@@ -1,0 +1,131 @@
+body {
+    background-color: #001929;
+    color: #D8ECFD;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+#title {
+    padding-left: 1.6em;
+    font-size: 0.8em;
+}
+
+#titleheader {
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    font-size: 6vw;
+    margin-left: 30%;
+    display: inline-block;
+}
+
+#profile {
+    font-size: 1.2em;
+    padding-left: 1.6em;
+    padding-top: 1em;
+}
+
+span {
+    color: #F2CB54;
+}
+
+aside {
+    position: fixed;
+    display: inline-block;
+    background-color: #010B13;
+    width: 26%;
+    height: 100vh;
+    border-right: 3px solid #FFBA00;
+}
+
+aside > span {
+    padding: 1em;
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+nav {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+nav > a {
+    display: block;
+    width: inherit;
+    font-size: 1.2em;
+    text-indent: 0.6em;
+    padding: 1.6em;
+}
+
+nav > a:hover {
+    background-color: #FFBA00;
+    color: #010B13;
+}
+
+.important {
+    color: #FFBA00;
+    font-style: italic;
+}
+
+.content {
+    margin-left: 30%;
+    display: inline-block;
+}
+
+p {
+    visibility: hidden;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-delay: 0.5s;
+    animation-fill-mode: forwards;
+    font-size: 1.5em;
+}
+
+@keyframes fadeIn {
+    0% {visibility: visible; transform: translateY(30px); opacity: 0;}
+    100% {visibility: visible; transform: translateY(0); opacity: 1;}
+}
+
+img {
+    display: inline-block;
+}
+
+#bottomstuff {
+    cursor:pointer;
+    position: absolute;
+    bottom: 1em;
+    left: 2em;
+    width: 12em;
+    font-size: 0.8em;
+}
+
+.profile {
+    display: inline-block;
+    background-color: #010B13;
+    width: 55vw;
+    padding: 1.6em;
+    border: 3px solid #FFBA00;
+    margin: 1em;
+}
+
+.date {
+    font-size: 1.1em;
+    font-style: italic;
+}
+
+.selectpathfinder  {
+    background-color: #FFBA00;
+    color: #010B13;
+    padding: 1em;
+    border: 2px solid #FFBA00;
+    font-size: 1.2em;
+    float: right;
+}
+
+.selectpathfinder:hover {
+    background-color: #010B13;
+    color: #D8ECFD;
+    border: 2px solid #FFBA00;
+}
