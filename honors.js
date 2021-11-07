@@ -15,16 +15,7 @@ async function getPathfinders () {
     return a;
 }
 
-function selectPathfinder () {
-    let pathfinders = getPathfinders();
-    for (let s of pathfinders) {
-        if (pathfinders) {
-            return;
-        }
-    }
-}
-
-async function getPathfinderHonors () {
+async function getPathfinderHonors (pathfinderID) {
 
 }
 
@@ -38,15 +29,13 @@ function clearContent () {
 var title = document.getElementById("titleheader");
 function initPage(pageName) {
     clearContent();
-    title.textContent = pageName;
+    title.innerHTML = pageName;
 }
 
 function  decodeDate (date) {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let month = date.match("-(.*)-")[1];
-    let day = date.match(`${month + "-"}(.*)T`)[1];
     let d = new Date(date);
-    return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();/*months[month - 1] + " " + day + ", " + date.match(/.{1,4}/i)*/
+    return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
 }
 
 getPathfinders();
