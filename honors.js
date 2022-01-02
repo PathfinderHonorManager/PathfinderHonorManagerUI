@@ -1,5 +1,3 @@
-
-
 var baseAddress = "https://pathfinderhonormanager.azurewebsites.net/api"
 var honorURI = "/honors";
 var pathfinderURI = "/pathfinders";
@@ -11,23 +9,29 @@ const pathfinders = fetch(baseAddress + pathfinderURI)
     return pathfinders;
 });
 
-pathfindersStaticArray = [];
+const honors = fetch(baseAddress + honorURI)
+.then((response) => response.json())
+.then((honors) => {
+    return honors;
+});
+
+let pathfindersArray = [];
 async function getPathfinders () {
     const a = await pathfinders;
     console.log(a);
-    pathfindersStaticArray = a;
-
+    pathfindersArray = a;
     return a;
 }
-function makeThingsWork() {
 getPathfinders();
+
+let honorsArray = [];
+async function getHonors () {
+    const a = await honors;
+    console.log(a);
+    honorsArray = a;
+    return a;
 }
-
-makeThingsWork();
-
-async function getPathfinderHonors (pathfinderID) {
-
-}
+getHonors();
 
 var content = document.getElementById("content");
 var subcontent = document.getElementById("subcontent");
@@ -60,7 +64,7 @@ function initPage(pageName, pageID) {
     title.innerHTML = pageName;
 }
 
-function  decodeDate (date) {
+function decodeDate (date) {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let d = new Date(date);
     return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();

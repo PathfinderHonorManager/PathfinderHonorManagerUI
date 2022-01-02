@@ -34,7 +34,6 @@
 
         <h1 id="titleheader">Pathfinder Honor Manager</h1>
         <div id="content" class="content">
-            <button onclick="window.open('assets.html')">Phor Developers - Preview Assets</button>
 
             <div id="subcontent">
                 <div id="myclub" class="tab">
@@ -50,9 +49,18 @@
                     <p>Insert cool sash with js diagonal scrolling.</p>
                 </div>
                 <div id="findhonors" class="tab">
-                    <p>Insert long list of honors.</p>
+                    <table>
+                        <tr v-for="honor in honors" id="honortable">
+                            <td>
+                            <honor-card :title="honor.honorname" :level="honor.level"></honor-card>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div id="homepage" class="tab"></div>
+                <div id="homepage" class="tab">
+                    <p>Welcome to the Pathfinder Honor Manager!</p>
+                    <p>Here, we manage honors, which is something that needs to be done.</p>
+                </div>
                 <div id="moreinfo" class="tab"></div>
             </div>
         </div>
