@@ -1,10 +1,13 @@
 :root {
-    --base-color: #0F0F0F;
+    --base-color: #161616;
+    --navbar-color: #161616;
     --font-color: #e0e0e0;
-    --block-color: #0c0c0c;
-    --border-color: #2b2b2b;
+    --block-color: #570F1E;
+    /*flame or skobeloff in coolors also kind of works*/
+    --border-color: #323C48;
     --highlight: #ffba00;
     --left-space: 1.6em;
+    --texture: url("texture.svg");
 
 }
 
@@ -18,7 +21,7 @@ body {
 }
 
 .placeholder {
-    margin-top: calc(2vh + 4em);
+    margin-top: calc(2vh + 6em);
 }
 
 #title {
@@ -43,15 +46,15 @@ body {
 }
 
 span {
-    color: #F2CB54;
+    color: var(--highlight);
 }
 
 header {
     position: fixed;
     display: block;
-    background: rgba(12, 12, 12, 0.5);
-    backdrop-filter: blur(32px);
-    -webkit-backdrop-filter: blur(32px);
+    background: var(--navbar-color);
+    border: none;
+    border-bottom: 2px solid var(--border-color);
     top: 0;
     padding: 0.2em 0 0.2em 0;
     width: 100%;
@@ -67,16 +70,14 @@ header > h3 {
 
 header > a {
     display: flex;
-    background-color: var(--highlight);
-    background-image: url("texture.svg");
-    color: var(--block-color);
+    color: var(--font-color);
+    border: none;
     height: calc(100% - 2em);
     padding: 1em;
     margin: 0;
     font-size: 2vh;
     text-decoration: none;
     float: right;
-    text-shadow: 0 0 6px var(--highlight), 0 0 6px var(--highlight), 0 0 6px var(--highlight);
 
 }
 
@@ -142,9 +143,9 @@ nav > a {
 }
 
 nav > a:hover {
-    background-image: url("texture.svg");
+    background-image: var(--texture);
     background-color: var(--highlight);
-    color: var(--block-color);
+    color: var(--base-color);
     text-shadow: 0 0 6px var(--highlight), 0 0 6px var(--highlight), 0 0 6px var(--highlight);
 }
 
@@ -181,8 +182,8 @@ img {
 button {
     display: inline-block;
     background-color: var(--highlight);
-    background-image: url("texture.svg");
-    color: var(--block-color);
+    background-image: var(--texture);
+    color: var(--base-color);
     padding: 1em;
     border: 2px solid var(--highlight);
     border-radius: 2px;
@@ -192,13 +193,14 @@ button {
 
 button:hover {
     background-color: var(--block-color);
-    color: var(--font-color);
+    background: none;
+    color: var(--highlight);
     border: 2px solid var(--highlight);
     text-shadow: none;
 }
 
 #bottomstuff {
-    cursor:pointer;
+    cursor: pointer;
     position: absolute;
     bottom: 1em;
     left: var(--left-space);
@@ -208,14 +210,14 @@ button:hover {
 
 .card {
     display: inline-block;
-    background-color: var(--block-color);
+    background-color: var(--base-color);
     width: 55vw;
     padding: 1.6em;
-    border: 3px dashed var(--border-color);
+    border: 3px solid var(--border-color);
     border-radius: 4px;
     margin-top: 1em;
     line-height: 10px;
-    box-shadow: 0 5px 8px black;
+    /*box-shadow: 0 5px 8px black;*/
     transition: 0.4s;
 }
 
@@ -224,8 +226,7 @@ button:hover {
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 9px 8px #0a0a0a;
+    transform: translateX(4px);
 }
 
 .popupwindow {
@@ -280,7 +281,7 @@ button:hover {
 
 input[type="text"] {
     background-color: transparent;
-    background-image: url("texture.svg");
+    background-image: var(--texture);
     color: var(--font-color);
     height: 2em;
     width: 55vw;
