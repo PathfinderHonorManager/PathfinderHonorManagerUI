@@ -1,74 +1,57 @@
-var baseAddress = "https://pathfinderhonormanager.azurewebsites.net/api"
-var honorURI = "/honors";
-var pathfinderURI = "/pathfinders";
+// var honorURI = "/honors";
+// var pathfinderURI = "/pathfinders";
+// var pathfinderID = "";
+// var PHURI = "/PathfinderHonors";
+// var fetched = 0;
 
+// const pathfinders = fetch(baseAddress + pathfinderURI)
+// .then((response) => response.json())
+// .then((pathfinders) => {
+//     return pathfinders;
+// });
 
-const pathfinders = fetch(baseAddress + pathfinderURI)
-.then((response) => response.json())
-.then((pathfinders) => {
-    return pathfinders;
-});
+// const honors = fetch(baseAddress + honorURI)
+// .then((response) => response.json())
+// .then((honors) => {
+//     return honors;
+// });
 
-const honors = fetch(baseAddress + honorURI)
-.then((response) => response.json())
-.then((honors) => {
-    return honors;
-});
+//var pathfinderHonors;
 
-let pathfindersArray = [];
-async function getPathfinders () {
-    const a = await pathfinders;
-    console.log(a);
-    pathfindersArray = a;
-    return a;
-}
-getPathfinders();
+// let pathfindersArray = [];
+// async function getPathfinders () {
+//     const a = await pathfinders;
+//     console.log(a);
+//     pathfindersArray = a;
+//     fetched = 1;
+//     return a;
+// }
+// getPathfinders();
 
-let honorsArray = [];
-async function getHonors () {
-    const a = await honors;
-    console.log(a);
-    honorsArray = a;
-    return a;
-}
-getHonors();
+// var honorsArray = [];
+// async function getHonors () {
+//     const a = await honors;
+//     console.log(a);
+//     honorsArray = a;
+//     fetched = 2;
+//     return a;
+// }
+// getHonors();
 
-var content = document.getElementById("content");
-var subcontent = document.getElementById("subcontent");
-var tabs = document.getElementsByClassName("tab");
-function clearContent () {
-    while (content.lastChild) {
-        content.removeChild(content.lastChild);
-    }
-}
-
-var title = document.getElementById("titleheader");
-var pagePath = "homepage";
-let page = document.getElementById(pagePath);
-function initPage(pageName, pageID) {
-    console.log(`You are currently viewing the ${pageName} page.`)
-    pagePath = pageID;
-    document.getElementById(pagePath);
-    function hideChildren () {
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i].getAttribute("id") === pageID) {
-                tabs[i].style.display = "block";
-                console.log("you done good, kid.");
-            } else {
-            tabs[i].style.display = "none";
-            }
-        }
-    }
-    hideChildren();
-    page.style.visibility = "visible";
-    title.innerHTML = pageName;
-}
-
-function decodeDate (date) {
-    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let d = new Date(date);
-    return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-}
-
-getPathfinders();
-initPage("Pathfinder Honor Manager", "homepage");
+// let pathfinderIdsHonors = [];
+// async function getPathfinderHonors (ID) {
+//     var coolParser = (obj) => obj.json() ?? "here's some crap.";
+//     try {
+//     var pathfinderHonors = fetch(baseAddress + pathfinderURI + "/" + ID + "/PathfinderHonors", {
+//         "method":"GET",
+//         "Access-Control-Allow-Origin": "*"
+//     })
+//     .then(a => coolParser(a));
+//     pathfinderIdsHonors = pathfinderHonors;
+//     } catch (err) {
+//         console.error(`An Error (${err}) has occured with fetch function.`);
+//     }
+//     console.log(await pathfinderHonors);
+//     return pathfinderHonors;
+// }
+// getPathfinderHonors("2080a454-1ee3-483b-9dde-55880109db70");

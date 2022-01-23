@@ -12,11 +12,10 @@
                 <table>
                     <tr v-for="item in profiles">
                         <td>
-                        <pathfinder-card :date="item.date" :first-name="item.firstname" :last-name="item.lastname"></pathfinder-card>
+                        <pathfinder-card :date="item.date" :first-name="item.firstname" :last-name="item.lastname" :functionfile="item"></pathfinder-card>
                         </td>
                     </tr>
                 </table>
-                <button onclick="showHonors(12)">Load More</button>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
