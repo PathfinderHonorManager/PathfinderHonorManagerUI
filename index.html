@@ -10,7 +10,7 @@
     <div id="vuestuff">
         <div class="vignette"></div>
         <div class="popupwindow" id="honorcase">
-            <h2></h2>
+            <h2>{{pathfinderselector}}'s Honors</h2>
         </div>
         <header>
             <h3>Pathfinder Honor Manager</h3>
@@ -53,7 +53,7 @@
                     <table>
                         <tr v-for="item in profiles">
                             <td>
-                            <pathfinder-card :date="item.date" :first-name="item.firstname" :last-name="item.lastname" :honor-set="item.functionfile"></pathfinder-card>
+                            <pathfinder-card :date="item.date" :first-name="item.firstname" :last-name="item.lastname" :honorset="item.functionfile"></pathfinder-card>
                             </td>
                         </tr>
                     </table>

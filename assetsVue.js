@@ -6,14 +6,8 @@ var app = new Vue({
         ],
         honors: [
         ],
-        pathfinderselector: 'nobody',
-        openHonors: {
-            honorName: [],
-            honorStatus: []
-        }
-    }
-});
-
+        pathfinderselector: 'nobody'
+    }});
 
 let elems = [];
 function dataToElements() {
@@ -48,8 +42,8 @@ console.log("Readiness!");
 let pathfinderCard_pathfinder = 0;
 
 var pathfinderCard = Vue.component('pathfinder-card', {
-    props: ['date', 'firstName', 'lastName', 'honor-set'],
-    template: '<div class="card"><p class="specialitalic">Since {{ date }}</p><button class="selectpathfinder" onclick="openHonorSet()">{{firstName}}\'s Profile</button><h2>{{ firstName }} {{ lastName }}</h2></div>'
+    props: ['date', 'firstName', 'lastName', 'honorset'],
+    template: '<div class="card"><p class="specialitalic">Since {{ date }}</p><button class="selectpathfinder" :id="honorset" onclick="openHonorSet(this.id)">{{firstName}}\'s Profile</button><h2>{{ firstName }} {{ lastName }}</h2></div>'
 });
 
 var honorCard = Vue.component('honor-card', {
