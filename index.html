@@ -11,10 +11,15 @@
         <div class="vignette"></div>
         <div class="popupwindow" id="honorcase">
             <h2>{{pathfinderselector}}'s Honors</h2>
+            <table>
+                <tr v-for="honor in pathfinderhonors">
+                    <honor-card></honor-card>
+                </tr>
+            </table>
         </div>
         <header>
             <h3>Pathfinder Honor Manager</h3>
-            <a id="newauth">Sign in</a>
+            <a id="newauth">Sign Up</a>
             <a href="authentication.html" target="blank" id="authenticate">Log In</a>
         </header>
         <aside id="navbar">
@@ -30,10 +35,10 @@
             </div>
 
             <nav>
-                <a onclick="initPage('My Club', 'myclub')">My Club</a>
-                <a onclick="initPage('My Sash', 'mysash')">My Sash</a>
-                <a onclick="initPage('Find Honors', 'findhonors')">Find Honors</a>
-                <a onclick="initPage('Pathfinder Honor Manager', 'homepage')">Home Page</a>
+                <a onclick="initPage('Pathfinder Honor Manager', 'homepage')"><img src="Icons/home_black_24dp.svg" class="icon">Home</a>
+                <a onclick="initPage('My Club', 'myclub')"><img src="Icons/groups_black_24dp.svg" class="icon">My Club</a>
+                <a onclick="initPage('My Sash', 'mysash')"><img src="Icons/dashboard_black_24dp.svg" class="icon">My Sash</a>
+                <a onclick="initPage('Find Honors', 'findhonors')"><img src="Icons/search_black_24dp.svg" class="icon">Find Honors</a>
                 <a class="important">More Info...</a>
             </nav>
 

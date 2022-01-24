@@ -7,7 +7,7 @@
     --border-color: #323C48;
     --highlight: #ffba00;
     --left-space: 1.6em;
-    --texture: url("texture.svg");
+    --texture: url("Textures/texture.svg");
 
 }
 
@@ -79,6 +79,16 @@ header > a {
     text-decoration: none;
     float: right;
 
+}
+
+.icon {
+    display: flex;
+    float: left;
+    margin-right: 0.5em
+}
+
+a:hover > .icon {
+    filter: brightness(1) brightness(0.09);
 }
 
 #newauth {
