@@ -30,7 +30,7 @@ function dataToHonors() {
         honorElems.push({
             honorname: `${honorsArray[i].name}`,
             level: `${honorsArray[i].level}`,
-            imagepath: `${honorsArray[i].patchPath}`
+            imagepath: `https://pathfinderhonor.azureedge.net/assets/${honorsArray[i].patchPath}`
         });
     }
 }
