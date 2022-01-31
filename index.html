@@ -10,10 +10,11 @@
     <div id="vuestuff">
         <div class="vignette"></div>
         <div class="popupwindow" id="honorcase">
-            <h2>{{pathfinderselector}}'s Honors</h2>
             <table>
                 <tr v-for="honor in pathfinderhonors">
-                    <honor-card></honor-card>
+                    <td>
+                        <honor-card-p :title="honor.name" :status="honor.status"></honor-card-p>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -77,6 +78,7 @@
                             </td>
                         </tr>
                     </table>
+                    <button onclick="paginations += 1; renderHonorsSearch(10)">Show more</button>
                 </div>
                 <div id="homepage" class="tab">
                     <p>Welcome to the Pathfinder Honor Manager!</p>
@@ -85,6 +87,7 @@
                 <div id="moreinfo" class="tab"></div>
             </div>
         </div>
+        <div class="placeholder"></div>
     </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

@@ -11,6 +11,10 @@
 
 }
 
+div {
+    margin: 0;
+}
+
 body {
     background-color: var(--base-color);
     color: var(--font-color);
@@ -240,21 +244,44 @@ button:hover {
 }
 
 .popupwindow {
-    display: none;
     position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
     background: rgba(12, 12, 12, 0.5);
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
-    width: 55vw;
-    height: 65vh;
+    width: 65vw;
+    height: 75vh;
     padding: 1.6em;
-    top: 17.5vh;
-    left: 22.5vw;
+    top: 12.5vh;
+    left: 17.5vw;
     border: 3px solid var(--highlight);
     border-radius: 4px;
     box-shadow: 0 0px 20vw black;
     z-index: 3;
     animation: glidein 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.popupwindow > .card {
+    margin: 0 auto;
+}
+
+.popupwindow > td {
+    overflow: hidden;
+    height: 2em;
+}
+
+.popupwindow::-webkit-scrollbar {
+    background-color: transparent;
+}
+
+.popupwindow::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.popupwindow::-webkit-scrollbar-thumb {
+    background: var(--highlight);
+    border-radius: 4px;
 }
 
 @keyframes glidein {
@@ -308,4 +335,67 @@ input[type="text"] {
     float: right;
     width: 20%;
     height: auto;
+}
+
+table {
+    margin: 0;
+    margin-bottom: 5%;
+}
+
+.status-changeable {
+    background-color: var(--border-color);
+    color: var(--font-color);
+    border: none;
+    border-radius: 20px;
+    text-shadow: none;
+    padding-right: calc(0.4em + 10px + 0.8em);
+}
+
+.status-changeable::after {
+    position: absolute;
+    content: '';
+    height: none;
+    width: none;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--font-color) transparent transparent transparent;
+    margin-top: 0.2em;
+    margin-left: 0.4em;
+}
+
+.status-changeable:hover {
+    background-color: var(--border-color);
+    color: var(--font-color);
+    border: none;
+}
+
+.dropdown {
+    background-color: var(--border-color);
+    width: 7.2em;
+    height: 3.5em;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.1s;
+}
+
+.dropdown:hover {
+    height: 14em;
+}
+
+.dropdownoption {
+    background: none;
+    background-color: transparent;
+    color: var(--font-color);
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    text-shadow: none;
+}
+
+.dropdownoption:hover {
+    background-color: var(--base-color);
+    background-image: var(--texture); 
+    color: var(--font-color);
+    border: none;
 }

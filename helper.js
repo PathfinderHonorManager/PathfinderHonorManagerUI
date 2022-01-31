@@ -1,4 +1,4 @@
-
+let paginations = 1;
 function searchHonors(query) {
     let tokens = query.toLowerCase().split(' ');
     let props = honorsArray.map(obj => Object.values(obj)[1].toLowerCase());
@@ -6,12 +6,17 @@ function searchHonors(query) {
     return matches;
 }
 
+function renderHonorsSearch(page) {
+    app.$data.honors = honorElems.filter(obj => newHonors.indexOf(Object.values(obj)[0].toLowerCase()) > -1).slice(0, (page * paginations));
+}
+
 //Event listeners
 var newHonors;
 var queryElement = document.getElementById("honorsearcharea");
 queryElement.addEventListener('keyup', function (e) {
-    newHonors = searchHonors(e.target.value);
-    app.$data.honors = honorElems.filter(obj => newHonors.indexOf(Object.values(obj)[0].toLowerCase()) > -1);
+    paginations = 1;
+    newHonors = searchHonors(e.target.value, 10);
+    renderHonorsSearch(10);
 });
 
 var content = document.getElementById("content");

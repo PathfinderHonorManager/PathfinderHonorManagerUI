@@ -7,8 +7,9 @@ var app = new Vue({
         honors: [
         ],
         pathfinderselector: 'nobody',
+        pathfinderindex: 0,
         pathfinderhonors: []
-    }});
+}});
 
 let elems = [];
 function dataToElements() {
@@ -18,7 +19,8 @@ function dataToElements() {
             date: `${decodeDate(pathfindersArray[i].created)}`,
             firstname: `${pathfindersArray[i].firstName}`,
             lastname: `${pathfindersArray[i].lastName}`,
-            functionfile: i
+            functionfile: i,
+            honors: DATA.pathfinders[i].pathfinderHonors
         });
     }
 }
@@ -50,6 +52,21 @@ var pathfinderCard = Vue.component('pathfinder-card', {
 var honorCard = Vue.component('honor-card', {
     props: ['title', 'level', 'image'],
     template: '<div class="card"><h2>{{title}}</h2><p class="special-italic">Level {{ level }}</p><img :src="image" alt="image could not be retrieved." class="honorimg"></div>'
+});
+
+var pathfinderHonorCard = Vue.component('honor-card-p', {
+    props: ['title', 'status'],
+    template: `<div class="card">
+                    <h2>{{title}}</h2>
+                    <div class="dropdown">
+                        <button class="status-changeable">{{status}}</button>
+                        <div class="dropdowncnt">
+                            <button class="dropdownoption" onclick='requestHonorUpdate("Planned")'>Planned</button>
+                            <button class="dropdownoption" onclick='requestHonorUpdate("Earned")'>Earned</button>
+                            <button class="dropdownoption" onclick='requestHonorUpdate("Awarded")'>Awarded</button>
+                        </div>
+                    </div>
+                </div>`
 });
 
 function mapPrototypeElements() {

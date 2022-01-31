@@ -56,6 +56,16 @@ async function getAllTheTHINGS () {
 }
 
 getAllTheTHINGS();
+
+//statatus is actually just status. :)
+function putHonorStatus(pathfinderID, honorID, statatus) {
+    fetch(baseAddress + "/pathfinders" + pathfinderID + "/PathfinderHonors" + honorID, {
+        "method": "PUT",
+        "headers": {'Content-Type': 'application/json'},
+        "redirect": "follow",
+        "body": JSON.stringify({status: statatus})
+    })
+}
 var permission = false;
 var tries = 1000000;
 let submition = "";
