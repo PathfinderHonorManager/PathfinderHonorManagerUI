@@ -30,7 +30,7 @@ function dataToHonors() {
         honorElems.push({
             honorname: `${honorsArray[i].name}`,
             level: `${honorsArray[i].level}`,
-            imagepath: `https://pathfinderhonor.azureedge.net/assets/${honorsArray[i].patchPath}`
+            imagepath: `https://pathfinderhonor.azureedge.net/assets/honors/small/${honorsArray[i].patchPath}`
         });
     }
 }
@@ -55,15 +55,15 @@ var honorCard = Vue.component('honor-card', {
 });
 
 var pathfinderHonorCard = Vue.component('honor-card-p', {
-    props: ['title', 'status'],
+    props: ['title', 'status', 'pathfinder', 'honor', 'indexer'],
     template: `<div class="card">
                     <h2>{{title}}</h2>
                     <div class="dropdown">
                         <button class="status-changeable">{{status}}</button>
                         <div class="dropdowncnt">
-                            <button class="dropdownoption" onclick='requestHonorUpdate("Planned")'>Planned</button>
-                            <button class="dropdownoption" onclick='requestHonorUpdate("Earned")'>Earned</button>
-                            <button class="dropdownoption" onclick='requestHonorUpdate("Awarded")'>Awarded</button>
+                            <button class="dropdownoption" :data-ownerid="pathfinder" :data-honorid="honor" data-setterstatus="Planned" onclick="requestHonorUpdate(this)" :data-index="indexer">Planned</button>
+                            <button class="dropdownoption" :data-ownerid="pathfinder" :data-honorid="honor" data-setterstatus="Earned" onclick="requestHonorUpdate(this)" :data-index="indexer">Earned</button>
+                            <button class="dropdownoption" :data-ownerid="pathfinder" :data-honorid="honor" data-setterstatus="Awarded" onclick="requestHonorUpdate(this)" :data-index="indexer">Awarded</button>
                         </div>
                     </div>
                 </div>`

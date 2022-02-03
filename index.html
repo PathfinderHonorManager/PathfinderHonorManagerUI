@@ -13,7 +13,7 @@
             <table>
                 <tr v-for="honor in pathfinderhonors">
                     <td>
-                        <honor-card-p :title="honor.name" :status="honor.status"></honor-card-p>
+                        <honor-card-p :title="honor.name" :status="honor.status" :pathfinder="honor.pathfinderID" :honor="honor.honorID" :indexer="honor"></honor-card-p>
                     </td>
                 </tr>
             </table>

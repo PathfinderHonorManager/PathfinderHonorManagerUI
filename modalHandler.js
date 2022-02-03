@@ -21,17 +21,10 @@ function openHonorSet (el) {
     callShunBox();
 }
 
-var dropdwnPathfinderIndex = -1;
-var dropdwnIndex = -1;
 function requestHonorUpdate(status) {
-    console.log(status);
-    console.log(dropdwnPathfinderIndex);
-    console.log(dropdwnIndex);
-}
-function changeHonorStatus(pathfinderIndex, honorIndex, newStat) {
-    let pathfinderID = DATA.pathfinders[pathfinderIndex].pathfinderID;
-    let honorID = DATA.pathfinders[pathfinder].pathfidnerHonors[honorIndex].honorID;
-    putHonorStatus(pathfinderID, honorID, newStat);
+    console.log(status.parentElement.parentElement.parentElement.tabindex);
+    putHonorStatus(status.dataset.ownerid, status.dataset.honorid, status.dataset.setterstatus);
+    status.parentNode.parentNode.getElementsByClassName("status-changeable")[0].innerText = status.dataset.setterstatus;
 }
 
 vignette.addEventListener('mousedown', function (e) {
