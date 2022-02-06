@@ -59,7 +59,7 @@
                     <table>
                         <tr v-for="item in profiles">
                             <td>
-                            <pathfinder-card :date="item.date" :first-name="item.firstname" :last-name="item.lastname" :honorset="item.functionfile"></pathfinder-card>
+                            <pathfinder-card :date="item.date" :first-name="item.firstname" :last-name="item.lastname" :honorset="item.functionfile" :classname="item.classname"></pathfinder-card>
                             </td>
                         </tr>
                     </table>
@@ -78,7 +78,7 @@
                             </td>
                         </tr>
                     </table>
-                    <button onclick="paginations += 1; renderHonorsSearch(10)">Show more</button>
+                    <button onclick="paginations += 1; renderHonorsSearch(10)" id="thepaginator">Show more</button>
                 </div>
                 <div id="homepage" class="tab">
                     <p>Welcome to the Pathfinder Honor Manager!</p>

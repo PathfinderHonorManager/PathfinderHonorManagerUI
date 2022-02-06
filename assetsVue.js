@@ -19,6 +19,7 @@ function dataToElements() {
             date: `${decodeDate(pathfindersArray[i].created)}`,
             firstname: `${pathfindersArray[i].firstName}`,
             lastname: `${pathfindersArray[i].lastName}`,
+            classname: `${(pathfindersArray[i].className === null)? 'Staff' : pathfindersArray[i].className}`,
             functionfile: i,
             honors: DATA.pathfinders[i].pathfinderHonors
         });
@@ -45,8 +46,8 @@ console.log("Readiness!");
 let pathfinderCard_pathfinder = 0;
 
 var pathfinderCard = Vue.component('pathfinder-card', {
-    props: ['date', 'firstName', 'lastName', 'honorset'],
-    template: '<div class="card"><p class="specialitalic">Since {{ date }}</p><button class="selectpathfinder" :id="honorset" onclick="openHonorSet(this.id)">{{firstName}}\'s Honors</button><h2>{{ firstName }} {{ lastName }}</h2></div>'
+    props: ['date', 'firstName', 'lastName', 'honorset', 'classname'],
+    template: '<div class="card"><h4 style="text-align: center; margin: 0;">{{classname}}</h4><p class="specialitalic">Since {{ date }}</p><button class="selectpathfinder" :id="honorset" onclick="openHonorSet(this.id)">{{firstName}}\'s Honors</button><h2>{{ firstName }} {{ lastName }}</h2></div>'
 });
 
 var honorCard = Vue.component('honor-card', {
@@ -71,6 +72,5 @@ var pathfinderHonorCard = Vue.component('honor-card-p', {
 
 function mapPrototypeElements() {
     app.$data.profiles = elems;
-    app.$data.honors = honorElems;
 }
 setTimeout(mapPrototypeElements, 2000);

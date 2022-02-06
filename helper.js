@@ -6,17 +6,29 @@ function searchHonors(query) {
     return matches;
 }
 
-function renderHonorsSearch(page) {
-    app.$data.honors = honorElems.filter(obj => newHonors.indexOf(Object.values(obj)[0].toLowerCase()) > -1).slice(0, (page * paginations));
+var newHonors = [];
+var renderedHonors = [];
+
+
+var thePaginator = document.getElementById("thepaginator");
+thePaginator.style.display = "none";
+
+function renderHonorsSearch(p) {
+    renderedHonors = honorElems.filter(obj => newHonors.indexOf(Object.values(obj)[0].toLowerCase()) > -1).slice(0, (p * paginations));
+    app.$data.honors = renderedHonors;
+    if (newHonors.length === renderedHonors.length) {
+        thePaginator.style.display = "none";
+    } else {
+        thePaginator.style.display = "inherit";
+    }
 }
 
 //Event listeners
-var newHonors;
 var queryElement = document.getElementById("honorsearcharea");
 queryElement.addEventListener('keyup', function (e) {
     paginations = 1;
-    newHonors = searchHonors(e.target.value, 10);
-    renderHonorsSearch(10);
+    newHonors = searchHonors(e.target.value);
+    renderHonorsSearch(6);
 });
 
 var content = document.getElementById("content");

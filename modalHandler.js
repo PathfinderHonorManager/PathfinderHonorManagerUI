@@ -25,6 +25,9 @@ function requestHonorUpdate(status) {
     console.log(status.parentElement.parentElement.parentElement.tabindex);
     putHonorStatus(status.dataset.ownerid, status.dataset.honorid, status.dataset.setterstatus);
     status.parentNode.parentNode.getElementsByClassName("status-changeable")[0].innerText = status.dataset.setterstatus;
+    status.parentNode.parentNode.style.height = "0";
+    setTimeout(200, function () {return 1;});
+    status.parentNode.parentNode.style = null;
 }
 
 vignette.addEventListener('mousedown', function (e) {

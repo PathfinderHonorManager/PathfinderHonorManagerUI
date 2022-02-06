@@ -230,13 +230,17 @@ button:hover {
     border: 3px solid var(--border-color);
     border-radius: 4px;
     margin-top: 1em;
-    line-height: 10px;
+    line-height: 1.5em;
     /*box-shadow: 0 5px 8px black;*/
     transition: 0.4s;
 }
 
 .card > h2 {
-    line-height: 1.2em;
+    line-height: 0.5em;
+}
+
+.card > h4 {
+    line-height: 0;
 }
 
 .card:hover {
@@ -308,7 +312,7 @@ button:hover {
     display: inline-block;
     width: auto;
     word-break: break-all;
-    font-size: 1.2em;
+    font-size: 1em;
     font-style: italic;
 }
 
