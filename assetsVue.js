@@ -47,7 +47,7 @@ let pathfinderCard_pathfinder = 0;
 
 var pathfinderCard = Vue.component('pathfinder-card', {
     props: ['date', 'firstName', 'lastName', 'honorset', 'classname'],
-    template: '<div class="card"><h4 style="text-align: center; margin: 0;">{{classname}}</h4><p class="specialitalic">Since {{ date }}</p><button class="selectpathfinder" :id="honorset" onclick="openHonorSet(this.id)">{{firstName}}\'s Honors</button><h2>{{ firstName }} {{ lastName }}</h2></div>'
+    template: '<div class="cardoverflow"><h4>{{classname}}</h4><div class="card"><button class="selectpathfinder" :id="honorset" onclick="openHonorSet(this.id)">{{firstName}}\'s Honors</button><h2>{{ firstName }} {{ lastName }}</h2><p class="specialitalic">Since {{ date }}</p></div></div>'
 });
 
 var honorCard = Vue.component('honor-card', {
