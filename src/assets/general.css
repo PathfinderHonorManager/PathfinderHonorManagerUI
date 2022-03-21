@@ -1,0 +1,162 @@
+/*
+ELEMENT STYLE GUIDE:
+display
+margin
+size
+transfom/positioning
+font
+color
+border
+padding
+text transforms
+other
+*/
+
+:root {
+    /*MARGINS*/
+    --topMargin: 8em;
+    --leftMargin: 15%;
+    --textBlockMargin: 25%;
+
+    /*SIZES*/
+    --asideWidth: 20%;
+
+    /*TRANSFORMS/POSITIONS*/
+
+    /*FONTS*/
+    --mainFont: 'segoe UI', Arial;
+
+    /*FONT SIZES*/
+    --textSize: 1.3em;
+
+    /*LINE HEIGHT*/
+    --textLineHeight: 1.5em;
+    --spaceHBelow: 2em;
+    --spacePBelow: 1em;
+
+    /*COLOR PALLETTE*/
+    --bgColor: #111417;
+    --outlineColor: #1A1F23; 
+    --color: #F5F5F5;
+    --yellow: #FFBB00;
+    --orange: #F77D1B;
+    --red: #EF3E36;
+    --blue: #3185FC;
+    --darkBlue: #3772FF;
+
+    /*BORDER*/
+
+
+
+}
+
+
+/*GENERAL*/
+body {
+    margin: var(--topMargin);
+    margin-left: var(--leftMargin);
+    font-family: var(--mainFont);
+    background-color: var(--bgColor);
+    color: var(--color);
+}
+
+h1 {
+    display: block;
+    margin-bottom: var(--spaceHBelow);
+    text-align: center;
+    color: var(--color);
+}
+
+h1::after {
+    content: '';
+    display: block;
+    margin: auto;
+    width: 3em;
+    height: 0;
+    border-bottom: 6px solid var(--yellow);
+    border-radius: 5px;
+}
+
+h2 {
+    display: block;
+    margin: 0;
+    margin-top: calc(var(--spaceHBelow) + var(--spacePBelow));
+    text-align: left;
+    color: var(--color);
+}
+
+h2::before {
+    content: '';
+    display: block;
+    width: 3em;
+    height: 0;
+    border-bottom: 6px solid var(--yellow);
+    border-radius: 2px 6px 0 0;
+
+}
+
+p {
+    display: inline-block;
+    margin: 0;
+    margin-bottom: var(--spacePBelow);
+    font-size: var(--textSize);
+    line-height: var(--textLineHeight);
+}
+
+aside {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    float: right;
+    margin: 0;
+    height: 100%;
+    width: var(--asideWidth);
+    border-right: 2px solid var(--outlineColor);
+    padding-top: 30%;
+}
+
+aside > a {
+    display: block;
+    width: calc(100% - 1em);
+    color: var(--color);
+    font-size: 1.2em;
+    font-weight: lighter;
+    text-align: right;
+    text-decoration: none;
+    --br: calc((1.2em + (0.5em * 2)) / 2);
+    border-radius: var(--br)  0 0 var(--br);
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-right: 1em;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+aside > a:hover {
+    background-color: var(--outlineColor);
+}
+
+aside > a:focus::after {
+    content: '';
+    position: absolute;
+    width: 3em;
+    height: 0;
+    border: 3px solid var(--yellow);
+    border-radius: 0 0 3px 3px;
+    animation-name: slide;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide {
+    0% {opacity: 0.3; transform: translateX(0) translateY(1.6em); width: 1em;}
+    30% {opacity: 1; transform: translateX(-100%) translateY(1.1em); width: 3em;}
+    100% {transform: translateX(calc(-100% - 1em)) translateY(1.3em); width: 1em;}
+}
+
+/*CLASSES*/
+.mainText {
+    margin-left: var(--textBlockMargin);
+    margin-right: var(--textBlockMargin);
+}
