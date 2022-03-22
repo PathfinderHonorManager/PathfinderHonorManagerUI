@@ -12,10 +12,9 @@ export default {
       params,
     });
   },
-  get: (params = {}) => {
-    // you could also add id as a parameter
-    // to get a pathfinder by id
-    return axios.get(BASE_URL, {
+  get: (id: number, params = {}) => {
+    // I assume you can retreive pathfinders by id
+    return axios.get(BASE_URL + `/${id}`, {
       params,
     });
   },

@@ -12,7 +12,11 @@ interface Pathfinder {
 
 export const usePathfinderStore = defineStore("pathfinder", {
   state: () => ({
-    pathfinders: [] as Pathfinder[], // define the data shape of the store using the interface above
+    // define the data shape of the store using the interface above
+    // I'm assuming that the data from the api returns an array of pathfinders
+    pathfinders: [] as Pathfinder[],
+    loading: false,
+    error: false,
   }),
   getters: {
     // getters are functions that return values from the state
@@ -24,12 +28,18 @@ export const usePathfinderStore = defineStore("pathfinder", {
   actions: {
     // actions are functions that modify the state
     // they are used to call API requests or to modify the state in some other way
-    async getPathFinders() {
+    async getPathfinders() {
+      this.loading = true;
+      this.error = false;
+
       try {
-        const response = await api.get();
+        const response = await api.getAll();
         this.pathfinders = response.data; // i'm not sure how the response data is supposed to look, but this is where you set the state
       } catch (err) {
+        this.error = true;
         console.error(`Could not get pathfinders, because: ${err}`);
+      } finally {
+        this.loading = false;
       }
     },
   },
