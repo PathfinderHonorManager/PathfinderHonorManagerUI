@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { honors } from "@/helpers/fetchHandler";
+import { honors } from "@/api/fetchHandler";
 
 export const useHonorStore = defineStore("honors", {
   state: () => ({
