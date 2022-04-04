@@ -2,7 +2,7 @@
   <p>An example of how to integrate with the store!</p>
   <p v-if="loading">Loading</p>
   <p v-if="error">Error</p>
-  <button @click="getPathfinders"></button>
+  <button @click="getPathfinders">Get Pathfinders</button>
   <ul>
     <li v-for="(pathfinder, i) in pathfinders" :key="i">
       <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
