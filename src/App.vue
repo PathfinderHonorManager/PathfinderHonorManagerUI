@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Authentication from "@/components/Authentication.vue";
 import { RouterLink, RouterView } from "vue-router";
 import { ManagerIntro } from "@/components/ManagerIntro.vue";
 import { defineComponent } from "vue";
@@ -8,11 +9,12 @@ import { useHonorStore } from "@/stores/honors";
 
 const pathfinder = usePathfinderStore();
 const honors = useHonorStore();
-const { firstName, lastName, } = storeToRefs(pathfinder);
-const { singleFocus, groupFocus, } = storeToRefs(honors);
+const { firstName, lastName } = storeToRefs(pathfinder);
+const { singleFocus, groupFocus } = storeToRefs(honors);
 </script>
 
 <template>
+  <Authentication />
   <header>
     <div class="wrapper">
       <h1>Honor Manager</h1>

@@ -13,7 +13,7 @@ export default {
     });
   },
   get: (id: number, params = {}) => {
-    // I assume you can retreive pathfinders by id
+    // I assume you can retrieve pathfinders by id
     return axios.get(BASE_URL + `/${id}`, {
       params,
     });
