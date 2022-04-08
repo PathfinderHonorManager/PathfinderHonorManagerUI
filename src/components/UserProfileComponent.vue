@@ -1,10 +1,15 @@
 <template>
   <div>
-    <h2>User Profile</h2>
-    <button @click="login">Log in</button>
-    <pre v-if="isAuthenticated">
-        <code>{{ user }}</code>
-      </pre>
+    <div v-if="isAuthenticated">
+      <h2>User Profile</h2>
+      <button @click="logout">Log out</button>
+      <pre v-if="isAuthenticated">
+          <code>{{ user }}</code>
+        </pre>
+    </div>
+    <div v-else>
+      <button @click="login">Log in</button>
+    </div>
   </div>
 </template>
 
@@ -14,11 +19,14 @@ import { useAuth0 } from "@auth0/auth0-vue";
 
 export default defineComponent({
   setup() {
-    const { loginWithRedirect, user, isAuthenticated } = useAuth0();
+    const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
 
     return {
       login: () => {
         loginWithRedirect();
+      },
+      logout: () => {
+        logout({ returnTo: window.location.origin });
       },
       user,
       isAuthenticated,
