@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import api from "@/api/honors";
-import { ref } from "vue";
 import type { Url } from "url";
 
 // Define the data shape of a pathfinder
 interface Honor {
+  honorID: string;
   name: string;
   level: number;
   description: string;
@@ -30,7 +30,7 @@ export const useHonorStore = defineStore("honor", {
 
       try {
         const response = await api.getAll();
-        this.honors = ref(response.data);
+        this.honors = response.data;
       } catch (err) {
         this.error = true;
         console.error(`Could not get honors, because: ${err}`);

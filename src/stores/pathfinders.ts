@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
-import { ref } from "vue";
 
 interface Pathfinder {
+  pathfinderID: string;
   firstName: string;
   lastName: string;
   pathfinderClass: string;
@@ -11,6 +11,7 @@ interface Pathfinder {
 }
 
 interface PathfinderHonors {
+  pathfinderHonorID: string;
   name: string;
   status: string;
 }
@@ -39,7 +40,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
 
       try {
         const response = await api.getAll();
-        this.pathfinders = ref(response.data); // i'm not sure how the response data is supposed to look, but this is where you set the state
+        this.pathfinders = response.data;
       } catch (err) {
         this.error = true;
         console.error(`Could not get pathfinders, because: ${err}`);
