@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const BASE_URL =
-  "https://pathfinderhonormanager.azurewebsites.net/api/pathfinders";
+const BASE_URL = "https://pathfinderhonormanager.azurewebsites.net/api/honors";
 
 export default {
   getAll: (params = {}) => {

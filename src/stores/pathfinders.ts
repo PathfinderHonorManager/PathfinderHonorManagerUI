@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
+import { ref } from "vue";
 
 // Define the data shape of a pathfinder
 interface Pathfinder {
@@ -34,7 +35,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
 
       try {
         const response = await api.getAll();
-        this.pathfinders = response.data; // i'm not sure how the response data is supposed to look, but this is where you set the state
+        this.pathfinders = ref(response.data); // i'm not sure how the response data is supposed to look, but this is where you set the state
       } catch (err) {
         this.error = true;
         console.error(`Could not get pathfinders, because: ${err}`);

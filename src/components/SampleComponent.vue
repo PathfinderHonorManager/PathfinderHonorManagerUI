@@ -8,23 +8,31 @@
       <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
     </li>
   </ul>
+  <button @click="getHonors">Get Honors</button>
+  <ul>
+  <li v-for="(honor, i) in honors" :key="i">
+      <p>{{ honor.name }}</p>
+    </li>
+  </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
+import { useHonorStore } from "../stores/honors";
 
 export default defineComponent({
   setup() {
-    const store = usePathfinderStore();
+    const pathfinderStore = usePathfinderStore();
+    const honorStore = useHonorStore();
 
     return {
-      // there's a way to destructure this, but this is more explicit and clear.
-      // these returned items are available in the template.
-      loading: store.loading,
-      error: store.error,
-      pathfinders: store.pathfinders,
-      getPathfinders: store.getPathfinders,
+      loading: pathfinderStore.loading,
+      error: pathfinderStore.error,
+      pathfinders: pathfinderStore.pathfinders,
+      getPathfinders: pathfinderStore.getPathfinders,
+      honors: honorStore.honors,
+      getHonors: honorStore.getHonors,
     };
   },
 });

@@ -2,16 +2,11 @@
 import Authentication from "@/components/Authentication.vue";
 import { RouterLink, RouterView } from "vue-router";
 import UserProfileComponent from "./components/UserProfileComponent.vue";
-import { ManagerIntro } from "@/components/ManagerIntro.vue";
-import { defineComponent } from "vue";
-import { storeToRefs } from "pinia";
-import { usePathfinderStore } from "@/stores/pathfinders";
-import { useHonorStore } from "@/stores/honors";
+import { usePathfinderStore } from "./stores/pathfinders";
+import { useHonorStore } from "./stores/honors";
 
 const pathfinder = usePathfinderStore();
 const honors = useHonorStore();
-const { firstName, lastName } = storeToRefs(pathfinder);
-const { singleFocus, groupFocus } = storeToRefs(honors);
 </script>
 
 <template>
