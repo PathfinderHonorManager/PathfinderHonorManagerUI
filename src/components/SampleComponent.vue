@@ -7,12 +7,12 @@
   </div>
   <div v-else>
     <ul>
-      <li v-for="(pathfinder, i) in pathfinders" :key="i">
+      <li v-for="pathfinder in pathfinders" :key="pathfinder.pathfinderID">
         <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
         <ul>
           <li
-            v-for="(pathfinderHonor, i) in pathfinder.pathfinderHonors"
-            :key="i"
+            v-for="pathfinderHonor in pathfinder.pathfinderHonors"
+            :key="pathfinderHonor.pathfinderHonorID"
           >
             <p>
               {{ pathfinderHonor.name }} -- {{ pathfinderHonor.status }}
@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect } from "vue";
+import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { useHonorStore } from "../stores/honors";
 
