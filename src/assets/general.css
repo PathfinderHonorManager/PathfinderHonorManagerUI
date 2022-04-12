@@ -113,7 +113,6 @@ aside {
     height: 100%;
     width: var(--asideWidth);
     border-right: 2px solid var(--outlineColor);
-    padding-top: 30%;
 }
 
 aside > a {

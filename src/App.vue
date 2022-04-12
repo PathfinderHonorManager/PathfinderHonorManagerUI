@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Authentication from "@/components/Authentication.vue";
 import { RouterLink, RouterView } from "vue-router";
+import UserProfileComponent from "./components/UserProfileComponent.vue";
 import { ManagerIntro } from "@/components/ManagerIntro.vue";
 import { defineComponent } from "vue";
 import { storeToRefs } from "pinia";
@@ -22,7 +23,9 @@ const { singleFocus, groupFocus } = storeToRefs(honors);
   </header>
 
   <aside>
+    <UserProfileComponent />
     <RouterLink to="/" ref="homeLink">Home</RouterLink>
+    <RouterLink to="/club">My Club</RouterLink>
     <RouterLink to="/about">About</RouterLink>
   </aside>
 
