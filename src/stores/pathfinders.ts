@@ -2,13 +2,17 @@ import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
 import { ref } from "vue";
 
-// Define the data shape of a pathfinder
 interface Pathfinder {
   firstName: string;
   lastName: string;
   pathfinderClass: string;
   grade: number;
-  honors: any[]; // not sure how this is supposed to look
+  pathfinderHonors: PathfinderHonors[];
+}
+
+interface PathfinderHonors {
+  name: string;
+  status: string;
 }
 
 export const usePathfinderStore = defineStore("pathfinder", {

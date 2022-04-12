@@ -6,6 +6,11 @@
   <ul>
     <li v-for="(pathfinder, i) in pathfinders" :key="i">
       <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
+        <ul>
+          <li v-for="(pathfinderHonor, i) in pathfinder.pathfinderHonors" :key="i">
+          <p>{{ pathfinderHonor.name }} -- {{ pathfinderHonor.status }} </p>
+          </li>
+        </ul> 
     </li>
   </ul>
   <button @click="getHonors">Get Honors</button>
