@@ -73,7 +73,4 @@ export const usePathfinderStore = defineStore("pathfinder", {
       }
     },
   },
-  persist: {
-    enabled: true,
-  },
 });

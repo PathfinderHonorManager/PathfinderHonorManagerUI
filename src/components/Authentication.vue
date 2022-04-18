@@ -7,7 +7,8 @@ const { getAccessTokenSilently } = useAuth0();
 axios.interceptors.request.use(
   async (config) => {
     const token = await getAccessTokenSilently();
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers["Content-Type"] = "application/json";
     return config;
   },
   (error) => {

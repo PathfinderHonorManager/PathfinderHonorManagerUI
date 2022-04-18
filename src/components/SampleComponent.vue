@@ -20,6 +20,7 @@
             </p>
           </li>
         </ul>
+        <PathfinderHonorFormComponent :pathfinderID="pathfinder.pathfinderID" />
       </li>
     </ul>
   </div>
@@ -35,8 +36,10 @@
 import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { useHonorStore } from "../stores/honors";
+import PathfinderHonorFormComponent from "./PathfinderHonorFormComponent.vue";
 
 export default defineComponent({
+  components: { PathfinderHonorFormComponent },
   setup() {
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
@@ -48,6 +51,7 @@ export default defineComponent({
       getPathfinders: pathfinderStore.getPathfinders,
       honors: honorStore.honors,
       getHonors: honorStore.getHonors,
+      postPathfinderHonor: pathfinderStore.postPathfinderHonor,
     };
   },
 });

@@ -9,12 +9,15 @@ export default {
       params,
     });
   },
-  get: (id: number, params = {}) => {
+  get: (id: string, params = {}) => {
     return axios.get(BASE_URL + `/${id}`, {
       params,
     });
   },
   post: (data = null) => {
     return axios.post(BASE_URL, data);
+  },
+  postPathfinderHonor: (id: string, data: JSON) => {
+    return axios.post(BASE_URL + `/${id}/PathfinderHonors`, data);
   },
 };
