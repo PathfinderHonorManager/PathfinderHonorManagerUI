@@ -12,7 +12,13 @@ interface Pathfinder {
 
 interface PathfinderHonors {
   pathfinderHonorID: string;
+  honorID: string;
   name: string;
+  status: string;
+}
+
+interface PathfinderHonorPostData {
+  honorID: string;
   status: string;
 }
 
@@ -48,5 +54,26 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
+    async postPathfinderHonor(pathfinderID: string, honorId: string) {
+      this.loading = true;
+      this.error = false;
+      const postData: PathfinderHonorPostData = {
+        honorID: honorId,
+        status: "Planned",
+      };
+
+      try {
+        await api.postPathfinderHonor(pathfinderID, postData);
+      } catch (err) {
+        this.error = true;
+        console.error(`Could add honor, because: ${err}`);
+      } finally {
+        await this.getPathfinders();
+        this.loading = false;
+      }
+    },
+  },
+  persist: {
+    enabled: true,
   },
 });

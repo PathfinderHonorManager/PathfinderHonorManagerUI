@@ -39,4 +39,7 @@ export const useHonorStore = defineStore("honor", {
       }
     },
   },
+  persist: {
+    enabled: true,
+  },
 });
