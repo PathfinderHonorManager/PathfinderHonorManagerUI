@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createAuth0 } from "@auth0/auth0-vue";
 import piniaPersist from "pinia-plugin-persist";
+import SimpleTypeahead from 'vue3-simple-typeahead';
 
 import App from "./App.vue";
 import router from "./router";
@@ -23,5 +24,7 @@ app.use(
 app.use(pinia);
 
 app.use(router);
+
+app.use(SimpleTypeahead);
 
 app.mount("#app");
