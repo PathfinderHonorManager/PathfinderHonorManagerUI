@@ -37,6 +37,7 @@ import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { useHonorStore } from "../stores/honors";
 import PathfinderHonorFormComponent from "./PathfinderHonorFormComponent.vue";
+import { storeToRefs } from "pinia";
 
 export default defineComponent({
   components: { PathfinderHonorFormComponent },
@@ -44,12 +45,15 @@ export default defineComponent({
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
 
+    const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
+    const { honors } = storeToRefs(honorStore);
+
     return {
-      loading: pathfinderStore.loading,
-      error: pathfinderStore.error,
-      pathfinders: pathfinderStore.pathfinders,
+      loading,
+      error,
+      pathfinders,
       getPathfinders: pathfinderStore.getPathfinders,
-      honors: honorStore.honors,
+      honors,
       getHonors: honorStore.getHonors,
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
     };
