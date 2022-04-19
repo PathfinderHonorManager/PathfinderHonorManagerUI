@@ -16,6 +16,7 @@ app.use(
     client_id: "mfTYOD64ySERkhLAatJBxWIULeq892fK",
     redirect_uri: window.location.origin,
     audience: "https://pathfinderhonormanager.azurewebsites.net/api/",
+    cacheLocation: "localstorage",
   })
 );
 
