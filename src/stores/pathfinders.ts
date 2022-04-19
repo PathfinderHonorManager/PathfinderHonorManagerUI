@@ -54,6 +54,23 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
+    async getPathfinderByID(pathfinderID: string) {
+      this.loading = true;
+      this.error = false;
+
+      try {
+        const response = await api.get(pathfinderID);
+        const pathfinderIndex = this.pathfinders.findIndex(
+          (p) => p.pathfinderID === pathfinderID
+        );
+        this.pathfinders[pathfinderIndex] = response.data;
+      } catch (err) {
+        this.error = true;
+        console.error(`Could not get pathfinders, because: ${err}`);
+      } finally {
+        this.loading = false;
+      }
+    },
     async postPathfinderHonor(pathfinderID: string, honorId: string) {
       this.loading = true;
       this.error = false;
@@ -68,7 +85,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.error = true;
         console.error(`Could add honor, because: ${err}`);
       } finally {
-        await this.getPathfinders();
+        await this.getPathfinderByID(pathfinderID);
         this.loading = false;
       }
     },
