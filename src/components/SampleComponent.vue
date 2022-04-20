@@ -2,10 +2,7 @@
   <p>An example of how to integrate with the store!</p>
   <p v-if="error">Error</p>
   <button @click="getPathfinders">Get Pathfinders</button>
-  <div v-if="loading">
-    <p>Loading</p>
-  </div>
-  <div v-else>
+  <div>
     <ul>
       <li v-for="pathfinder in pathfinders" :key="pathfinder.pathfinderID">
         <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
