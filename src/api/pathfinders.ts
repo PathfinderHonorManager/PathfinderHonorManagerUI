@@ -20,4 +20,7 @@ export default {
   postPathfinderHonor: (id: string, data: JSON) => {
     return axios.post(BASE_URL + `/${id}/PathfinderHonors`, data);
   },
+  putPathfinderHonor: (id: string, honorid: string, data: JSON) => {
+    return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
+  },
 };

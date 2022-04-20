@@ -1,6 +1,12 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
 
+export enum status {
+  Planned = "Planned",
+  Earned = "Earned",
+  Awarded = "Awarded",
+}
+
 interface Pathfinder {
   pathfinderID: string;
   firstName: string;
@@ -17,9 +23,9 @@ interface PathfinderHonors {
   status: string;
 }
 
-interface PathfinderHonorPostData {
+interface PathfinderHonorPostPut {
   honorID: string;
-  status: string;
+  status: status;
 }
 
 export const usePathfinderStore = defineStore("pathfinder", {
@@ -54,7 +60,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
-    async getPathfinderByID(pathfinderID: string) {
+    async getPathfinderById(pathfinderID: string) {
       this.loading = true;
       this.error = false;
 
@@ -74,9 +80,9 @@ export const usePathfinderStore = defineStore("pathfinder", {
     async postPathfinderHonor(pathfinderID: string, honorId: string) {
       this.loading = true;
       this.error = false;
-      const postData: PathfinderHonorPostData = {
+      const postData: PathfinderHonorPostPut = {
         honorID: honorId,
-        status: "Planned",
+        status: status.Planned,
       };
 
       try {
@@ -85,7 +91,29 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.error = true;
         console.error(`Could add honor, because: ${err}`);
       } finally {
-        await this.getPathfinderByID(pathfinderID);
+        await this.getPathfinderById(pathfinderID);
+        this.loading = false;
+      }
+    },
+    async putPathfinderHonor(
+      pathfinderID: string,
+      honorId: string,
+      status: status
+    ) {
+      this.loading = true;
+      this.error = false;
+      const putData: PathfinderHonorPostPut = {
+        honorID: honorId,
+        status: status,
+      };
+
+      try {
+        await api.putPathfinderHonor(pathfinderID, honorId, putData);
+      } catch (err) {
+        this.error = true;
+        console.error(`Could modify honor, because: ${err}`);
+      } finally {
+        await this.getPathfinderById(pathfinderID);
         this.loading = false;
       }
     },

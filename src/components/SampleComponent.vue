@@ -10,17 +10,17 @@
       <li v-for="pathfinder in pathfinders" :key="pathfinder.pathfinderID">
         <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
         <ul>
-          <li
+          <PathfinderHonorComponent
             v-for="pathfinderHonor in pathfinder.pathfinderHonors"
+            :item="postPathfinderHonor"
             :key="pathfinderHonor.pathfinderHonorID"
-          >
-            <p>
-              {{ pathfinderHonor.name }} -- {{ pathfinderHonor.status }}
-              {{ pathfinderHonor.pathfinderHonorID }}
-            </p>
-          </li>
+            v-bind:pathfinderID="pathfinder.pathfinderID"
+            v-bind:honorID="pathfinderHonor.honorID"
+            v-bind:name="pathfinderHonor.name"
+            v-bind:status="pathfinderHonor.status"
+          ></PathfinderHonorComponent>
         </ul>
-        <PathfinderHonorFormComponent :pathfinderID="pathfinder.pathfinderID" />
+        <PostPathfinderHonorComponent :pathfinderID="pathfinder.pathfinderID" />
       </li>
     </ul>
   </div>
@@ -36,11 +36,13 @@
 import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { useHonorStore } from "../stores/honors";
-import PathfinderHonorFormComponent from "./PathfinderHonorFormComponent.vue";
+import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
+import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
+
 import { storeToRefs } from "pinia";
 
 export default defineComponent({
-  components: { PathfinderHonorFormComponent },
+  components: { PostPathfinderHonorComponent, PathfinderHonorComponent },
   setup() {
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();

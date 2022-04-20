@@ -1,14 +1,5 @@
 <template>
   <form @submit.prevent="postPathfinderHonor(pathfinderID, postHonorID)">
-    <!-- <div class="form-group">
-      <label for="pathfinderHonorID">HonorID</label>
-      <input
-        type="text"
-        class="form-control"
-        id="honorID"
-        v-model="postHonorID"
-      />
-    </div> -->
     <vue3-simple-typeahead
       id="typeahead_id"
       placeholder="Start writing..."
