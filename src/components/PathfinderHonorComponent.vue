@@ -1,17 +1,19 @@
-<template>
-  <form
-    @submit.prevent="putPathfinderHonor(pathfinderID, honorID, newStatus)"
-  >
-    <li>
-      {{ name }} --
-      <select v-model="newStatus">
-        <option>Planned</option>
-        <option>Earned</option>
-        <option>Awarded</option>
-      </select>
-    </li>
-    <button>Modify Status</button>
-  </form>
+<template :class="showing? 'showing' : 'hidden'">
+  <div class="power">
+    <form
+      @submit.prevent="putPathfinderHonor(pathfinderID, honorID, newStatus)"
+    >
+      <li>
+        <h3>{{ name }}</h3>
+        <select v-model="newStatus">
+          <option>Planned</option>
+          <option>Earned</option>
+          <option>Awarded</option>
+        </select>
+      </li>
+      <button>Modify Status</button>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -59,3 +61,23 @@ export default defineComponent({
   }
 });
 </script>
+
+<style>
+select {
+  margin: 10px;
+  background-color: transparent;
+  color: var(--color);
+  outline: 2px solid var(--color);
+  border-radius: 5px;
+  padding: 0.5em;
+}
+option {
+  background-color: inherit;
+  color: black;
+}
+
+option:hover {
+  background-color: var(--blue);
+  color: var(--color)
+}
+</style>

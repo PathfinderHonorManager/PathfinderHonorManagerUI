@@ -2,10 +2,13 @@
   <p>An example of how to integrate with the store!</p>
   <p v-if="error">Error</p>
   <button @click="getPathfinders">Get Pathfinders</button>
-  <div>
+  <div class="power">
     <ul>
       <li v-for="pathfinder in pathfinders" :key="pathfinder.pathfinderID">
         <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
+        <br>
+        <button onclick="showing = true; console.log(showing);">Show Honors</button>
+        <button onclick="showing = false; console.log(showing);">Hide Honors</button>
         <ul>
           <PathfinderHonorComponent
             v-for="pathfinderHonor in pathfinder.pathfinderHonors"
@@ -38,6 +41,9 @@ import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 
 import { storeToRefs } from "pinia";
 
+import { ref } from "vue"
+let showing = ref(false);
+
 export default defineComponent({
   components: { PostPathfinderHonorComponent, PathfinderHonorComponent },
   setup() {
@@ -59,3 +65,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.hidden {
+  display: none;
+}
+
+.showing {
+  display: inline-block;
+}
+</style>
