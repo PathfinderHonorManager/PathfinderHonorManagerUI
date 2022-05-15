@@ -2,14 +2,14 @@
   <p>An example of how to integrate with the store!</p>
   <p v-if="error">Error</p>
   <button @click="getPathfinders">Get Pathfinders</button>
-  <div class="power">
-    <ul>
-      <li v-for="pathfinder in pathfinders" :key="pathfinder.pathfinderID">
-        <p>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</p>
+  <div v-if="pathfinders[0]" class="power">
+    <table>
+      <tr v-for="(pathfinder, i) in pathfinders" :key="i">
+        <h2>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</h2>
         <br>
-        <button onclick="showing = true; console.log(showing);">Show Honors</button>
-        <button onclick="showing = false; console.log(showing);">Hide Honors</button>
-        <ul>
+        <button v-if="!showing[i]" @click="showing[i] = true;">Show Honors</button>
+        <button v-if="showing[i]" @click="showing[i] = false;">Hide Honors</button>
+        <tr v-if="showing[i]">
           <PathfinderHonorComponent
             v-for="pathfinderHonor in pathfinder.pathfinderHonors"
             :item="postPathfinderHonor"
@@ -18,11 +18,12 @@
             v-bind:honorID="pathfinderHonor.honorID"
             v-bind:name="pathfinderHonor.name"
             v-bind:status="pathfinderHonor.status"
+            v-bind:display="true"
           ></PathfinderHonorComponent>
-        </ul>
+        </tr>
         <PostPathfinderHonorComponent :pathfinderID="pathfinder.pathfinderID" />
-      </li>
-    </ul>
+      </tr>
+    </table>
   </div>
   <button @click="getHonors">Get Honors</button>
   <ul>
@@ -40,9 +41,9 @@ import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 
 import { storeToRefs } from "pinia";
-
 import { ref } from "vue"
-let showing = ref(false);
+
+
 
 export default defineComponent({
   components: { PostPathfinderHonorComponent, PathfinderHonorComponent },
@@ -53,6 +54,10 @@ export default defineComponent({
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
     const { honors } = storeToRefs(honorStore);
 
+    const displays = [];
+    const showing = ref(displays);
+    console.log(showing);
+
     return {
       loading,
       error,
@@ -61,17 +66,8 @@ export default defineComponent({
       honors,
       getHonors: honorStore.getHonors,
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
+      showing: showing,
     };
   },
 });
 </script>
-
-<style>
-.hidden {
-  display: none;
-}
-
-.showing {
-  display: inline-block;
-}
-</style>

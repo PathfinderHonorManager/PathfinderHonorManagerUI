@@ -1,17 +1,20 @@
-<template :class="showing? 'showing' : 'hidden'">
-  <div class="power">
+<template>
+  <div class="power" v-if="display">
     <form
+      id="honorform"
       @submit.prevent="putPathfinderHonor(pathfinderID, honorID, newStatus)"
     >
-      <li>
+      <td>
         <h3>{{ name }}</h3>
+      </td>
+      <td style="display: inline;">
         <select v-model="newStatus">
           <option>Planned</option>
           <option>Earned</option>
           <option>Awarded</option>
         </select>
-      </li>
-      <button>Modify Status</button>
+        <button>Update Status <strong>&check;</strong></button>
+      </td>
     </form>
   </div>
 </template>
@@ -53,6 +56,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    display: {
+      type: Boolean,
+      required: false,
+    },
   },
   data() {
     return {
@@ -63,6 +70,18 @@ export default defineComponent({
 </script>
 
 <style>
+
+button > strong {
+  position: absolute;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+button:focus > strong {
+  position: relative;
+  opacity: 1;
+}
+
 select {
   margin: 10px;
   background-color: transparent;

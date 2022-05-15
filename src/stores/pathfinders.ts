@@ -21,6 +21,7 @@ interface PathfinderHonors {
   honorID: string;
   name: string;
   status: string;
+  patchPath: string;
 }
 
 interface PathfinderHonorPostPut {
