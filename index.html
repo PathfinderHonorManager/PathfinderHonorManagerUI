@@ -1,100 +1,13 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Pathfinder Honor Manager</title>
-        <link rel="stylesheet" href="styles.css">
-        <script src="fetchHandler.js"></script>
-        <script src="honors.js" async></script>
-        <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
-    </head>
-    <body>
-    <div id="vuestuff">
-        <div class="vignette"></div>
-        <div class="popupwindow" id="honorcase">
-            <table>
-                <tr v-for="honor in pathfinderhonors">
-                    <td>
-                        <honor-card-p :title="honor.name" :status="honor.status" :pathfinder="honor.pathfinderID" :honor="honor.honorID" :indexer="honor"></honor-card-p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <header>
-            <h3>Pathfinder Honor Manager</h3>
-            <a id="newauth">Sign Up</a>
-            <a href="authentication.html" target="blank" id="authenticate">Log In</a>
-        </header>
-        <aside id="navbar">
-            <!---<div id="title">
-                <h1>Pathfinder</h1>
-                <h2>Honor Manager</h2>
-            </div>
-
-            <span>-</span>--->
-
-            <div id="profile">
-                <h1>Menu</h1>
-            </div>
-
-            <nav>
-                <a onclick="initPage('Pathfinder Honor Manager', 'homepage')"><img src="Icons/home_black_24dp.svg" class="icon">Home</a>
-                <a onclick="initPage('My Club', 'myclub')"><img src="Icons/groups_black_24dp.svg" class="icon">My Club</a>
-                <a onclick="initPage('My Sash', 'mysash')"><img src="Icons/dashboard_black_24dp.svg" class="icon">My Sash</a>
-                <a onclick="initPage('Find Honors', 'findhonors')"><img src="Icons/search_black_24dp.svg" class="icon">Find Honors</a>
-                <a class="important">More Info...</a>
-            </nav>
-
-            <div id="bottomstuff">
-                <img id="bottomlogo" src="pathfinder-logo.png" height="60" width="auto">
-                <h2>HONOR MANAGER</h2>
-            </div>
-        </aside>
-
-        <div class="placeholder"></div>
-
-        <h1 id="titleheader">Pathfinder Honor Manager</h1>
-        <div id="content" class="content">
-
-            <div id="subcontent">
-                <div id="myclub" class="tab">
-                    <table>
-                        <tr v-for="item in profiles">
-                            <td>
-                            <pathfinder-card :date="item.date" :first-name="item.firstname" :last-name="item.lastname" :honorset="item.functionfile" :classname="item.classname"></pathfinder-card>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div id="mysash" class="tab">
-                    <p>Insert cool sash with js diagonal scrolling.</p>
-                </div>
-                <div id="findhonors" class="tab">
-                    <form onsubmit="return false;">
-                        <input type="text" id="honorsearcharea" placeholder="Search Honors">
-                    </form>
-                    <table>
-                        <tr v-for="honor in honors" id="honortable">
-                            <td>
-                            <honor-card :title="honor.honorname" :level="honor.level" :image="honor.imagepath"></honor-card>
-                            </td>
-                        </tr>
-                    </table>
-                    <button onclick="paginations += 1; renderHonorsSearch(10)" id="thepaginator">Show more</button>
-                </div>
-                <div id="homepage" class="tab">
-                    <p>Welcome to the Pathfinder Honor Manager!</p>
-                    <p>Here, we manage honors, which is something that needs to be done.</p>
-                </div>
-                <div id="moreinfo" class="tab"></div>
-            </div>
-        </div>
-        <div class="placeholder"></div>
-    </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-        <script src="assetsVue.js"></script>
-        <script src="helper.js"></script>
-        <script src="navbarHandler.js"></script>
-        <script src="modalHandler.js"></script>
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
