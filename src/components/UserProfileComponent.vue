@@ -1,41 +1,17 @@
 <template>
   <div>
-    <div v-if="isAuthenticated">
-      <h2>Profile</h2>
-      <img v-bind:src="user.picture">
-      <p>{{ user.name }}</p>
-      <button @click="logout">Log out</button>
-    </div>
-    <div v-else>
-      <button @click="login">Log in</button>
+    <div id="profile-hunk">
+      <div v-if="isAuthenticated">
+        <img v-bind:src="user.picture"> 
+        <h1>{{ user.name }}</h1>
+        <button @click="logout">Log out</button>
+      </div>
+      <div v-else>
+        <button @click="login" style="background-color: var(--darkBlue);">Log in</button>
+      </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-@import "/src/assets/general.css";
-
-div {
-  margin: 2em;
-  float: left;
-}
-
-img {
-  display: block;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  border-radius: 50%;
-}
-
-button {
-  display: block;
-  background-color: var(--yellow);
-  color: var(--bgColor);
-  border: none;
-  padding: 1em;
-  font-weight: bolder;
-}
-</style>
 
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -58,3 +34,37 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+@import "/src/assets/general.css";
+
+#profile-hunk {
+  margin-top: 4em;
+  text-align: center;
+}
+
+img {
+  display: inline;
+  margin-bottom: 0.25em;
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+}
+
+h1 {
+  margin: 0;
+}
+
+button {
+  display: inline;
+  margin: 0;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  background-color: var(--outlineColor);
+  color: var(--color);
+  width: 80%;
+  border: none;
+  padding: 1em;
+  font-weight: bolder;
+}
+</style>

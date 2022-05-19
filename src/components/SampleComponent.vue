@@ -1,6 +1,5 @@
 <template>
-  <p>An example of how to integrate with the store!</p>
-  <p v-if="error">Error</p>
+  <p v-if="error">Error!</p>
   <button @click="getPathfinders">Get Pathfinders</button>
   <div v-if="pathfinders[0]" class="power">
     <table>

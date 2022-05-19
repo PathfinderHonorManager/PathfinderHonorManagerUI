@@ -36,7 +36,7 @@ other
 
     /*COLOR PALLETTE*/
     --bgColor: #111417;
-    --outlineColor: #1A1F23; 
+    --outlineColor: /*#1A1F23;*/ rgba(155, 155, 255, 0.05);
     --color: #F5F5F5;
     --yellow: #FFBB00;
     --orange: #F77D1B;
@@ -46,8 +46,8 @@ other
 
     /*BORDER*/
 
-
-
+    /*PADDING*/
+    --aside-left-padding: 0;
 }
 
 
@@ -62,7 +62,7 @@ body {
 
 .power {
     margin: 10px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--outlineColor);
     border-radius: 5px;
     padding: 10px;
 }
@@ -141,6 +141,7 @@ aside {
     height: 100%;
     width: var(--asideWidth);
     border-right: 2px solid var(--outlineColor);
+    padding-left: var(--aside-left-padding);
 }
 
 aside > a {
