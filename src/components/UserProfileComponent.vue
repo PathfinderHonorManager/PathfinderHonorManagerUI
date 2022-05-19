@@ -62,7 +62,7 @@ button {
   margin-bottom: 2em;
   background-color: var(--outlineColor);
   color: var(--color);
-  width: 80%;
+  width: 65%;
   border: none;
   padding: 1em;
   font-weight: bolder;

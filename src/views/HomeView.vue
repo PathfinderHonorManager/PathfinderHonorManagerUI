@@ -1,6 +1,6 @@
 <template>
   <!-- <ManagerIntro /> -->
-  <SampleComponent />
+  <p>Sup?</p>
 </template>
 
 <script setup lang="ts">
