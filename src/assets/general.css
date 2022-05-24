@@ -203,7 +203,7 @@ input[type=text] {
   background-color: var(--bgColor);
   color: var(--color);
   font-weight: bold;
-  width: 80%;
+  width: 200px;
   border: none;
   outline: none;
   border-radius: 5px;

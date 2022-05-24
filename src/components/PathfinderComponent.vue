@@ -18,6 +18,7 @@
             v-bind:name="pathfinderHonor.name"
             v-bind:status="pathfinderHonor.status"
             v-bind:display="true"
+            v-bind:image="pathfinderHonor.patchFilename"
           ></PathfinderHonorComponent>
         </div>
       </tr>

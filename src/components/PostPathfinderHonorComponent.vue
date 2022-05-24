@@ -13,7 +13,7 @@
       "
     >
     </vue3-simple-typeahead>
-    <button style="margin: var(--standard); margin-top: 0; width: 80%;">Post New Honor</button>
+    <button style="margin: var(--standard); margin-top: 0; padding: 0.75em;">Post New Honor</button>
   </form>
 </template>
 
