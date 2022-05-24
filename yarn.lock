@@ -1776,9 +1776,9 @@ type-fest@^0.20.2:
   version "0.20.2"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.20.2.tgz"
 
-typescript@~4.5.5:
-  version "4.5.5"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.5.5.tgz"
+typescript@~4.7.2:
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.7.2.tgz#1f9aa2ceb9af87cca227813b4310fff0b51593c4"
 
 unfetch@^4.2.0:
   version "4.2.0"
