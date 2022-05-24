@@ -2,7 +2,7 @@
   <form @submit.prevent="postPathfinderHonor(pathfinderID, postHonorID)">
     <vue3-simple-typeahead
       id="typeahead_id"
-      placeholder="Start writing..."
+      placeholder="Search Honors"
       :items="honors"
       :minInputLength="1"
       @selectItem="selectItem"
@@ -13,7 +13,7 @@
       "
     >
     </vue3-simple-typeahead>
-    <button>Post New Honor</button>
+    <button style="margin: var(--standard); margin-top: 0; padding: 0.75em;">Post New Honor</button>
   </form>
 </template>
 
