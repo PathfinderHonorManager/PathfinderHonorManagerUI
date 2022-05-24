@@ -21,6 +21,7 @@ const honors = useHonorStore();
     <UserProfileComponent />
     <RouterLink to="/" ref="homeLink">Home</RouterLink>
     <RouterLink to="/club">My Club</RouterLink>
+    <RouterLink to="/honors">All Honors</RouterLink>
     <RouterLink to="/about">About</RouterLink>
   </aside>
 

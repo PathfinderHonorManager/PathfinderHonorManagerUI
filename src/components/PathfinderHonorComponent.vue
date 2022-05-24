@@ -1,20 +1,18 @@
 <template>
-  <div class="power" v-if="display">
+  <div class="power" v-if="display" style="display: inline-block; margin: 0.5em; width: 14em; height: auto; overflow: hidden;">
     <form
       id="honorform"
       @submit.prevent="putPathfinderHonor(pathfinderID, honorID, newStatus)"
     >
-      <td>
+      <div class="selectcontainer">
         <h3>{{ name }}</h3>
-      </td>
-      <td style="display: inline;">
         <select v-model="newStatus">
           <option>Planned</option>
           <option>Earned</option>
           <option>Awarded</option>
         </select>
         <button>Update Status <strong>&check;</strong></button>
-      </td>
+      </div>
     </form>
   </div>
 </template>
@@ -84,19 +82,32 @@ button:focus > strong {
 
 select {
   margin: 10px;
-  background-color: transparent;
+  background-color: var(--bgColor);
   color: var(--color);
-  outline: 2px solid var(--color);
+  font-weight: bold;
+  width: 65%;
+  border: none;
+  outline: none;
   border-radius: 5px;
-  padding: 0.5em;
-}
-option {
-  background-color: inherit;
-  color: black;
+  padding: 0.75em;
+  transition: 0.2s;
 }
 
-option:hover {
-  background-color: var(--blue);
-  color: var(--color)
+select:focus > option {
+  border: none;
+  outline: none;
+  padding: 0.5em;
+}
+
+.selectcontainer {
+  margin-bottom: 0.5em;
+}
+
+.selectcontainer > * {
+  margin-left: 10px;
+}
+
+.selectcontainer > button {
+  width: 65%;
 }
 </style>

@@ -17,9 +17,10 @@ other
     --topMargin: 8em;
     --leftMargin: 15%;
     --textBlockMargin: 25%;
+    --standard: 10px;
 
     /*SIZES*/
-    --asideWidth: 20%;
+    --asideWidth: 16%;
 
     /*TRANSFORMS/POSITIONS*/
 
@@ -48,6 +49,7 @@ other
 
     /*PADDING*/
     --aside-left-padding: 0;
+    --aside-right-padding: 0;
 }
 
 
@@ -61,10 +63,29 @@ body {
 }
 
 .power {
-    margin: 10px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
     background-color: var(--outlineColor);
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
+}
+
+.unpower {
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: var(--outlineColor);
+    backdrop-filter: brightness(50%);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.plain {
+    margin: 0;
+    background-color: inherit;
+    color: var(--color);
+    padding: var(--standard);
 }
 
 h1 {
@@ -112,7 +133,7 @@ p {
 
 button {
     display: block;
-    margin: 10px;
+    margin: 0;
     background-color: var(--darkBlue);
     color: var(--color);
     border: none;
@@ -142,45 +163,52 @@ aside {
     width: var(--asideWidth);
     border-right: 2px solid var(--outlineColor);
     padding-left: var(--aside-left-padding);
+    padding-right: var(--aside-right-padding);
 }
 
 aside > a {
+    --left: 2em;
+    --squish: 14px;
     display: block;
-    width: calc(100% - 1em);
+    margin-bottom: 0.5em;
+    margin-left: var(--squish);
+    margin-right: var(--squish);
+    width: calc(100% - var(--left) - (2 * var(--squish)));
     color: var(--color);
     font-size: 1.2em;
-    font-weight: lighter;
-    text-align: right;
+    font-weight: normal;
+    text-align: left;
     text-decoration: none;
     --br: calc((1.2em + (0.5em * 2)) / 2);
-    border-radius: var(--br)  0 0 var(--br);
+    border-radius: var(--br);
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    padding-right: 1em;
+    padding-left: var(--left);
     overflow: hidden;
     transition: 0.2s;
 }
 
 aside > a:hover {
-    background-color: var(--outlineColor);
-}
-
-aside > a:focus::after {
-    content: '';
-    position: absolute;
-    width: 3em;
-    height: 0;
-    border: 3px solid var(--yellow);
-    border-radius: 0 0 3px 3px;
-    animation-name: slide;
-    animation-duration: 0.2s;
-    animation-fill-mode: forwards;
+    background-color: var(--darkBlue);
 }
 
 @keyframes slide {
     0% {opacity: 0.3; transform: translateX(0) translateY(1.6em); width: 1em;}
     30% {opacity: 1; transform: translateX(-100%) translateY(1.1em); width: 3em;}
     100% {transform: translateX(calc(-100% - 1em)) translateY(1.3em); width: 1em;}
+}
+
+input[type=text] {
+  margin: var(--standard);
+  background-color: var(--bgColor);
+  color: var(--color);
+  font-weight: bold;
+  width: 80%;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 0.75em;
+  transition: 0.2s;
 }
 
 /*CLASSES*/

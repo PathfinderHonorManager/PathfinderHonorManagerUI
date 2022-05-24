@@ -5,10 +5,11 @@
       <tr v-for="(pathfinder, i) in pathfinders" :key="i">
         <h2>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</h2>
         <br>
-        <button v-if="!showing[i]" @click="showing[i] = true;">Show Honors</button>
-        <button v-if="showing[i]" @click="showing[i] = false;">Hide Honors</button>
-        <tr v-if="showing[i]">
-          <PathfinderHonorComponent
+        <button v-if="!showing[i]" @click="showing[i] = true;" class="plain">Show Honors +</button>
+        <button v-if="showing[i]" @click="showing[i] = false;" class="plain">Hide Honors -</button>
+        <div v-if="showing[i]" class="honortable">
+          <PostPathfinderHonorComponent :pathfinderID="pathfinder.pathfinderID"/>
+          <PathfinderHonorComponent 
             v-for="pathfinderHonor in pathfinder.pathfinderHonors"
             :item="postPathfinderHonor"
             :key="pathfinderHonor.pathfinderHonorID"
@@ -18,17 +19,10 @@
             v-bind:status="pathfinderHonor.status"
             v-bind:display="true"
           ></PathfinderHonorComponent>
-        </tr>
-        <PostPathfinderHonorComponent :pathfinderID="pathfinder.pathfinderID" />
+        </div>
       </tr>
     </table>
   </div>
-  <button @click="getHonors">Get Honors</button>
-  <ul>
-    <li v-for="(honor, i) in honors" :key="i">
-      <p>{{ honor.name }} {{ honor.honorID }}</p>
-    </li>
-  </ul>
 </template>
 
 <script lang="ts">
@@ -50,6 +44,7 @@ export default defineComponent({
     const honorStore = useHonorStore();
 
     pathfinderStore.getPathfinders();
+    honorStore.getHonors();
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
     const { honors } = storeToRefs(honorStore);
@@ -72,3 +67,12 @@ export default defineComponent({
 });
 
 </script>
+
+<style>
+  .honortable {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    grid-auto-rows: minmax(100px, auto);
+  }
+</style>
