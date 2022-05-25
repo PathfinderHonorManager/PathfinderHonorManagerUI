@@ -21,36 +21,9 @@
     "@auth0/auth0-spa-js" "^1.20.0"
     vue "^3.2.30"
 
-"@babel/helper-validator-identifier@^7.16.7":
-  version "7.16.7"
-  resolved "https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.16.7.tgz"
-
-"@babel/parser@^7.16.4", "@babel/parser@^7.6.0", "@babel/parser@^7.9.6":
+"@babel/parser@^7.16.4":
   version "7.17.3"
   resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.17.3.tgz"
-
-"@babel/types@^7.6.1", "@babel/types@^7.9.6":
-  version "7.17.0"
-  resolved "https://registry.npmjs.org/@babel/types/-/types-7.17.0.tgz"
-  dependencies:
-    "@babel/helper-validator-identifier" "^7.16.7"
-    to-fast-properties "^2.0.0"
-
-"@emmetio/abbreviation@^2.2.3":
-  version "2.2.3"
-  resolved "https://registry.npmjs.org/@emmetio/abbreviation/-/abbreviation-2.2.3.tgz"
-  dependencies:
-    "@emmetio/scanner" "^1.0.0"
-
-"@emmetio/css-abbreviation@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.npmjs.org/@emmetio/css-abbreviation/-/css-abbreviation-2.1.4.tgz"
-  dependencies:
-    "@emmetio/scanner" "^1.0.0"
-
-"@emmetio/scanner@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@emmetio/scanner/-/scanner-1.0.0.tgz"
 
 "@eslint/eslintrc@^1.3.0":
   version "1.3.0"
@@ -214,69 +187,37 @@
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.3.tgz#fbf80cc039b82ac21a1acb0f0478de8f61fbf600"
 
-"@volar/code-gen@0.31.4":
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/@volar/code-gen/-/code-gen-0.31.4.tgz"
+"@volar/code-gen@0.34.16":
+  version "0.34.16"
+  resolved "https://registry.yarnpkg.com/@volar/code-gen/-/code-gen-0.34.16.tgz#32885846b51d420ab673c0ec5aa5b6b4f8fd9152"
   dependencies:
-    "@volar/shared" "0.31.4"
-    "@volar/source-map" "0.31.4"
+    "@volar/source-map" "0.34.16"
 
-"@volar/html2pug@0.31.4":
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/@volar/html2pug/-/html2pug-0.31.4.tgz"
+"@volar/source-map@0.34.16":
+  version "0.34.16"
+  resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-0.34.16.tgz#c2f927825604fa0dd7b4ca53292cc6a5dd08f3d7"
+
+"@volar/vue-code-gen@0.34.16":
+  version "0.34.16"
+  resolved "https://registry.yarnpkg.com/@volar/vue-code-gen/-/vue-code-gen-0.34.16.tgz#2678f0762614bae0f0cafc0dbfcc286facbeab6e"
   dependencies:
-    domelementtype "^2.2.0"
-    domhandler "^4.3.0"
-    htmlparser2 "^7.2.0"
-    pug "^3.0.2"
+    "@volar/code-gen" "0.34.16"
+    "@volar/source-map" "0.34.16"
+    "@vue/compiler-core" "^3.2.31"
+    "@vue/compiler-dom" "^3.2.31"
+    "@vue/shared" "^3.2.31"
 
-"@volar/shared@0.31.4":
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/@volar/shared/-/shared-0.31.4.tgz"
+"@volar/vue-typescript@0.34.16":
+  version "0.34.16"
+  resolved "https://registry.yarnpkg.com/@volar/vue-typescript/-/vue-typescript-0.34.16.tgz#016cee6328313c8b4876d3e87747cdcd74a2508f"
   dependencies:
-    upath "^2.0.1"
-    vscode-html-languageservice "^4.2.1"
-    vscode-jsonrpc "^8.0.0-next.5"
-    vscode-uri "^3.0.3"
+    "@volar/code-gen" "0.34.16"
+    "@volar/source-map" "0.34.16"
+    "@volar/vue-code-gen" "0.34.16"
+    "@vue/compiler-sfc" "^3.2.31"
+    "@vue/reactivity" "^3.2.31"
 
-"@volar/source-map@0.31.4":
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/@volar/source-map/-/source-map-0.31.4.tgz"
-  dependencies:
-    "@volar/shared" "0.31.4"
-    vscode-languageserver-textdocument "^1.0.3"
-
-"@volar/transforms@0.31.4":
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/@volar/transforms/-/transforms-0.31.4.tgz"
-  dependencies:
-    "@volar/shared" "0.31.4"
-    vscode-languageserver-types "^3.17.0-next.6"
-
-"@volar/vue-code-gen@0.31.4":
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/@volar/vue-code-gen/-/vue-code-gen-0.31.4.tgz"
-  dependencies:
-    "@volar/code-gen" "0.31.4"
-    "@volar/shared" "0.31.4"
-    "@volar/source-map" "0.31.4"
-    "@vue/compiler-core" "^3.2.27"
-    "@vue/compiler-dom" "^3.2.27"
-    "@vue/shared" "^3.2.27"
-    upath "^2.0.1"
-
-"@vscode/emmet-helper@^2.8.3":
-  version "2.8.4"
-  resolved "https://registry.npmjs.org/@vscode/emmet-helper/-/emmet-helper-2.8.4.tgz"
-  dependencies:
-    emmet "^2.3.0"
-    jsonc-parser "^2.3.0"
-    vscode-languageserver-textdocument "^1.0.1"
-    vscode-languageserver-types "^3.15.1"
-    vscode-nls "^5.0.0"
-    vscode-uri "^2.1.2"
-
-"@vue/compiler-core@3.2.36":
+"@vue/compiler-core@3.2.36", "@vue/compiler-core@^3.2.31":
   version "3.2.36"
   resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.2.36.tgz#2fa44595308c95610602df54dcb69063ba2c8383"
   dependencies:
@@ -285,23 +226,14 @@
     estree-walker "^2.0.2"
     source-map "^0.6.1"
 
-"@vue/compiler-core@^3.2.27":
-  version "3.2.31"
-  resolved "https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.2.31.tgz"
-  dependencies:
-    "@babel/parser" "^7.16.4"
-    "@vue/shared" "3.2.31"
-    estree-walker "^2.0.2"
-    source-map "^0.6.1"
-
-"@vue/compiler-dom@3.2.36", "@vue/compiler-dom@^3.2.27":
+"@vue/compiler-dom@3.2.36", "@vue/compiler-dom@^3.2.31":
   version "3.2.36"
   resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.2.36.tgz#16d911ff163ed5fc8087a01645bf14bb7f325401"
   dependencies:
     "@vue/compiler-core" "3.2.36"
     "@vue/shared" "3.2.36"
 
-"@vue/compiler-sfc@3.2.36":
+"@vue/compiler-sfc@3.2.36", "@vue/compiler-sfc@^3.2.31":
   version "3.2.36"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.2.36.tgz#e5065e7c0e5170ffa750e3c3dd93a29db109d0f2"
   dependencies:
@@ -352,17 +284,11 @@
     estree-walker "^2.0.2"
     magic-string "^0.25.7"
 
-"@vue/reactivity@3.2.36":
+"@vue/reactivity@3.2.36", "@vue/reactivity@^3.2.31":
   version "3.2.36"
   resolved "https://registry.yarnpkg.com/@vue/reactivity/-/reactivity-3.2.36.tgz#026b14e716febffe80cd284fd8a2b33378968646"
   dependencies:
     "@vue/shared" "3.2.36"
-
-"@vue/reactivity@^3.2.27":
-  version "3.2.31"
-  resolved "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.2.31.tgz"
-  dependencies:
-    "@vue/shared" "3.2.31"
 
 "@vue/runtime-core@3.2.36":
   version "3.2.36"
@@ -386,11 +312,7 @@
     "@vue/compiler-ssr" "3.2.36"
     "@vue/shared" "3.2.36"
 
-"@vue/shared@3.2.31":
-  version "3.2.31"
-  resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.2.31.tgz"
-
-"@vue/shared@3.2.36", "@vue/shared@^3.2.27":
+"@vue/shared@3.2.36", "@vue/shared@^3.2.31":
   version "3.2.36"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.36.tgz#35e11200542cf29068ba787dad57da9bdb82f644"
 
@@ -470,14 +392,6 @@ array-union@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/array-union/-/array-union-2.1.0.tgz"
 
-asap@~2.0.3:
-  version "2.0.6"
-  resolved "https://registry.npmjs.org/asap/-/asap-2.0.6.tgz"
-
-assert-never@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/assert-never/-/assert-never-1.2.1.tgz"
-
 assertion-error@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/assertion-error/-/assertion-error-1.1.0.tgz"
@@ -492,12 +406,6 @@ axios@^0.27.2:
   dependencies:
     follow-redirects "^1.14.9"
     form-data "^4.0.0"
-
-babel-walk@3.0.0-canary-5:
-  version "3.0.0-canary-5"
-  resolved "https://registry.npmjs.org/babel-walk/-/babel-walk-3.0.0-canary-5.tgz"
-  dependencies:
-    "@babel/types" "^7.9.6"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -526,13 +434,6 @@ browser-tabs-lock@^1.2.15:
   dependencies:
     lodash ">=4.17.21"
 
-call-bind@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/call-bind/-/call-bind-1.0.2.tgz"
-  dependencies:
-    function-bind "^1.1.1"
-    get-intrinsic "^1.0.2"
-
 callsites@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/callsites/-/callsites-3.1.0.tgz"
@@ -555,12 +456,6 @@ chalk@^4.0.0:
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
-
-character-parser@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/character-parser/-/character-parser-2.2.0.tgz"
-  dependencies:
-    is-regex "^1.0.3"
 
 check-error@^1.0.2:
   version "1.0.2"
@@ -585,13 +480,6 @@ combined-stream@^1.0.8:
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
-
-constantinople@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/constantinople/-/constantinople-4.0.1.tgz"
-  dependencies:
-    "@babel/parser" "^7.6.0"
-    "@babel/types" "^7.6.1"
 
 core-js@^3.20.3:
   version "3.21.1"
@@ -667,56 +555,11 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-doctypes@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/doctypes/-/doctypes-1.1.0.tgz"
-
-dom-serializer@^1.0.1:
-  version "1.3.2"
-  resolved "https://registry.npmjs.org/dom-serializer/-/dom-serializer-1.3.2.tgz"
-  dependencies:
-    domelementtype "^2.0.1"
-    domhandler "^4.2.0"
-    entities "^2.0.0"
-
-domelementtype@^2.0.1, domelementtype@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/domelementtype/-/domelementtype-2.2.0.tgz"
-
 domexception@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/domexception/-/domexception-4.0.0.tgz"
   dependencies:
     webidl-conversions "^7.0.0"
-
-domhandler@^4.2.0, domhandler@^4.2.2, domhandler@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.npmjs.org/domhandler/-/domhandler-4.3.0.tgz"
-  dependencies:
-    domelementtype "^2.2.0"
-
-domutils@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.npmjs.org/domutils/-/domutils-2.8.0.tgz"
-  dependencies:
-    dom-serializer "^1.0.1"
-    domelementtype "^2.2.0"
-    domhandler "^4.2.0"
-
-emmet@^2.3.0:
-  version "2.3.6"
-  resolved "https://registry.npmjs.org/emmet/-/emmet-2.3.6.tgz"
-  dependencies:
-    "@emmetio/abbreviation" "^2.2.3"
-    "@emmetio/css-abbreviation" "^2.1.4"
-
-entities@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/entities/-/entities-2.2.0.tgz"
-
-entities@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/entities/-/entities-3.0.1.tgz"
 
 es-cookie@^1.3.2:
   version "1.3.2"
@@ -1060,14 +903,6 @@ get-func-name@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/get-func-name/-/get-func-name-2.0.0.tgz"
 
-get-intrinsic@^1.0.2:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.1.1.tgz"
-  dependencies:
-    function-bind "^1.1.1"
-    has "^1.0.3"
-    has-symbols "^1.0.1"
-
 glob-parent@^5.1.2:
   version "5.1.2"
   resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz"
@@ -1112,16 +947,6 @@ has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz"
 
-has-symbols@^1.0.1, has-symbols@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/has-symbols/-/has-symbols-1.0.3.tgz"
-
-has-tostringtag@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/has-tostringtag/-/has-tostringtag-1.0.0.tgz"
-  dependencies:
-    has-symbols "^1.0.2"
-
 has@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/has/-/has-1.0.3.tgz"
@@ -1133,15 +958,6 @@ html-encoding-sniffer@^3.0.0:
   resolved "https://registry.npmjs.org/html-encoding-sniffer/-/html-encoding-sniffer-3.0.0.tgz"
   dependencies:
     whatwg-encoding "^2.0.0"
-
-htmlparser2@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.npmjs.org/htmlparser2/-/htmlparser2-7.2.0.tgz"
-  dependencies:
-    domelementtype "^2.0.1"
-    domhandler "^4.2.2"
-    domutils "^2.8.0"
-    entities "^3.0.1"
 
 http-proxy-agent@^5.0.0:
   version "5.0.0"
@@ -1196,13 +1012,6 @@ is-core-module@^2.8.1:
   dependencies:
     has "^1.0.3"
 
-is-expression@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/is-expression/-/is-expression-4.0.0.tgz"
-  dependencies:
-    acorn "^7.1.1"
-    object-assign "^4.1.1"
-
 is-extglob@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz"
@@ -1221,24 +1030,9 @@ is-potential-custom-element-name@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.1.tgz"
 
-is-promise@^2.0.0:
-  version "2.2.2"
-  resolved "https://registry.npmjs.org/is-promise/-/is-promise-2.2.2.tgz"
-
-is-regex@^1.0.3:
-  version "1.1.4"
-  resolved "https://registry.npmjs.org/is-regex/-/is-regex-1.1.4.tgz"
-  dependencies:
-    call-bind "^1.0.2"
-    has-tostringtag "^1.0.0"
-
 isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
-
-js-stringify@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/js-stringify/-/js-stringify-1.0.2.tgz"
 
 js-yaml@^4.1.0:
   version "4.1.0"
@@ -1285,21 +1079,6 @@ json-schema-traverse@^0.4.1:
 json-stable-stringify-without-jsonify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz"
-
-jsonc-parser@^2.3.0:
-  version "2.3.1"
-  resolved "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-2.3.1.tgz"
-
-jsonc-parser@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-3.0.0.tgz"
-
-jstransformer@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/jstransformer/-/jstransformer-1.0.0.tgz"
-  dependencies:
-    is-promise "^2.0.0"
-    promise "^7.0.1"
 
 levn@^0.4.1:
   version "0.4.1"
@@ -1391,10 +1170,6 @@ natural-compare@^1.4.0:
 nwsapi@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/nwsapi/-/nwsapi-2.2.0.tgz"
-
-object-assign@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
 
 once@^1.3.0:
   version "1.4.0"
@@ -1513,106 +1288,9 @@ promise-polyfill@^8.2.1:
   version "8.2.3"
   resolved "https://registry.npmjs.org/promise-polyfill/-/promise-polyfill-8.2.3.tgz"
 
-promise@^7.0.1:
-  version "7.3.1"
-  resolved "https://registry.npmjs.org/promise/-/promise-7.3.1.tgz"
-  dependencies:
-    asap "~2.0.3"
-
 psl@^1.1.33:
   version "1.8.0"
   resolved "https://registry.npmjs.org/psl/-/psl-1.8.0.tgz"
-
-pug-attrs@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/pug-attrs/-/pug-attrs-3.0.0.tgz"
-  dependencies:
-    constantinople "^4.0.1"
-    js-stringify "^1.0.2"
-    pug-runtime "^3.0.0"
-
-pug-code-gen@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/pug-code-gen/-/pug-code-gen-3.0.2.tgz"
-  dependencies:
-    constantinople "^4.0.1"
-    doctypes "^1.1.0"
-    js-stringify "^1.0.2"
-    pug-attrs "^3.0.0"
-    pug-error "^2.0.0"
-    pug-runtime "^3.0.0"
-    void-elements "^3.1.0"
-    with "^7.0.0"
-
-pug-error@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/pug-error/-/pug-error-2.0.0.tgz"
-
-pug-filters@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/pug-filters/-/pug-filters-4.0.0.tgz"
-  dependencies:
-    constantinople "^4.0.1"
-    jstransformer "1.0.0"
-    pug-error "^2.0.0"
-    pug-walk "^2.0.0"
-    resolve "^1.15.1"
-
-pug-lexer@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npmjs.org/pug-lexer/-/pug-lexer-5.0.1.tgz"
-  dependencies:
-    character-parser "^2.2.0"
-    is-expression "^4.0.0"
-    pug-error "^2.0.0"
-
-pug-linker@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/pug-linker/-/pug-linker-4.0.0.tgz"
-  dependencies:
-    pug-error "^2.0.0"
-    pug-walk "^2.0.0"
-
-pug-load@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/pug-load/-/pug-load-3.0.0.tgz"
-  dependencies:
-    object-assign "^4.1.1"
-    pug-walk "^2.0.0"
-
-pug-parser@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/pug-parser/-/pug-parser-6.0.0.tgz"
-  dependencies:
-    pug-error "^2.0.0"
-    token-stream "1.0.0"
-
-pug-runtime@^3.0.0, pug-runtime@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/pug-runtime/-/pug-runtime-3.0.1.tgz"
-
-pug-strip-comments@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/pug-strip-comments/-/pug-strip-comments-2.0.0.tgz"
-  dependencies:
-    pug-error "^2.0.0"
-
-pug-walk@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/pug-walk/-/pug-walk-2.0.0.tgz"
-
-pug@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/pug/-/pug-3.0.2.tgz"
-  dependencies:
-    pug-code-gen "^3.0.2"
-    pug-filters "^4.0.0"
-    pug-lexer "^5.0.1"
-    pug-linker "^4.0.0"
-    pug-load "^3.0.0"
-    pug-parser "^6.0.0"
-    pug-runtime "^3.0.1"
-    pug-strip-comments "^2.0.0"
 
 punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
@@ -1630,7 +1308,7 @@ resolve-from@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/resolve-from/-/resolve-from-4.0.0.tgz"
 
-resolve@^1.15.1, resolve@^1.22.0:
+resolve@^1.22.0:
   version "1.22.0"
   resolved "https://registry.npmjs.org/resolve/-/resolve-1.22.0.tgz"
   dependencies:
@@ -1738,19 +1416,11 @@ tinyspy@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-0.3.2.tgz#2f95cb14c38089ca690385f339781cd35faae566"
 
-to-fast-properties@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-2.0.0.tgz"
-
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npmjs.org/to-regex-range/-/to-regex-range-5.0.1.tgz"
   dependencies:
     is-number "^7.0.0"
-
-token-stream@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/token-stream/-/token-stream-1.0.0.tgz"
 
 tough-cookie@^4.0.0:
   version "4.0.0"
@@ -1808,10 +1478,6 @@ universalify@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/universalify/-/universalify-0.1.2.tgz"
 
-upath@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/upath/-/upath-2.0.1.tgz"
-
 uri-js@^4.2.2:
   version "4.4.1"
   resolved "https://registry.npmjs.org/uri-js/-/uri-js-4.4.1.tgz"
@@ -1846,119 +1512,6 @@ vitest@^0.12.9:
     tinyspy "^0.3.2"
     vite "^2.9.8"
 
-void-elements@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/void-elements/-/void-elements-3.1.0.tgz"
-
-vscode-css-languageservice@^5.1.9:
-  version "5.1.13"
-  resolved "https://registry.npmjs.org/vscode-css-languageservice/-/vscode-css-languageservice-5.1.13.tgz"
-  dependencies:
-    vscode-languageserver-textdocument "^1.0.1"
-    vscode-languageserver-types "^3.16.0"
-    vscode-nls "^5.0.0"
-    vscode-uri "^3.0.2"
-
-vscode-html-languageservice@^4.2.1:
-  version "4.2.2"
-  resolved "https://registry.npmjs.org/vscode-html-languageservice/-/vscode-html-languageservice-4.2.2.tgz"
-  dependencies:
-    vscode-languageserver-textdocument "^1.0.3"
-    vscode-languageserver-types "^3.16.0"
-    vscode-nls "^5.0.0"
-    vscode-uri "^3.0.3"
-
-vscode-json-languageservice@^4.1.10:
-  version "4.2.0"
-  resolved "https://registry.npmjs.org/vscode-json-languageservice/-/vscode-json-languageservice-4.2.0.tgz"
-  dependencies:
-    jsonc-parser "^3.0.0"
-    vscode-languageserver-textdocument "^1.0.3"
-    vscode-languageserver-types "^3.16.0"
-    vscode-nls "^5.0.0"
-    vscode-uri "^3.0.3"
-
-vscode-jsonrpc@8.0.0-next.7, vscode-jsonrpc@^8.0.0-next.5:
-  version "8.0.0-next.7"
-  resolved "https://registry.npmjs.org/vscode-jsonrpc/-/vscode-jsonrpc-8.0.0-next.7.tgz"
-
-vscode-languageserver-protocol@^3.17.0-next.12:
-  version "3.17.0-next.15"
-  resolved "https://registry.npmjs.org/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.17.0-next.15.tgz"
-  dependencies:
-    vscode-jsonrpc "8.0.0-next.7"
-    vscode-languageserver-types "3.17.0-next.8"
-
-vscode-languageserver-textdocument@^1.0.1, vscode-languageserver-textdocument@^1.0.3:
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/vscode-languageserver-textdocument/-/vscode-languageserver-textdocument-1.0.4.tgz"
-
-vscode-languageserver-types@3.17.0-next.8, vscode-languageserver-types@^3.17.0-next.6:
-  version "3.17.0-next.8"
-  resolved "https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.17.0-next.8.tgz"
-
-vscode-languageserver-types@^3.15.1, vscode-languageserver-types@^3.16.0:
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.16.0.tgz"
-
-vscode-nls@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/vscode-nls/-/vscode-nls-5.0.0.tgz"
-
-vscode-pug-languageservice@0.31.4:
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/vscode-pug-languageservice/-/vscode-pug-languageservice-0.31.4.tgz"
-  dependencies:
-    "@volar/code-gen" "0.31.4"
-    "@volar/shared" "0.31.4"
-    "@volar/source-map" "0.31.4"
-    "@volar/transforms" "0.31.4"
-    pug-lexer "^5.0.1"
-    pug-parser "^6.0.0"
-    vscode-languageserver-textdocument "^1.0.3"
-    vscode-languageserver-types "^3.17.0-next.6"
-
-vscode-typescript-languageservice@0.31.4:
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/vscode-typescript-languageservice/-/vscode-typescript-languageservice-0.31.4.tgz"
-  dependencies:
-    "@volar/shared" "0.31.4"
-    semver "^7.3.5"
-    upath "^2.0.1"
-    vscode-languageserver-protocol "^3.17.0-next.12"
-    vscode-languageserver-textdocument "^1.0.3"
-    vscode-nls "^5.0.0"
-
-vscode-uri@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npmjs.org/vscode-uri/-/vscode-uri-2.1.2.tgz"
-
-vscode-uri@^3.0.2, vscode-uri@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.npmjs.org/vscode-uri/-/vscode-uri-3.0.3.tgz"
-
-vscode-vue-languageservice@0.31.4:
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/vscode-vue-languageservice/-/vscode-vue-languageservice-0.31.4.tgz"
-  dependencies:
-    "@volar/code-gen" "0.31.4"
-    "@volar/html2pug" "0.31.4"
-    "@volar/shared" "0.31.4"
-    "@volar/source-map" "0.31.4"
-    "@volar/transforms" "0.31.4"
-    "@volar/vue-code-gen" "0.31.4"
-    "@vscode/emmet-helper" "^2.8.3"
-    "@vue/reactivity" "^3.2.27"
-    "@vue/shared" "^3.2.27"
-    upath "^2.0.1"
-    vscode-css-languageservice "^5.1.9"
-    vscode-html-languageservice "^4.2.1"
-    vscode-json-languageservice "^4.1.10"
-    vscode-languageserver-protocol "^3.17.0-next.12"
-    vscode-languageserver-textdocument "^1.0.3"
-    vscode-pug-languageservice "0.31.4"
-    vscode-typescript-languageservice "0.31.4"
-
 vue-demi@*, vue-demi@^0.12.1:
   version "0.12.5"
   resolved "https://registry.npmjs.org/vue-demi/-/vue-demi-0.12.5.tgz"
@@ -1981,12 +1534,11 @@ vue-router@^4.0.12:
   dependencies:
     "@vue/devtools-api" "^6.0.0"
 
-vue-tsc@^0.31.4:
-  version "0.31.4"
-  resolved "https://registry.npmjs.org/vue-tsc/-/vue-tsc-0.31.4.tgz"
+vue-tsc@^0.34.16:
+  version "0.34.16"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-0.34.16.tgz#92cc8cc23bc3e979d44bc8ed9a318d46ee5201fa"
   dependencies:
-    "@volar/shared" "0.31.4"
-    vscode-vue-languageservice "0.31.4"
+    "@volar/vue-typescript" "0.34.16"
 
 vue3-simple-typeahead@^1.0.5:
   version "1.0.5"
@@ -2040,15 +1592,6 @@ which@^2.0.1:
   resolved "https://registry.npmjs.org/which/-/which-2.0.2.tgz"
   dependencies:
     isexe "^2.0.0"
-
-with@^7.0.0:
-  version "7.0.2"
-  resolved "https://registry.npmjs.org/with/-/with-7.0.2.tgz"
-  dependencies:
-    "@babel/parser" "^7.9.6"
-    "@babel/types" "^7.9.6"
-    assert-never "^1.2.1"
-    babel-walk "3.0.0-canary-5"
 
 word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"
