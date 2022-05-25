@@ -15,7 +15,7 @@
     "pinia": "^2.0.14",
     "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.2.36",
-    "vue-router": "^4.0.12",
+    "vue-router": "^4.0.15",
     "vue3-simple-typeahead": "^1.0.5"
   },
   "devDependencies": {
