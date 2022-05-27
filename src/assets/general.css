@@ -50,13 +50,16 @@ other
     /*PADDING*/
     --aside-left-padding: 0;
     --aside-right-padding: 0;
+
+    /*FILTERS*/
+    --glassMorph: blur(20px);
 }
 
 
 /*GENERAL*/
 body {
     margin: var(--topMargin);
-    margin-left: var(--leftMargin);
+    /*margin-left: var(--leftMargin);*/
     font-family: var(--mainFont);
     background-color: var(--bgColor);
     color: var(--color);
@@ -67,6 +70,7 @@ body {
     margin-top: 10px;
     margin-bottom: 10px;
     background-color: var(--outlineColor);
+    backdrop-filter: var(--glassMorph);
     border-radius: 10px;
     padding: 10px;
 }
@@ -86,6 +90,11 @@ body {
     background-color: inherit;
     color: var(--color);
     padding: var(--standard);
+}
+
+.light {
+    margin: 0.25em;
+    font-weight: lighter;
 }
 
 h1 {
