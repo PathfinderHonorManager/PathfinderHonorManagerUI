@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Authentication from "@/components/Authentication.vue";
+import RequestLoginModal  from "./components/RequestLoginModal.vue";
 import { RouterLink, RouterView } from "vue-router";
 import UserProfileComponent from "./components/UserProfileComponent.vue";
 import { usePathfinderStore } from "./stores/pathfinders";
@@ -11,6 +12,7 @@ const honors = useHonorStore();
 
 <template>
   <Authentication />
+  <RequestLoginModal />
   <header>
     <div class="wrapper">
       <h1>Honor Manager</h1>
