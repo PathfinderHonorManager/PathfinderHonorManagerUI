@@ -3,11 +3,12 @@
     class="power"
     v-if="display"
     style="
-      display: inline-block;
-      margin: 0.5em;
-      width: 14em;
+      display: grid;
+      width: 100%;
+      margin: 0;
       height: auto;
       overflow: hidden;
+      text-align: center;
     "
   >
     <form
@@ -116,11 +117,12 @@ button:focus > strong {
 }
 
 select {
-  margin: 10px;
+  margin-bottom: var(--standard);
+  margin-top: var(--standard);
   background-color: var(--bgColor);
   color: var(--color);
   font-weight: bold;
-  width: 65%;
+  width: 100%;
   border: none;
   outline: none;
   border-radius: 5px;
@@ -134,20 +136,12 @@ select:focus > option {
   padding: 0.5em;
 }
 
-select[selectedindex="1"] {
-  background-color: mediumseagreen;
-}
-
 .selectcontainer {
   margin-bottom: 0.5em;
 }
 
-.selectcontainer > * {
-  margin-left: 10px;
-}
-
 .selectcontainer > button {
-  width: 65%;
+  width: 100%;
 }
 
 .selectcontainer > img {

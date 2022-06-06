@@ -14,9 +14,8 @@ const honors = useHonorStore();
   <Authentication />
   <RequestLoginModal />
   <header>
-    <div class="wrapper">
-      <h1>Honor Manager</h1>
-    </div>
+    <!--This will be used a some point-->
+    <div class="wrapper"></div>
   </header>
 
   <aside>
@@ -27,7 +26,7 @@ const honors = useHonorStore();
     <RouterLink to="/about">About</RouterLink>
   </aside>
 
-  <div class="mainText">
+  <div class="maintext">
     <RouterView />
   </div>
 </template>

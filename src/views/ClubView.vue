@@ -3,6 +3,6 @@ import PathfinderComponent from "../components/PathfinderComponent.vue";
 </script>
 
 <template>
-  <h2>Eagles Club</h2>
+  <h1>Eagles Club</h1>
   <PathfinderComponent />
 </template>
