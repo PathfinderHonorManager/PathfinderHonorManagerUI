@@ -13,6 +13,7 @@
       "
     >
     </vue3-simple-typeahead>
+    <br/>
     <button style="margin: var(--standard); margin-top: 0; padding: 0.75em;">Post New Honor</button>
   </form>
 </template>
@@ -55,3 +56,14 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+form {
+  text-align: center;
+  margin-bottom: var(--spaceHBelow);
+}
+
+form > button {
+  display: inline;
+}
+</style>

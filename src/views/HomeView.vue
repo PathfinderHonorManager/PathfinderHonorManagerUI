@@ -1,9 +1,4 @@
 <template>
-  <!-- <ManagerIntro /> -->
+  <h1>Welcome to the Honor Manager!</h1>
   <p>Sup?</p>
 </template>
-
-<script setup lang="ts">
-import ManagerIntro from "../components/ManagerIntro.vue";
-import SampleComponent from "../components/SampleComponent.vue";
-</script>

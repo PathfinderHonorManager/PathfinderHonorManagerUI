@@ -16,7 +16,7 @@ other
     /*MARGINS*/
     --topMargin: 8em;
     --leftMargin: 15%;
-    --textBlockMargin: 25%;
+    --textBlockMargin: 16%;
     --standard: 10px;
 
     /*SIZES*/
@@ -86,7 +86,7 @@ body {
 }
 
 .plain {
-    margin: 0;
+    margin: var(--standard);
     background-color: inherit;
     color: var(--color);
     padding: var(--standard);
@@ -162,6 +162,7 @@ button:active {
 }
 
 aside {
+    z-index: 2;
     display: block;
     position: fixed;
     top: 0;
@@ -212,7 +213,7 @@ input[type=text] {
   background-color: var(--bgColor);
   color: var(--color);
   font-weight: bold;
-  width: 200px;
+  width: 65%;
   border: none;
   outline: none;
   border-radius: 5px;
@@ -221,7 +222,7 @@ input[type=text] {
 }
 
 /*CLASSES*/
-.mainText {
+.maintext {
     margin-left: var(--textBlockMargin);
     margin-right: var(--textBlockMargin);
 }
