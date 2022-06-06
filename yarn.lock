@@ -187,33 +187,33 @@
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.3.tgz#fbf80cc039b82ac21a1acb0f0478de8f61fbf600"
 
-"@volar/code-gen@0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@volar/code-gen/-/code-gen-0.36.0.tgz#db61031a56f970595980aa610ecbb505ce0ca508"
+"@volar/code-gen@0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@volar/code-gen/-/code-gen-0.36.1.tgz#8f17846179e03e74f77425ee861aff7a0880c3ea"
   dependencies:
-    "@volar/source-map" "0.36.0"
+    "@volar/source-map" "0.36.1"
 
-"@volar/source-map@0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-0.36.0.tgz#14a506370cacc1de11e0825e4abb6f19f9d59702"
+"@volar/source-map@0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-0.36.1.tgz#ecfb51931b73dad4bb11255e594cec0838caf47d"
 
-"@volar/vue-code-gen@0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@volar/vue-code-gen/-/vue-code-gen-0.36.0.tgz#a071aa5ac55af1937e9bd3f9a67f35cef150bf14"
+"@volar/vue-code-gen@0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@volar/vue-code-gen/-/vue-code-gen-0.36.1.tgz#ba75e77c1483f00bb13b1a70889f5bc4b9930e36"
   dependencies:
-    "@volar/code-gen" "0.36.0"
-    "@volar/source-map" "0.36.0"
+    "@volar/code-gen" "0.36.1"
+    "@volar/source-map" "0.36.1"
     "@vue/compiler-core" "^3.2.36"
     "@vue/compiler-dom" "^3.2.36"
     "@vue/shared" "^3.2.36"
 
-"@volar/vue-typescript@0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@volar/vue-typescript/-/vue-typescript-0.36.0.tgz#9039179d21e03a29a3d33f65dda81e103ddd7c05"
+"@volar/vue-typescript@0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@volar/vue-typescript/-/vue-typescript-0.36.1.tgz#699a68a45764648487a622d7179da19dae77354f"
   dependencies:
-    "@volar/code-gen" "0.36.0"
-    "@volar/source-map" "0.36.0"
-    "@volar/vue-code-gen" "0.36.0"
+    "@volar/code-gen" "0.36.1"
+    "@volar/source-map" "0.36.1"
+    "@volar/vue-code-gen" "0.36.1"
     "@vue/compiler-sfc" "^3.2.36"
     "@vue/reactivity" "^3.2.36"
 
@@ -1561,11 +1561,11 @@ vue-router@^4.0.15:
   dependencies:
     "@vue/devtools-api" "^6.0.0"
 
-vue-tsc@^0.36.0:
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-0.36.0.tgz#1b9ec3742e2972b578084e45ae4a51ca5a994bc6"
+vue-tsc@^0.36.1:
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-0.36.1.tgz#ea7feb9bd4739a38af374be80f727289668d4800"
   dependencies:
-    "@volar/vue-typescript" "0.36.0"
+    "@volar/vue-typescript" "0.36.1"
 
 vue3-simple-typeahead@^1.0.5:
   version "1.0.5"
