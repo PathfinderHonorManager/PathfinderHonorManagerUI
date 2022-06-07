@@ -1,6 +1,6 @@
 <template>
   <div
-    class="power"
+    class="outline"
     v-if="display"
     style="
       display: grid;
@@ -26,7 +26,7 @@
           <option value="Earned">Earned</option>
           <option value="Awarded">Awarded</option>
         </select>
-        <button>Update Status <strong>&check;</strong></button>
+        <button class="outline" style="pointer-events: none; color: grey;">Update Status <strong>&check;</strong></button>
       </div>
     </form>
   </div>
@@ -43,10 +43,25 @@ export default defineComponent({
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
 
+    function resetButtonStyle() {
+      this.style.color = "grey";
+      this.style.backgroundColor = "inherit";
+      this.style.border = "var(lightBorder)";
+      this.style.pointerEvents = "none";
+    }
+
     const colors = ["var(--bgColor)", "var(--orange)", "mediumseagreen"];
     function getSelectedIndex() {
       const s = this.selectedIndex;
       this.style.backgroundColor = colors[s];
+      let siblingButton = this.nextSibling;
+      siblingButton.style.color = "var(--color)";
+      siblingButton.style.backgroundColor = "var(--blue)";
+      siblingButton.style.border = "";
+      siblingButton.style.pointerEvents = "auto";
+      if (siblingButton.getAttribute("listener") !== true) {
+        siblingButton.addEventListener("click", resetButtonStyle);
+      }
     }
 
     async function colorAll() {
@@ -68,6 +83,7 @@ export default defineComponent({
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
       putPathfinderHonor: pathfinderStore.putPathfinderHonor,
       getSelectedIndex,
+      resetButtonStyle,
     };
   },
   props: {

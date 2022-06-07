@@ -14,9 +14,9 @@ other
 
 :root {
     /*MARGINS*/
-    --topMargin: 8em;
-    --leftMargin: 15%;
-    --textBlockMargin: 16%;
+    --topMargin: 4em;
+    --leftMargin: 16vw;
+    --textBlockMargin: 12vw;
     --standard: 10px;
 
     /*SIZES*/
@@ -46,6 +46,7 @@ other
     --darkBlue: #3772FF;
 
     /*BORDER*/
+    --lightBorder: 2px solid var(--outlineColor);
 
     /*PADDING*/
     --aside-left-padding: 0;
@@ -59,7 +60,7 @@ other
 /*GENERAL*/
 body {
     margin: var(--topMargin);
-    /*margin-left: var(--leftMargin);*/
+    margin-left: var(--leftMargin);
     font-family: var(--mainFont);
     background-color: var(--bgColor);
     color: var(--color);
@@ -81,6 +82,16 @@ body {
     margin-bottom: 10px;
     background-color: var(--outlineColor);
     backdrop-filter: brightness(50%);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.outline {
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: inherit;
+    border: var(--lightBorder);
     border-radius: 10px;
     padding: 10px;
 }
@@ -171,9 +182,10 @@ aside {
     margin: 0;
     height: 100%;
     width: var(--asideWidth);
-    border-right: 2px solid var(--outlineColor);
+    border-right: var(--lightBorder);
     padding-left: var(--aside-left-padding);
     padding-right: var(--aside-right-padding);
+    backdrop-filter: var(--glassMorph);
 }
 
 aside > a {
