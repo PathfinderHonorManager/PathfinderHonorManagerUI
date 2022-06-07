@@ -61,6 +61,7 @@ other
 body {
     margin: var(--topMargin);
     margin-left: var(--leftMargin);
+    margin-right: 0;
     font-family: var(--mainFont);
     background-color: var(--bgColor);
     color: var(--color);
@@ -106,6 +107,14 @@ body {
 .light {
     margin: 0.25em;
     font-weight: lighter;
+}
+
+.patchimage {
+    width: 100px;
+    height: auto;
+    border: 3px dashed var(--orange);
+    border-radius: 50%;
+    box-shadow: 0 0 10px black;
 }
 
 h1 {
@@ -229,7 +238,7 @@ input[type=text] {
   border: none;
   outline: none;
   border-radius: 5px;
-  padding: 0.75em;
+  padding: 1.5em;
   transition: 0.2s;
 }
 

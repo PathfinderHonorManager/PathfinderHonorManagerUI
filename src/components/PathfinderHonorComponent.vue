@@ -18,6 +18,7 @@
       <div class="selectcontainer">
         <img
           :src="'https://pathfinderhonor.azureedge.net/assets/small/' + image"
+          class="patchimage"
         />
         <br />
         <h3>{{ name }}</h3>
@@ -158,13 +159,5 @@ select:focus > option {
 
 .selectcontainer > button {
   width: 100%;
-}
-
-.selectcontainer > img {
-  width: 100px;
-  height: auto;
-  border: 3px dashed var(--orange);
-  border-radius: 50%;
-  box-shadow: 0 0 10px black;
 }
 </style>
