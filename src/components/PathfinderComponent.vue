@@ -1,7 +1,7 @@
 <template>
   <p v-if="error">Error!</p>
-  <div v-if="pathfinders[0]" class="power">
-    <div v-for="(pathfinder, i) in pathfinders" :key="i">
+  <div v-if="pathfinders[0]" class="outline">
+    <div v-for="(pathfinder, i) in pathfinders" :key="i" class="power">
       <h2>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</h2>
       <button v-if="!showing[i]" @click="showing[i] = true" class="plain">
         Show Honors +
@@ -73,7 +73,7 @@ export default defineComponent({
 .honortable {
   display: grid;
   justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.5em;
   grid-auto-rows: minmax(100px, auto);
 }

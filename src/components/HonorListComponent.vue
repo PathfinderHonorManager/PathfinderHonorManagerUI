@@ -4,6 +4,7 @@
     <div class="power">
       <img 
         :src="'https://pathfinderhonor.azureedge.net/assets/small/' + honor.patchFilename"
+        class="patchimage"
       />
       <p>{{ doNotLookMsgs[Math.floor(Math.random() * doNotLookMsgs.length)] }}</p>
     </div>

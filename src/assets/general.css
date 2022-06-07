@@ -14,9 +14,9 @@ other
 
 :root {
     /*MARGINS*/
-    --topMargin: 8em;
-    --leftMargin: 15%;
-    --textBlockMargin: 16%;
+    --topMargin: 4em;
+    --leftMargin: 16vw;
+    --textBlockMargin: 12vw;
     --standard: 10px;
 
     /*SIZES*/
@@ -46,6 +46,7 @@ other
     --darkBlue: #3772FF;
 
     /*BORDER*/
+    --lightBorder: 2px solid var(--outlineColor);
 
     /*PADDING*/
     --aside-left-padding: 0;
@@ -59,7 +60,8 @@ other
 /*GENERAL*/
 body {
     margin: var(--topMargin);
-    /*margin-left: var(--leftMargin);*/
+    margin-left: var(--leftMargin);
+    margin-right: 0;
     font-family: var(--mainFont);
     background-color: var(--bgColor);
     color: var(--color);
@@ -85,6 +87,16 @@ body {
     padding: 10px;
 }
 
+.outline {
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: inherit;
+    border: var(--lightBorder);
+    border-radius: 10px;
+    padding: 10px;
+}
+
 .plain {
     margin: var(--standard);
     background-color: inherit;
@@ -95,6 +107,14 @@ body {
 .light {
     margin: 0.25em;
     font-weight: lighter;
+}
+
+.patchimage {
+    width: 100px;
+    height: auto;
+    border: 3px dashed var(--orange);
+    border-radius: 50%;
+    box-shadow: 0 0 10px black;
 }
 
 h1 {
@@ -171,9 +191,10 @@ aside {
     margin: 0;
     height: 100%;
     width: var(--asideWidth);
-    border-right: 2px solid var(--outlineColor);
+    border-right: var(--lightBorder);
     padding-left: var(--aside-left-padding);
     padding-right: var(--aside-right-padding);
+    backdrop-filter: var(--glassMorph);
 }
 
 aside > a {
@@ -217,7 +238,7 @@ input[type=text] {
   border: none;
   outline: none;
   border-radius: 5px;
-  padding: 0.75em;
+  padding: 1.5em;
   transition: 0.2s;
 }
 
