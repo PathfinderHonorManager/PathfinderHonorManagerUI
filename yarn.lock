@@ -1556,9 +1556,9 @@ vue-tsc@^0.37.8:
   dependencies:
     "@volar/vue-typescript" "0.37.8"
 
-vue3-simple-typeahead@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/vue3-simple-typeahead/-/vue3-simple-typeahead-1.0.5.tgz"
+vue3-simple-typeahead@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/vue3-simple-typeahead/-/vue3-simple-typeahead-1.0.7.tgz#fbd098076ec790de5055627efff06f111ed3991e"
 
 vue@^3.2.30, vue@^3.2.37:
   version "3.2.37"
