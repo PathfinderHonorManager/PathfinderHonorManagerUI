@@ -15,11 +15,11 @@
       class="power"
       style="
         position: fixed;
-        height: 500px;
+        height: 300px;
         width: 600px;
         margin: 0;
         left: calc(50% - 300px);
-        top: calc(50% - 250px);
+        top: calc(50% - 150px);
         text-align: center;
         box-shadow: 0 0 200px black;
         z-index: 3;

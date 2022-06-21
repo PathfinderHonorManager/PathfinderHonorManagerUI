@@ -109,6 +109,14 @@ body {
     font-weight: lighter;
 }
 
+.honortable {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.5em;
+    grid-auto-rows: minmax(100px, auto);
+  }
+
 .patchimage {
     width: 100px;
     height: auto;
@@ -236,9 +244,9 @@ input[type=text] {
   font-weight: bold;
   width: 65%;
   border: none;
+  border-radius: calc((2.4em + (0.5em * 2)) / 2);
   outline: none;
-  border-radius: 5px;
-  padding: 1.5em;
+  padding: 1.2em 2em;
   transition: 0.2s;
 }
 
