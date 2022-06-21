@@ -68,13 +68,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.honortable {
-  display: grid;
-  justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.5em;
-  grid-auto-rows: minmax(100px, auto);
-}
-</style>
