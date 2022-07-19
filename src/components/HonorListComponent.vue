@@ -1,23 +1,20 @@
 <template>
-  <!--work in progress-->
-  <div v-if="false" class="outline" style="text-align: center">
+  <div class="outline" style="text-align: center">
     <h3>Find and add honors</h3>
 
     <input
       id="honorform"
-      v-on:keyup="searchResult = getHonorsByQuery('abs')"
+      @keyup="doHonorSearch"
       type="text"
       placeholder="Search. . . "
       style="background-color: var(--outlineColor)"
     />
-    <li v-for="(honor, i) in searchResult" :key="i">
-      <p>add {{ honor }}</p>
-    </li>
   </div>
-  <div class="outline">
+  <span class="loader" v-if="loading">Loading Honors</span>
+  <div class="outline" v-if="honorSearchResult.length > 0">
     <div class="honortable">
       <div
-        v-for="(honor, i) in honors"
+        v-for="(honor, i) in honorSearchResult"
         :key="i"
         class="outline"
         style="
@@ -49,25 +46,22 @@ import { storeToRefs } from "pinia";
 export default defineComponent({
   setup() {
     const honorStore = useHonorStore();
-    honorStore.getHonors();
-    const { honors, getHonorsByQuery } = storeToRefs(honorStore);
+    const { loading } = storeToRefs(honorStore);
+    const honors = honorStore.getHonors();
 
-    const searchResult = ref("");
+    let honorSearchResult = ref(honors);
 
-    const doNotLookMsgs = [
-      "Why are you looking?",
-      "This is still work in progress!",
-      "Look away!",
-      "Help me understand, please. Why are you looking?",
-      "There are plenty of other distractions for you to look at!",
-      "Really, now. You're making us look unproffesional. Click another nav link!",
-      "You don't have to do this!",
-    ];
+    function doHonorSearch(event) {
+      honorSearchResult.value = event.target.value !== ""? honorStore.getHonorsByQuery(event.target.value).splice(0, 15) : [];
+    }
+
     return {
-      honors,
-      getHonorsByQuery,
-      searchResult,
-      doNotLookMsgs,
+      honors, 
+      getHonors: honorStore.getHonors,
+      getHonorsByQuery: honorStore.getHonorsByQuery,
+      honorSearchResult,
+      doHonorSearch: doHonorSearch,
+      loading,
     };
   },
 });

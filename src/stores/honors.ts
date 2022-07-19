@@ -22,12 +22,12 @@ export const useHonorStore = defineStore("honor", {
     getHonorsByLevel: (state) => (level: number) => {
       return state.honors.filter((h) => h.level === level);
     },
-    getHonorsByQuery: (state) => (string: string) => {
-      const query = string.split(" ");
-      return state.honors.filter((h) => {
-        const passes = query.filter((q) => h.name.indexOf(q) > -1).length;
-        return !(passes - query.length); //if passing tokens length is the same as original tokens length, return true, otherwise return false.
-      });
+    getHonorsByQuery: (state) => (query: string) => {
+      console.log(query);
+      const tokens = query.toLowerCase().split(" ");
+      return state.honors.filter(
+        (h) => tokens.filter(t => h.name.toLowerCase().indexOf(t) > -1).length === tokens.length
+      );
     },
   },
   actions: {
