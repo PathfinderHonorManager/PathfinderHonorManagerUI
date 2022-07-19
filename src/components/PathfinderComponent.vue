@@ -27,6 +27,7 @@
       </div>
     </div>
   </div>
+  <span class="loader" v-if="loading">Loading Pathfinders</span>
 </template>
 
 <script lang="ts">

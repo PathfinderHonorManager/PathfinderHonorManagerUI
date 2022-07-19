@@ -67,6 +67,27 @@ body {
     color: var(--color);
 }
 
+.loader {
+	display: block;
+	width: 100%;
+	padding: 0.5em;
+	text-align: center;
+    font-weight: bold;
+	border-radius: 2em;
+    background-color: var(--outlineColor);
+	border: none;
+	overflow: hidden;
+	animation: load 3s infinite cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+@keyframes load {
+	0% {clip-path: circle(calc(1em + 2px) at 1em 50%);}
+	25% {clip-path: circle(50% at 50% 50%);}
+	50% {clip-path: circle(calc(1em + 2px) at calc(100% - 1em) 50%);}
+	75% {clip-path: circle(50% at 50% 50%);}
+	100% {clip-path: circle(calc(1em + 2px) at 1em 50%);}
+}
+
 .power {
     box-sizing: border-box;
     margin-top: 10px;
