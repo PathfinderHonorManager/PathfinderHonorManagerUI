@@ -11,7 +11,7 @@ interface Pathfinder {
   pathfinderID: string;
   firstName: string;
   lastName: string;
-  pathfinderClass: string;
+  className: string;
   grade: number;
   pathfinderHonors: PathfinderHonors[];
 }
