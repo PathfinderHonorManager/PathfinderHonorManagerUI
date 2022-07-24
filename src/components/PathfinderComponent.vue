@@ -3,6 +3,8 @@
   <div v-if="pathfinders[0]" class="outline">
     <div v-for="(pathfinder, i) in pathfinders" :key="i" class="power">
       <h2>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</h2>
+      <h3 v-if="pathfinder.className">{{ pathfinder.className }}  (Grade {{ pathfinder.grade}})</h3>
+      <h3 v-else>Staff</h3>
       <button v-if="!showing[i]" @click="showing[i] = true" class="plain">
         Show Honors +
       </button>
