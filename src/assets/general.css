@@ -37,7 +37,7 @@ other
 
     /*COLOR PALLETTE*/
     --bgColor: #111417;
-    --outlineColor: /*#1A1F23;*/ rgba(155, 155, 255, 0.05);
+    --outlineColor: /*#1A1F23;*/ rgba(155, 155, 255, 0.08);
     --color: #F5F5F5;
     --yellow: #FFBB00;
     --orange: #F77D1B;
@@ -51,6 +51,7 @@ other
     /*PADDING*/
     --aside-left-padding: 0;
     --aside-right-padding: 0;
+    --content-padding: 20px;
 
     /*FILTERS*/
     --glassMorph: blur(20px);
@@ -81,6 +82,19 @@ other
     font-weight: bold;
 }
 
+@keyframes sink {
+    from {box-shadow: 0 0 4px black, 0 0 0 black inset;}
+    to {box-shadow: 0 0 0 black, 0 0 8px black inset;}
+}
+
+@keyframes load {
+	0% {clip-path: circle(calc(1em + 2px) at 1em 50%);}
+	25% {clip-path: circle(50% at 50% 50%);}
+	50% {clip-path: circle(calc(1em + 2px) at calc(100% - 1em) 50%);}
+	75% {clip-path: circle(50% at 50% 50%);}
+	100% {clip-path: circle(calc(1em + 2px) at 1em 50%);}
+}
+
 
 /*GENERAL*/
 body {
@@ -105,12 +119,12 @@ body {
 	animation: load 3s infinite cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-@keyframes load {
-	0% {clip-path: circle(calc(1em + 2px) at 1em 50%);}
-	25% {clip-path: circle(50% at 50% 50%);}
-	50% {clip-path: circle(calc(1em + 2px) at calc(100% - 1em) 50%);}
-	75% {clip-path: circle(50% at 50% 50%);}
-	100% {clip-path: circle(calc(1em + 2px) at 1em 50%);}
+.content-box {
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: var(--content-padding);
 }
 
 .power {
@@ -120,7 +134,7 @@ body {
     background-color: var(--outlineColor);
     backdrop-filter: var(--glassMorph);
     border-radius: 10px;
-    padding: 10px;
+    padding: var(--content-padding);
 }
 
 .unpower {
@@ -130,7 +144,7 @@ body {
     background-color: var(--outlineColor);
     backdrop-filter: brightness(50%);
     border-radius: 10px;
-    padding: 10px;
+    padding: var(--content-padding);
 }
 
 .outline {
@@ -140,7 +154,7 @@ body {
     background-color: inherit;
     border: var(--lightBorder);
     border-radius: 10px;
-    padding: 10px;
+    padding: var(--content-padding);
 }
 
 .plain {
@@ -171,6 +185,13 @@ body {
     box-shadow: 0 0 10px black;
 }
 
+.row-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    grid-template-rows: auto;
+    align-items: baseline;
+}
+
 h1 {
     display: block;
     margin-bottom: var(--spaceHBelow);
@@ -191,7 +212,7 @@ h1::after {
 h2 {
     display: block;
     margin: 0;
-    margin-top: calc(var(--spaceHBelow) + var(--spacePBelow));
+    margin-top: var(--spaceHBelow);
     text-align: left;
     color: var(--color);
 }
@@ -215,7 +236,7 @@ p {
 }
 
 button {
-    display: block;
+    display: inline-block;
     margin: 0;
     background-color: var(--darkBlue);
     color: var(--color);
@@ -244,6 +265,7 @@ aside {
     float: right;
     margin: 0;
     height: 100%;
+    font-size: 14px;
     width: var(--asideWidth);
     border-right: var(--lightBorder);
     padding-left: var(--aside-left-padding);
@@ -285,15 +307,14 @@ aside > a:hover {
 
 input[type=text] {
   margin: var(--standard);
-  background-color: var(--bgColor);
+  background-color: var(--outlineColor);
   color: var(--color);
   font-weight: bold;
   width: 65%;
-  border: none;
+  border: var(--lightBorder);
   border-radius: calc((2.4em + (0.5em * 2)) / 2);
   outline: none;
   padding: 1.2em 2em;
-  transition: 0.2s;
 }
 
 /*CLASSES*/

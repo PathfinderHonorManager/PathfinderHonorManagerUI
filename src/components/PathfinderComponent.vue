@@ -1,16 +1,20 @@
 <template>
   <p v-if="error">Error!</p>
-  <div v-if="pathfinders[0]" class="outline">
-    <div v-for="(pathfinder, i) in pathfinders" :key="i" class="power">
-      <h2>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</h2>
-      <h3 v-if="pathfinder.className">{{ pathfinder.className }}  (Grade {{ pathfinder.grade}})</h3>
-      <h3 v-else>Staff</h3>
-      <button v-if="!showing[i]" @click="showing[i] = true" class="plain">
-        Show Honors +
-      </button>
-      <button v-if="showing[i]" @click="showing[i] = false" class="plain">
-        Hide Honors -
-      </button>
+  <div v-if="pathfinders[0]" class="content-box">
+    <div v-for="(pathfinder, i) in pathfinders" :key="i" class="outline">
+      <div class="row-list">
+        <h2>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</h2>
+
+        <h3 v-if="pathfinder.className">{{ pathfinder.className }}  (Grade {{ pathfinder.grade}})</h3>
+        <h3 v-else>Staff</h3>
+
+        <button v-if="!showing[i]" @click="showing[i] = true" class="plain">
+          Show Honors +
+        </button>
+        <button v-if="showing[i]" @click="showing[i] = false" class="plain">
+          Hide Honors -
+        </button>
+      </div>
 
       <PostPathfinderHonorComponent v-if="showing[i]" :pathfinderID="pathfinder.pathfinderID"/>
       
@@ -62,6 +66,7 @@ export default defineComponent({
       loading,
       error,
       pathfinders,
+      postPathfinder: (fn: string, ln: string, em: string, gr: number) => pathfinderStore.postPathfinder(fn, ln, em, gr),
       getPathfinders: pathfinderStore.getPathfinders,
       honors,
       getHonors: honorStore.getHonors,

@@ -1,21 +1,23 @@
 <template>
-  <form @submit.prevent="postPathfinderHonor(pathfinderID, postHonorID)">
-    <vue3-simple-typeahead
-      id="typeahead_id"
-      placeholder="Search Honors"
-      :items="honors"
-      :minInputLength="1"
-      @selectItem="selectItem"
-      :itemProjection="
-        (item) => {
-          return item.name;
-        }
-      "
-    >
-    </vue3-simple-typeahead>
-    <br/>
-    <button style="margin: var(--standard); margin-top: 0; padding: 0.75em;">Post New Honor</button>
-  </form>
+  <div class="content-box">
+    <form @submit.prevent="postPathfinderHonor(pathfinderID, postHonorID)">
+      <vue3-simple-typeahead
+        id="typeahead_id"
+        placeholder="Search Honors"
+        :items="honors"
+        :minInputLength="1"
+        @selectItem="selectItem"
+        :itemProjection="
+          (item) => {
+            return item.name;
+          }
+        "
+      >
+      </vue3-simple-typeahead>
+      <br/>
+      <button style="margin: var(--standard); margin-top: 0; padding: 0.75em;">Post New Honor</button>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
