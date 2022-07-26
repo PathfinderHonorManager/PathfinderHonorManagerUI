@@ -25,7 +25,7 @@ other
     /*TRANSFORMS/POSITIONS*/
 
     /*FONTS*/
-    --mainFont: 'segoe UI', Arial;
+    --mainFont: 'segoe-support';
 
     /*FONT SIZES*/
     --textSize: 1.3em;
@@ -54,6 +54,31 @@ other
 
     /*FILTERS*/
     --glassMorph: blur(20px);
+}
+
+@font-face {
+    font-family: 'segoe-support';
+    src: url("/public/fonts/segoe-ui/Segoe\ UI.woff");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'segoe-support';
+    src: url("/public/fonts/segoe-ui/Segoe\ UI\ Bold.woff");
+    font-style: normal;
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'segoe-support';
+    src: url("/public/fonts/segoe-ui/Segoe\ UI\ Italic.woff");
+    font-style: italic;
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'segoe-support';
+    src: url("/public/fonts/segoe-ui/Segoe\ UI\ Bold\ Italic.woff");
+    font-style: italic;
+    font-weight: bold;
 }
 
 
