@@ -14,7 +14,7 @@ export default {
       params,
     });
   },
-  post: (data = null) => {
+  post: (data: JSON) => {
     return axios.post(BASE_URL, data);
   },
   postPathfinderHonor: (id: string, data: JSON) => {

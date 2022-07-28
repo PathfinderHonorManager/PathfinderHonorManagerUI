@@ -78,6 +78,19 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
+    postPathfinder(firstName: string, lastName: string, email: string, grade: number) {
+      const data = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        grade: grade,
+      }
+      try {
+        api.post(data);
+      } catch (err) {
+        console.error(`Can't post this pathfinder because: ${err}`);
+      }
+    },
     async postPathfinderHonor(pathfinderID: string, honorId: string) {
       this.loading = true;
       this.error = false;
