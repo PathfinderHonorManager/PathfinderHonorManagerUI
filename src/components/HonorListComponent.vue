@@ -11,7 +11,7 @@
     />
   </div>
   <span class="loader" v-if="loading">Loading Honors</span>
-  <div class="outline" v-if="honorSearchResult.length > 0">
+  <div v-if="honorSearchResult.length > 0">
     <div class="honortable">
       <div
         v-for="(honor, i) in honorSearchResult"
