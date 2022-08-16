@@ -1563,9 +1563,9 @@ v8-compile-cache@^2.0.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.21.1:
-  version "0.21.1"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.21.1.tgz#b4f5b901c9a23a3aaec76d3404f3072821d93d00"
+vitest@^0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.22.0.tgz#175622a04af77c48967da3b798d53420ad463670"
   dependencies:
     "@types/chai" "^4.3.3"
     "@types/chai-subset" "^1.3.3"
