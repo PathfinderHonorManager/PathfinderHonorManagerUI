@@ -1304,9 +1304,9 @@ pinia-plugin-persist@^1.0.0:
   dependencies:
     vue-demi "^0.12.1"
 
-pinia@^2.0.18:
-  version "2.0.18"
-  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.18.tgz#b29ed34bcb4c032b7da7c24c10db18b88d9254d8"
+pinia@^2.0.19:
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.19.tgz#1ee8b521ab0fdac16b727151f7761674a04875e1"
   dependencies:
     "@vue/devtools-api" "^6.2.1"
     vue-demi "*"
