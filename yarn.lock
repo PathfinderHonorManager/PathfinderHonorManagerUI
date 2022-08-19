@@ -1472,9 +1472,9 @@ tinypool@^0.2.4:
   version "0.2.4"
   resolved "https://registry.npmjs.org/tinypool/-/tinypool-0.2.4.tgz"
 
-tinyspy@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/tinyspy/-/tinyspy-1.0.0.tgz"
+tinyspy@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-1.0.2.tgz#6da0b3918bfd56170fb3cd3a2b5ef832ee1dff0d"
 
 to-regex-range@^5.0.1:
   version "5.0.1"
@@ -1563,9 +1563,9 @@ v8-compile-cache@^2.0.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.22.0.tgz#175622a04af77c48967da3b798d53420ad463670"
+vitest@^0.22.1:
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.22.1.tgz#3122e6024bf782ee9aca53034017af7adb009c32"
   dependencies:
     "@types/chai" "^4.3.3"
     "@types/chai-subset" "^1.3.3"
@@ -1574,7 +1574,7 @@ vitest@^0.22.0:
     debug "^4.3.4"
     local-pkg "^0.4.2"
     tinypool "^0.2.4"
-    tinyspy "^1.0.0"
+    tinyspy "^1.0.2"
     vite "^2.9.12 || ^3.0.0-0"
 
 vue-demi@*, vue-demi@^0.12.1:
