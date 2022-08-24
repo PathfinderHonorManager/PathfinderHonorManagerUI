@@ -1606,9 +1606,9 @@ vue-tsc@^0.40.1:
     "@volar/vue-language-core" "0.40.1"
     "@volar/vue-typescript" "0.40.1"
 
-vue3-simple-typeahead@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.npmjs.org/vue3-simple-typeahead/-/vue3-simple-typeahead-1.0.9.tgz"
+vue3-simple-typeahead@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/vue3-simple-typeahead/-/vue3-simple-typeahead-1.0.10.tgz#2287dff663fe9f05380e9a74a660f7dfe0137f5e"
 
 vue@^3.2.35, vue@^3.2.37:
   version "3.2.37"
