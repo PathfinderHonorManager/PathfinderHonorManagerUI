@@ -21,11 +21,12 @@ other
 
     /*SIZES*/
     --asideWidth: 16%;
+    --iconSize: 32px;
 
     /*TRANSFORMS/POSITIONS*/
 
     /*FONTS*/
-    --mainFont: 'segoe-support';
+    --mainFont: 'segoe-support', 'Segoe UI', 'Arial';
 
     /*FONT SIZES*/
     --textSize: 1.3em;
@@ -37,7 +38,7 @@ other
 
     /*COLOR PALLETTE*/
     --bgColor: #111417;
-    --outlineColor: /*#1A1F23;*/ rgba(155, 155, 255, 0.08);
+    --outlineColor: rgba(155, 155, 255, 0.08);
     --color: #F5F5F5;
     --yellow: #FFBB00;
     --orange: #F77D1B;
@@ -59,25 +60,25 @@ other
 
 @font-face {
     font-family: 'segoe-support';
-    src: url("/public/fonts/segoe-ui/Segoe\ UI.woff");
+    src: url("/fonts/segoe-ui/Segoe\ UI.woff");
     font-style: normal;
     font-weight: normal;
 }
 @font-face {
     font-family: 'segoe-support';
-    src: url("/public/fonts/segoe-ui/Segoe\ UI\ Bold.woff");
+    src: url("/fonts/segoe-ui/Segoe\ UI\ Bold.woff");
     font-style: normal;
     font-weight: bold;
 }
 @font-face {
     font-family: 'segoe-support';
-    src: url("/public/fonts/segoe-ui/Segoe\ UI\ Italic.woff");
+    src: url("/fonts/segoe-ui/Segoe\ UI\ Italic.woff");
     font-style: italic;
     font-weight: normal;
 }
 @font-face {
     font-family: 'segoe-support';
-    src: url("/public/fonts/segoe-ui/Segoe\ UI\ Bold\ Italic.woff");
+    src: url("/fonts/segoe-ui/Segoe\ UI\ Bold\ Italic.woff");
     font-style: italic;
     font-weight: bold;
 }
@@ -108,6 +109,7 @@ body {
 
 .loader {
 	display: block;
+    margin: 0px var(--content-padding);
 	width: 100%;
 	padding: 0.5em;
 	text-align: center;
@@ -185,11 +187,18 @@ body {
     box-shadow: 0 0 10px black;
 }
 
-.row-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    grid-template-rows: auto;
-    align-items: baseline;
+.logobutton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --size: calc(var(--iconSize) * 1.75);
+    width: var(--size);
+    height: var(--size);
+    font-size: var(--iconSize);
+    padding: calc(var(--iconSize) * 0.5);
+    background-color: var(--outlineColor);
+    border-radius: 10px;
+    border: var(--lightBorder);
 }
 
 h1 {

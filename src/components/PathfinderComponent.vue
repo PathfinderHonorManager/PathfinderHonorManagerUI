@@ -1,37 +1,54 @@
 <template>
   <p v-if="error">Error!</p>
   <div v-if="pathfinders[0]" class="content-box">
-    <div v-for="(pathfinder, i) in pathfinders" :key="i" class="outline">
-      <div class="row-list">
-        <h2>{{ pathfinder.firstName }} {{ pathfinder.lastName }}</h2>
+    <DetailTableItemComponent
+      v-for="(pathfinder, i) in pathfinders"
+      :key="i"
+      :header="pathfinder.firstName + ' ' + pathfinder.lastName"
+    >
+      <h3 v-if="pathfinder.className">
+        {{ pathfinder.className }} (Grade {{ pathfinder.grade }})
+      </h3>
+      <h3 v-else>Staff</h3>
 
-        <h3 v-if="pathfinder.className">{{ pathfinder.className }}  (Grade {{ pathfinder.grade}})</h3>
-        <h3 v-else>Staff</h3>
+      <button
+        v-if="!showing[i]"
+        @click="showing[i] = true"
+        class="plain"
+        style="margin: 0"
+      >
+        Show {{ pathfinder.pathfinderHonors?.length }} Honors +
+      </button>
+      <button
+        v-if="showing[i]"
+        @click="showing[i] = false"
+        class="plain"
+        style="margin: 0"
+      >
+        Hide {{ pathfinder.pathfinderHonors?.length }} Honors -
+      </button>
 
-        <button v-if="!showing[i]" @click="showing[i] = true" class="plain">
-          Show Honors +
-        </button>
-        <button v-if="showing[i]" @click="showing[i] = false" class="plain">
-          Hide Honors -
-        </button>
+      <PostPathfinderHonorComponent
+        v-if="showing[i]"
+        :pathfinderID="pathfinder.pathfinderID"
+      />
+
+      <div class="content-box">
+        <div v-if="showing[i]" class="honortable">
+          <PathfinderHonorComponent
+            v-for="pathfinderHonor in pathfinder.pathfinderHonors"
+            :key="pathfinderHonor.pathfinderHonorID"
+            :item="postPathfinderHonor"
+            v-bind:pathfinderID="pathfinder.pathfinderID"
+            v-bind:honorID="pathfinderHonor.honorID"
+            v-bind:name="pathfinderHonor.name"
+            v-bind:status="pathfinderHonor.status"
+            v-bind:display="true"
+            v-bind:image="pathfinderHonor.patchFilename"
+          ></PathfinderHonorComponent>
+        </div>
       </div>
-
-      <PostPathfinderHonorComponent v-if="showing[i]" :pathfinderID="pathfinder.pathfinderID"/>
-      
-      <div v-if="showing[i]" class="honortable">
-        <PathfinderHonorComponent
-          v-for="pathfinderHonor in pathfinder.pathfinderHonors"
-          :key="pathfinderHonor.pathfinderHonorID"
-          :item="postPathfinderHonor"
-          v-bind:pathfinderID="pathfinder.pathfinderID"
-          v-bind:honorID="pathfinderHonor.honorID"
-          v-bind:name="pathfinderHonor.name"
-          v-bind:status="pathfinderHonor.status"
-          v-bind:display="true"
-          v-bind:image="pathfinderHonor.patchFilename"
-        ></PathfinderHonorComponent>
-      </div>
-    </div>
+    </DetailTableItemComponent>
   </div>
   <span class="loader" v-if="loading">Loading Pathfinders</span>
 </template>
@@ -40,6 +57,7 @@
 import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { useHonorStore } from "../stores/honors";
+import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 
@@ -47,7 +65,11 @@ import { storeToRefs } from "pinia";
 import { ref } from "vue";
 
 export default defineComponent({
-  components: { PostPathfinderHonorComponent, PathfinderHonorComponent },
+  components: {
+    PostPathfinderHonorComponent,
+    PathfinderHonorComponent,
+    DetailTableItemComponent,
+  },
   setup() {
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
@@ -66,7 +88,8 @@ export default defineComponent({
       loading,
       error,
       pathfinders,
-      postPathfinder: (fn: string, ln: string, em: string, gr: number) => pathfinderStore.postPathfinder(fn, ln, em, gr),
+      postPathfinder: (fn: string, ln: string, em: string, gr: number) =>
+        pathfinderStore.postPathfinder(fn, ln, em, gr),
       getPathfinders: pathfinderStore.getPathfinders,
       honors,
       getHonors: honorStore.getHonors,

@@ -31,7 +31,7 @@
       </h1>
       <button
         @click="login"
-        style="margin: 1em auto; font-size: 1.2em; padding: 1em"
+        style="margin: 1em; font-size: 1.2em; padding: 1em"
       >
         That's right. Do it. Log in.
       </button>
