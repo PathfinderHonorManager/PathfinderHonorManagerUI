@@ -16,6 +16,13 @@ interface Pathfinder {
   pathfinderHonors: PathfinderHonors[];
 }
 
+interface PutPathfinder {
+  firstName: string,
+  lastName: string,
+  email: string,
+  grade?: number,
+}
+
 interface PathfinderHonors {
   pathfinderHonorID: string;
   honorID: string;
@@ -78,17 +85,14 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
-    postPathfinder(firstName: string, lastName: string, email: string, grade: number) {
-      const data = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        grade: grade,
-      }
+    async postPathfinder(data: PutPathfinder) {
       try {
-        api.post(data);
+        await api.post(data);
       } catch (err) {
         console.error(`Can't post this pathfinder because: ${err}`);
+      } finally {
+        await api.getPathfinders();
+        this.loading = false;
       }
     },
     async postPathfinderHonor(pathfinderID: string, honorId: string) {
@@ -125,7 +129,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         await api.putPathfinderHonor(pathfinderID, honorId, putData);
       } catch (err) {
         this.error = true;
-        console.error(`Could modify honor, because: ${err}`);
+        console.error(`Could not modify honor, because: ${err}`);
       } finally {
         await this.getPathfinderById(pathfinderID);
         this.loading = false;
