@@ -233,12 +233,12 @@
     "@volar/typescript-faster" "0.40.13"
     "@volar/vue-language-core" "0.40.13"
 
-"@vue/compiler-core@3.2.42":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.2.42.tgz#6c4ece1a4ca50291f3e19b2d70a196b3eac7a745"
+"@vue/compiler-core@3.2.44":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.2.44.tgz#9ce3044db28b4b3d5de20cf345ad952f9303e91f"
   dependencies:
     "@babel/parser" "^7.16.4"
-    "@vue/shared" "3.2.42"
+    "@vue/shared" "3.2.44"
     estree-walker "^2.0.2"
     source-map "^0.6.1"
 
@@ -251,34 +251,34 @@
     estree-walker "^2.0.2"
     source-map "^0.6.1"
 
-"@vue/compiler-dom@3.2.42", "@vue/compiler-dom@^3.2.38":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.2.42.tgz#5f0fec1aa986913ff97ea78826f05193f0e5066c"
+"@vue/compiler-dom@3.2.44", "@vue/compiler-dom@^3.2.38":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.2.44.tgz#0fac337a8a6b3cae586aa8cac62e418aa4c79a83"
   dependencies:
-    "@vue/compiler-core" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/compiler-core" "3.2.44"
+    "@vue/shared" "3.2.44"
 
-"@vue/compiler-sfc@3.2.42", "@vue/compiler-sfc@^3.2.38":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.2.42.tgz#7fa10169de140f0770b147d26a51764137b8e4e7"
+"@vue/compiler-sfc@3.2.44", "@vue/compiler-sfc@^3.2.38":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.2.44.tgz#3cc87afdd39d1d9294b45bdd3402ef405d2b0938"
   dependencies:
     "@babel/parser" "^7.16.4"
-    "@vue/compiler-core" "3.2.42"
-    "@vue/compiler-dom" "3.2.42"
-    "@vue/compiler-ssr" "3.2.42"
-    "@vue/reactivity-transform" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/compiler-core" "3.2.44"
+    "@vue/compiler-dom" "3.2.44"
+    "@vue/compiler-ssr" "3.2.44"
+    "@vue/reactivity-transform" "3.2.44"
+    "@vue/shared" "3.2.44"
     estree-walker "^2.0.2"
     magic-string "^0.25.7"
     postcss "^8.1.10"
     source-map "^0.6.1"
 
-"@vue/compiler-ssr@3.2.42":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-ssr/-/compiler-ssr-3.2.42.tgz#a6839ba68195ac4ef864617e541c67a5e665498c"
+"@vue/compiler-ssr@3.2.44":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-ssr/-/compiler-ssr-3.2.44.tgz#efba77f4df4ea1727752637764f9d10498daa7df"
   dependencies:
-    "@vue/compiler-dom" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/compiler-dom" "3.2.44"
+    "@vue/shared" "3.2.44"
 
 "@vue/devtools-api@^6.4.4", "@vue/devtools-api@^6.4.5":
   version "6.4.5"
@@ -299,13 +299,13 @@
     "@typescript-eslint/parser" "^5.0.0"
     vue-eslint-parser "^8.0.0"
 
-"@vue/reactivity-transform@3.2.42":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/reactivity-transform/-/reactivity-transform-3.2.42.tgz#46cb236b903315b4bb8f6d28e950b2e475bb6611"
+"@vue/reactivity-transform@3.2.44":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/reactivity-transform/-/reactivity-transform-3.2.44.tgz#dab1175ee8ef1fa7e9d3d9ffe177ed03f70d4021"
   dependencies:
     "@babel/parser" "^7.16.4"
-    "@vue/compiler-core" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/compiler-core" "3.2.44"
+    "@vue/shared" "3.2.44"
     estree-walker "^2.0.2"
     magic-string "^0.25.7"
 
@@ -315,41 +315,41 @@
   dependencies:
     "@vue/shared" "3.2.38"
 
-"@vue/reactivity@3.2.42":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/reactivity/-/reactivity-3.2.42.tgz#ce9c7354d9378e8f65cb3bdccd4df0b85e8af994"
+"@vue/reactivity@3.2.44":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/reactivity/-/reactivity-3.2.44.tgz#f017f9d1557c5fac18feaa3207f247c8a763cf18"
   dependencies:
-    "@vue/shared" "3.2.42"
+    "@vue/shared" "3.2.44"
 
-"@vue/runtime-core@3.2.42":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/runtime-core/-/runtime-core-3.2.42.tgz#5ce3edb3a72465533020a618aff3f136bf195c22"
+"@vue/runtime-core@3.2.44":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/runtime-core/-/runtime-core-3.2.44.tgz#14abcb1c005873a2d506eaa0bd41726997a82ea1"
   dependencies:
-    "@vue/reactivity" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/reactivity" "3.2.44"
+    "@vue/shared" "3.2.44"
 
-"@vue/runtime-dom@3.2.42":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/runtime-dom/-/runtime-dom-3.2.42.tgz#1c132a14d158879ecbcc219e9aec150c20277924"
+"@vue/runtime-dom@3.2.44":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/runtime-dom/-/runtime-dom-3.2.44.tgz#0618b3bc99e220c25e1134d4c0da97028458e3af"
   dependencies:
-    "@vue/runtime-core" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/runtime-core" "3.2.44"
+    "@vue/shared" "3.2.44"
     csstype "^2.6.8"
 
-"@vue/server-renderer@3.2.42":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/server-renderer/-/server-renderer-3.2.42.tgz#fe7f489792ec0ff04f2da409f69c75728e51ac1b"
+"@vue/server-renderer@3.2.44":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/server-renderer/-/server-renderer-3.2.44.tgz#efeb4d99e2ff2f71b6ddb512009e6b31bedc8ed5"
   dependencies:
-    "@vue/compiler-ssr" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/compiler-ssr" "3.2.44"
+    "@vue/shared" "3.2.44"
 
 "@vue/shared@3.2.38":
   version "3.2.38"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.38.tgz#e823f0cb2e85b6bf43430c0d6811b1441c300f3c"
 
-"@vue/shared@3.2.42", "@vue/shared@^3.2.38":
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.42.tgz#1916345265c9ea1238199b7bd24719175811b9ea"
+"@vue/shared@3.2.44", "@vue/shared@^3.2.38":
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.44.tgz#d180eae83de86a48a3a0b6aaded546683443ca57"
 
 "@vue/test-utils@^2.2.1":
   version "2.2.1"
@@ -1807,15 +1807,15 @@ vue3-simple-typeahead@^1.0.11:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/vue3-simple-typeahead/-/vue3-simple-typeahead-1.0.11.tgz#dc1c4eb03f3494ae9f5d6034a933b425ce1c493e"
 
-vue@^3.2.35, vue@^3.2.42:
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.42.tgz#d129ab5f1767a14eacfddec862584d6993d8dfb4"
+vue@^3.2.35, vue@^3.2.44:
+  version "3.2.44"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.44.tgz#57581fcc753b8187aae9cf90254f9fa88f7b8ffd"
   dependencies:
-    "@vue/compiler-dom" "3.2.42"
-    "@vue/compiler-sfc" "3.2.42"
-    "@vue/runtime-dom" "3.2.42"
-    "@vue/server-renderer" "3.2.42"
-    "@vue/shared" "3.2.42"
+    "@vue/compiler-dom" "3.2.44"
+    "@vue/compiler-sfc" "3.2.44"
+    "@vue/runtime-dom" "3.2.44"
+    "@vue/server-renderer" "3.2.44"
+    "@vue/shared" "3.2.44"
 
 w3c-xmlserializer@^3.0.0:
   version "3.0.0"
