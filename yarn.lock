@@ -280,7 +280,7 @@
     "@vue/compiler-dom" "3.2.45"
     "@vue/shared" "3.2.45"
 
-"@vue/devtools-api@^6.4.4", "@vue/devtools-api@^6.4.5":
+"@vue/devtools-api@^6.4.5":
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.4.5.tgz#d54e844c1adbb1e677c81c665ecef1a2b4bb8380"
 
@@ -1441,11 +1441,11 @@ pinia-plugin-persist@^1.0.0:
   dependencies:
     vue-demi "^0.12.1"
 
-pinia@^2.0.23:
-  version "2.0.23"
-  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.23.tgz#570f5f82160b656b412602789683faa95502d227"
+pinia@^2.0.24:
+  version "2.0.24"
+  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.24.tgz#babf12207931f85b31d7451b55c0d76785b91b51"
   dependencies:
-    "@vue/devtools-api" "^6.4.4"
+    "@vue/devtools-api" "^6.4.5"
     vue-demi "*"
 
 postcss-selector-parser@^6.0.9:
