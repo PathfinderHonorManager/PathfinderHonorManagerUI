@@ -1617,11 +1617,11 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz"
 
-strip-literal@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/strip-literal/-/strip-literal-0.4.2.tgz#4f9fa6c38bb157b924e9ace7155ebf8a2342cbcf"
+strip-literal@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/strip-literal/-/strip-literal-1.0.0.tgz#0a484ed5a978cd9d2becf3cf8f4f2cb5ab0e1e74"
   dependencies:
-    acorn "^8.8.0"
+    acorn "^8.8.1"
 
 supports-color@^7.1.0:
   version "7.2.0"
@@ -1755,9 +1755,9 @@ vite@^3.0.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.25.3:
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.25.3.tgz#4e5ed481e4da6a0ce014bdb71dfc9661fd62b722"
+vitest@^0.25.4:
+  version "0.25.4"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.25.4.tgz#11134b4c9199ed64bd5cc2945d98435381c50ef9"
   dependencies:
     "@types/chai" "^4.3.3"
     "@types/chai-subset" "^1.3.3"
@@ -1768,7 +1768,7 @@ vitest@^0.25.3:
     debug "^4.3.4"
     local-pkg "^0.4.2"
     source-map "^0.6.1"
-    strip-literal "^0.4.2"
+    strip-literal "^1.0.0"
     tinybench "^2.3.1"
     tinypool "^0.3.0"
     tinyspy "^1.0.2"
