@@ -12,7 +12,7 @@
   "dependencies": {
     "@auth0/auth0-vue": "^1.0.2",
     "axios": "^0.27.2",
-    "pinia": "^2.0.27",
+    "pinia": "^2.0.28",
     "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
