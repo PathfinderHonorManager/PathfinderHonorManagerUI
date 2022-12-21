@@ -1777,9 +1777,9 @@ util-deprecate@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
 
-vite-node@0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/vite-node/-/vite-node-0.26.0.tgz#b070b812a9e90431f48fa9c2640e3cb6f60b4cce"
+vite-node@0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/vite-node/-/vite-node-0.26.1.tgz#1aaade8f64fa9b7234bd7eef020338297e742aa3"
   dependencies:
     debug "^4.3.4"
     mlly "^1.0.0"
@@ -1810,9 +1810,9 @@ vite@^2.9.14:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.26.0.tgz#8670ca2c36772d2f102968ad9d6faf14cceb0094"
+vitest@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.26.1.tgz#cdad665fdfb5c403f4feda8a7b2a6393b0ed4ea4"
   dependencies:
     "@types/chai" "^4.3.4"
     "@types/chai-subset" "^1.3.3"
@@ -1828,7 +1828,7 @@ vitest@^0.26.0:
     tinypool "^0.3.0"
     tinyspy "^1.0.2"
     vite "^3.0.0 || ^4.0.0"
-    vite-node "0.26.0"
+    vite-node "0.26.1"
 
 vue-demi@*, vue-demi@^0.12.1:
   version "0.12.5"
