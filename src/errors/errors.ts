@@ -46,7 +46,7 @@ export const Errors = {
     //From ClubView.vue form poster function
     invalidFirstName: userErrInstance("Invalid first name"),
     invalidLastName: userErrInstance("Invalid last name"),
-    invalidGrade: userErrInstance("The grade field must be between 5 and 12. If the entriant is a staff member, please leave this field blank."),
+    invalidGrade: userErrInstance("The grade field must be between 5 and 12. If you are submitting a staff member, please leave this field blank."),
     invalidEmail: userErrInstance("Invalid email"),
     alreadyExists: userErrInstance("Pathfinder already exists"),
   },
@@ -59,6 +59,7 @@ export const Errors = {
 //catch throw events in the app
 window.addEventListener("error", (event) => {
   if (event.error.type) {
+    alert(event.error.text());
     console.log(event.error.text());
   } else {
     //there is no official error for this case because of two reasons:

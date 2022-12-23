@@ -97,11 +97,11 @@ export default defineComponent({
       if (data.lastName === "") {
         throw Errors.postFormData.invalidLastName;
       }
+      if ((data.grade < 4 && data.grade != 0) || data.grade > 12) {
+        throw Errors.postFormData.invalidGrade;
+      }
       if (data.email === "") {
         throw Errors.postFormData.invalidEmail;
-      }
-      if (data.grade < 5 || data.grade > 12 || data.grade != 0) {
-        throw Errors.postFormData.invalidGrade;
       }
 
       pathfinderStore.postPathfinder(data);
