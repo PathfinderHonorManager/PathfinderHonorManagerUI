@@ -70,6 +70,8 @@ import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { ArgumentPlaceholder } from "@babel/types";
 
+import { Errors } from "../errors/errors";
+
 const pathfinderStore = usePathfinderStore();
 
 export default defineComponent({
@@ -88,6 +90,20 @@ export default defineComponent({
         email: getRefValue("email"),
         grade: Number(getRefValue("grade")),
       };
+
+      if (data.firstName === "") {
+        throw Errors.postFormData.invalidFirstName;
+      }
+      if (data.lastName === "") {
+        throw Errors.postFormData.invalidLastName;
+      }
+      if ((data.grade < 4 && data.grade != 0) || data.grade > 12) {
+        throw Errors.postFormData.invalidGrade;
+      }
+      if (data.email === "") {
+        throw Errors.postFormData.invalidEmail;
+      }
+
       pathfinderStore.postPathfinder(data);
     },
   },
