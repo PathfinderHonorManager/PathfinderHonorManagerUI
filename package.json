@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@auth0/auth0-vue": "^1.0.3",
+    "@auth0/auth0-vue": "^2.0.1",
     "axios": "^0.27.2",
     "pinia": "^2.0.32",
     "pinia-plugin-persist": "^1.0.0",
