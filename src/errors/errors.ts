@@ -6,6 +6,7 @@ enum ErrorType {
   APIResponse = "API response",
   Internal = "internal",
   Input = "input",
+  Test = "test",
 }
 
 //This is the base class for all errors in the app
@@ -33,6 +34,11 @@ function internalErrInstance(message: string) {
   return new ErrorInstance(ErrorType.Internal, message);
 }
 
+//This is a generic error for testing
+function testErrInstance(message: string) {
+  return new ErrorInstance(ErrorType.Test, message);
+}
+
 //This is a generic error for when the API returns an error response
 function apiResponseErrInstance(message: string) {
   return new ErrorInstance(ErrorType.APIResponse, message);
@@ -41,7 +47,16 @@ function apiResponseErrInstance(message: string) {
 export const Errors = {
   //API RESPONSE ERRORS
   //INTERNAL ERRORS
+  //TEST ERRORS
+  test: {
+    //general test errors
+    testError: testErrInstance("This is a test error."),
+  },
   //USER ERRORS
+  selectHonor: {
+    //from honors.ts selectHonor function
+    alreadySelected: userErrInstance("This honor is already selected."),
+  },
   postFormData: {
     //From ClubView.vue form poster function
     invalidFirstName: userErrInstance("Invalid first name"),
@@ -55,11 +70,14 @@ export const Errors = {
 //The first level will be the name of the function that threw the error.
 //The second level will be the name of the error that was thrown.
 
+//this object contains all instances of errors that have been thrown in the app
+let errorInstances = [] as ErrorInstance[];
 
 //catch throw events in the app
 window.addEventListener("error", (event) => {
   if (event.error.type) {
     alert(event.error.text());
+    errorInstances.push(event.error);
     console.log(event.error.text());
   } else {
     //there is no official error for this case because of two reasons:

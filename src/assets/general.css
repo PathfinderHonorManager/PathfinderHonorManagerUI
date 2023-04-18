@@ -110,7 +110,6 @@ body {
 .loader {
 	display: block;
     margin: 0px var(--content-padding);
-	width: 100%;
 	padding: 0.5em;
 	text-align: center;
     font-weight: bold;
@@ -170,6 +169,7 @@ body {
 .light {
     margin: 0.25em;
     font-weight: lighter;
+    font-style: italic;
 }
 
 .honortable {
@@ -178,7 +178,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 0.5em;
     grid-auto-rows: minmax(100px, auto);
-  }
+}
 
 .patchimage {
     width: 100px;
@@ -259,7 +259,7 @@ h2::before {
 }
 
 p {
-    display: inline-block;
+    display: block;
     margin: 0;
     margin-bottom: var(--spacePBelow);
     font-size: var(--textSize);
@@ -267,7 +267,7 @@ p {
 }
 
 button {
-    display: inline-block;
+    display: block;
     margin: 0;
     background-color: var(--darkBlue);
     color: var(--color);

@@ -26,14 +26,12 @@
       "
     >
       <p class="light">Log In</p>
-      <h1 style="margin: 2em; margin-top: 0">
-        View club members, and add or edit honors!
-      </h1>
+      <h1 style="margin: 0.5em">View club members, and add or edit honors!</h1>
       <button
         @click="login"
         style="margin: 1em; font-size: 1.2em; padding: 1em"
       >
-        That's right. Do it. Log in.
+        Log In.
       </button>
     </div>
   </div>
