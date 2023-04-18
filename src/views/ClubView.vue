@@ -20,7 +20,7 @@ const creatingPathfinder = ref(false);
       margin-bottom: 0;
     "
   >
-    <button class="logobutton" @click="creatingPathfinder = true">+</button>
+    <button class="biglogobutton" @click="creatingPathfinder = true">+</button>
   </div>
   <ModalComponent
     header="Add a Pathfinder!"
