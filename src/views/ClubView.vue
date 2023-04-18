@@ -68,7 +68,6 @@ const creatingPathfinder = ref(false);
 <script lang="ts">
 import { defineComponent } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
-import { ArgumentPlaceholder } from "@babel/types";
 
 import { Errors } from "../errors/errors";
 
@@ -100,7 +99,7 @@ export default defineComponent({
       if ((data.grade < 4 && data.grade != 0) || data.grade > 12) {
         throw Errors.postFormData.invalidGrade;
       }
-      if (data.email === "") {
+      if (data.email === "" || !data.email.includes("@")) {
         throw Errors.postFormData.invalidEmail;
       }
 

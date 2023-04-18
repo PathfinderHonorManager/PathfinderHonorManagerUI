@@ -24,6 +24,7 @@ const honors = useHonorStore();
     <RouterLink to="/" ref="homeLink">Home</RouterLink>
     <RouterLink to="/club">My Club</RouterLink>
     <RouterLink to="/honors">All Honors</RouterLink>
+    <!-- <RouterLink to="/planner">Planner</RouterLink> -->
   </aside>
 
   <div class="maintext">

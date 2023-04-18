@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import api from "@/api/honors";
 import type { Url } from "url";
+import { Errors } from "../errors/errors";
 
 // Define the data shape of a pathfinder
-interface Honor {
+interface IHonor {
   honorID: string;
   name: string;
   level: number;
@@ -12,11 +13,12 @@ interface Honor {
   wikiPath: Url;
 }
 
-export const useHonorStore = defineStore("honor", {
+export const useHonorStore = defineStore("honorStore", {
   state: () => ({
-    honors: [] as Honor[],
+    honors: [] as IHonor[],
     loading: false,
     error: false,
+    selected: [] as string[],
   }),
   getters: {
     getHonorsByLevel: (state) => (level: number) => {
@@ -26,8 +28,20 @@ export const useHonorStore = defineStore("honor", {
       console.log(query);
       const tokens = query.toLowerCase().split(" ");
       return state.honors.filter(
-        (h) => tokens.filter(t => h.name.toLowerCase().indexOf(t) > -1).length === tokens.length
+        (h) =>
+          tokens.filter((t) => h.name.toLowerCase().indexOf(t) > -1).length ===
+          tokens.length
       );
+    },
+    getHonorsBySelection: (state) => () => {
+      return state.honors.filter((h) => state.selected.includes(h.honorID));
+    },
+    getSelected: (state) => () => {
+      console.log(state.selected);
+      return state.selected;
+    },
+    isSelected: (state) => (honorID: string) => {
+      return state.selected.indexOf(honorID) > -1;
     },
   },
   actions: {
@@ -44,6 +58,25 @@ export const useHonorStore = defineStore("honor", {
       } finally {
         this.loading = false;
       }
+    },
+    selectHonor(honorID: string) {
+      if (this.getSelected().indexOf(honorID) > -1) {
+        throw Errors.selectHonor.alreadySelected;
+      }
+      this.selected = [...this.selected, honorID];
+      return;
+    },
+    toggleSelection(honorID: string) {
+      const s = this.getSelected();
+      if (s.indexOf(honorID) > -1) {
+        this.selected = s.filter((h) => h !== honorID);
+      } else {
+        this.selectHonor(honorID);
+      }
+      console.log(this.getSelected());
+    },
+    clearSelection() {
+      this.selected = [] as string[];
     },
   },
   persist: {
