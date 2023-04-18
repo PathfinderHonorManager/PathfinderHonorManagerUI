@@ -11,7 +11,7 @@
     />
   </div>
 
-  <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow);">
+  <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
     <h3>Selected Honors</h3>
     <div class="honortable">
       <div
@@ -26,7 +26,13 @@
             : 'var(--outlineColor)',
         }"
       >
-      <button v-if="isSelected(honor.honorID)" class="logobutton" style="border: none; background-color: var(--blue);"><img src="/close-icon.svg" /></button>
+        <button
+          v-if="isSelected(honor.honorID)"
+          class="logobutton"
+          style="border: none; background-color: var(--blue)"
+        >
+          <img src="public\close-icon.svg" />
+        </button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +
@@ -39,10 +45,12 @@
     </div>
 
     <div class="content-box">
-      <button style="font-size: 1.2em;">Plan it!</button>
-      <p class="light">This will add your selection of honors as a planned honor for every member in your club.</p>
+      <button style="font-size: 1.2em">Plan it!</button>
+      <p class="light">
+        This will add your selection of honors as a planned honor for every
+        member in your club.
+      </p>
     </div>
-    
   </div>
 
   <span class="loader" v-if="loading">Loading Honors</span>
@@ -61,7 +69,13 @@
             : 'var(--outlineColor)',
         }"
       >
-      <button v-if="isSelected(honor.honorID)" class="logobutton" style="border: none; background-color: var(--blue);"><img src="/close-icon.svg" /></button>
+        <button
+          v-if="isSelected(honor.honorID)"
+          class="logobutton"
+          style="border: none; background-color: var(--blue)"
+        >
+          <img src="public\close-icon.svg" />
+        </button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +
