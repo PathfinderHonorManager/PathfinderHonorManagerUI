@@ -31,6 +31,7 @@ other
 
     /*FONT SIZES*/
     --textSize: 1.3em;
+    --titleSize: 1.5em;
 
     /*LINE HEIGHT*/
     --textLineHeight: 1.5em;
@@ -38,8 +39,9 @@ other
     --spacePBelow: 1em;
 
     /*COLOR PALLETTE*/
-    --bgColor: #17202a;
-    --outlineColor: rgba(150, 150, 255, 0.1);
+    --bgColor: #152a43;
+    --outlineColor: rgba(138, 138, 255, 0.2);
+    --noteColor: #aec3cd;
     --color: #F5F5F5;
     --yellow: #FFBB00;
     --orange: #F77D1B;
@@ -104,6 +106,7 @@ body {
     margin: var(--topMargin);
     margin-left: var(--leftMargin);
     margin-right: 0;
+    font-size: 20px;
     font-family: var(--mainFont);
     background-color: var(--bgColor);
     color: var(--color);
@@ -169,8 +172,19 @@ body {
 }
 
 .light {
-    margin: 0.25em;
+    font-weight: light;
+}
+
+.highlight {
+    color: var(--yellow);
+}
+
+.note {
+    color: var(--noteColor);
+    font-size: 0.9em;
     font-weight: lighter;
+    font-style: italic;
+    /* transform: skewX(-3deg); */
 }
 
 .honortable {
@@ -182,8 +196,8 @@ body {
 }
 
 .patchimage {
-    width: 100px;
-    height: auto;
+    width: auto;
+    height: 100px;
     border: 3px dashed var(--orange);
     border-radius: 50%;
     box-shadow: 0 0 10px black;
@@ -255,6 +269,16 @@ h1::after {
     border-radius: 5px;
 }
 
+.underline::after {
+    content: '';
+    display: block;
+    margin: auto;
+    width: 3em;
+    height: 0;
+    border-bottom: 6px solid var(--yellow);
+    border-radius: 5px;
+}
+
 h2 {
     display: block;
     margin: 0;
@@ -271,6 +295,15 @@ h2::before {
     border-bottom: 6px solid var(--yellow);
     border-radius: 2px 6px 0 0;
 
+}
+
+.above-accent::before {
+    content: '';
+    display: block;
+    width: 3em;
+    height: 0;
+    border-bottom: 6px solid var(--yellow);
+    border-radius: 2px 6px 0 0;
 }
 
 p {
@@ -367,6 +400,14 @@ input[type=text] {
 .maintext {
     margin-left: var(--textBlockMargin);
     margin-right: var(--textBlockMargin);
+}
+
+.title {
+    font-size: var(--titleSize);
+}
+
+.right-align {
+    text-align: right;
 }
 
 .parallax {

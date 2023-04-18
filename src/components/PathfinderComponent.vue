@@ -1,6 +1,7 @@
 <template>
   <p v-if="error">Error!</p>
   <div v-if="pathfinders[0]" class="content-box">
+    <h3>Eagles Club, {{ pathfinders.length }} Members</h3>
     <span class="loader" v-if="loading">Loading Pathfinders</span>
     <DetailTableItemComponent
       v-for="(pathfinder, i) in pathfinders"
@@ -15,19 +16,20 @@
       <button
         v-if="!showing[i]"
         @click="showing[i] = true"
-        class="plain"
+        class="outline"
         style="margin: 0"
       >
-        Show {{ pathfinder.pathfinderHonors?.length }} Honors +
+        Show Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
       <button
         v-if="showing[i]"
         @click="showing[i] = false"
-        class="plain"
+        class="outline"
         style="margin: 0"
       >
-        Hide {{ pathfinder.pathfinderHonors?.length }} Honors -
+        Hide Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
+
 
       <PostPathfinderHonorComponent
         v-if="showing[i]"

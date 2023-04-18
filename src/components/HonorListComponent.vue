@@ -1,16 +1,4 @@
 <template>
-  <div class="outline" style="text-align: center">
-    <h3>Find and add honors</h3>
-
-    <input
-      id="honorform"
-      @keyup="doHonorSearch"
-      type="text"
-      placeholder="Search. . . "
-      style="background-color: var(--outlineColor)"
-    />
-  </div>
-
   <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
     <h3>Selected Honors</h3>
     <div class="honortable">
@@ -28,11 +16,8 @@
       >
         <button
           v-if="isSelected(honor.honorID)"
-          class="logobutton"
-          style="border: none; background-color: var(--blue)"
-        >
-          <img src="public\close-icon.svg" />
-        </button>
+          class="deselect-button"
+        ></button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +
@@ -43,14 +28,27 @@
         <h3>{{ honor.name }}</h3>
       </div>
     </div>
+  </div>
+  <div class="outline" style="text-align: center">
+    <h3>Find and Add Honors</h3>
 
-    <div class="content-box">
-      <button style="font-size: 1.2em">Plan it!</button>
-      <p class="light">
-        This will add your selection of honors as a planned honor for every
-        member in your club.
-      </p>
-    </div>
+    <input
+      id="honorform"
+      @keyup="doHonorSearch"
+      type="text"
+      placeholder="Search. . . "
+      style="background-color: var(--outlineColor)"
+    />
+  </div>
+
+  <div class="content-box right-align">
+    <button style="font-size: 1.2em; margin-bottom: 1em">
+      Plan Selected ({{ selected.length }})
+    </button>
+    <p class="note">
+      This will add your selection of honors as a planned honor for every member
+      in your club.
+    </p>
   </div>
 
   <span class="loader" v-if="loading">Loading Honors</span>
@@ -71,11 +69,8 @@
       >
         <button
           v-if="isSelected(honor.honorID)"
-          class="logobutton"
-          style="border: none; background-color: var(--blue)"
-        >
-          <img src="public\close-icon.svg" />
-        </button>
+          class="deselect-button"
+        ></button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +
@@ -152,5 +147,19 @@ export default defineComponent({
 
 .selected {
   border-color: var(--blue);
+}
+
+.deselect-button {
+  display: block;
+  background-color: var(--blue);
+  border: 2px solid var(--blue);
+  padding: 0;
+  margin: 0;
+  height: 25px;
+  width: 25px;
+  background-image: url("public/close-icon.svg");
+  background-size: 22.5px;
+  background-repeat: no-repeat;
+  background-position: -0.5125px -0.5125px;
 }
 </style>

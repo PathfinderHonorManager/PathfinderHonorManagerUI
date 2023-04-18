@@ -46,8 +46,8 @@ export default defineComponent({
 img {
   display: inline;
   margin-bottom: 0.25em;
-  width: 50px;
-  height: auto;
+  width: auto;
+  height: 50px;
   border-radius: 50%;
 }
 

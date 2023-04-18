@@ -11,15 +11,11 @@ const creatingPathfinder = ref(false);
 
 <template>
   <h1>Eagles Club</h1>
-  <div
-    class="content-box"
-    style="
-      display: flex;
-      justify-content: flex-end;
-      padding-bottom: 0;
-      margin-bottom: 0;
-    "
-  >
+  <div class="content-box">
+    <h3 class="title">Here, You Can View Your Club's Honors</h3>
+    <p class="note">Individually expand pathfinders to view their honor statuses.</p>
+  </div>
+  <div style="display: flex; justify-content: right; padding-right: var(--content-padding);">
     <button class="biglogobutton" @click="creatingPathfinder = true">+</button>
   </div>
   <ModalComponent
@@ -67,11 +63,8 @@ const creatingPathfinder = ref(false);
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { usePathfinderStore } from "../stores/pathfinders";
 
 import { Errors } from "../errors/errors";
-
-const pathfinderStore = usePathfinderStore();
 
 export default defineComponent({
   components: {
