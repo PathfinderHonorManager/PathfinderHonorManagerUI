@@ -22,7 +22,7 @@ const honors = useHonorStore();
   <aside id="menu">
     <UserProfileComponent />
     <RouterLink to="/">My Club</RouterLink>
-    <RouterLink to="/honors">All Honors</RouterLink>
+    <RouterLink to="/honors">Bulk-Add Honors</RouterLink>
   </aside>
 
   <div class="maintext">
