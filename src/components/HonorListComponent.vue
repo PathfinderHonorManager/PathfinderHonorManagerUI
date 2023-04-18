@@ -26,6 +26,7 @@
             : 'var(--outlineColor)',
         }"
       >
+      <button v-if="isSelected(honor.honorID)" class="logobutton" style="border: none; background-color: var(--blue);"><img src="public\close-icon.svg" /></button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +
@@ -60,6 +61,7 @@
             : 'var(--outlineColor)',
         }"
       >
+      <button v-if="isSelected(honor.honorID)" class="logobutton" style="border: none; background-color: var(--blue);"><img src="public\close-icon.svg" /></button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +

@@ -21,7 +21,8 @@ other
 
     /*SIZES*/
     --asideWidth: 16%;
-    --iconSize: 32px;
+    --iconSize: 24px;
+    --bigIconSize: 38px;
 
     /*TRANSFORMS/POSITIONS*/
 
@@ -45,6 +46,7 @@ other
     --red: #EF3E36;
     --blue: #3185FC;
     --darkBlue: #3772FF;
+    --blueGradient: linear-gradient(90deg, #3185FC 0%, #004cff 100%);
 
     /*BORDER*/
     --lightBorder: 2px solid var(--outlineColor);
@@ -169,7 +171,6 @@ body {
 .light {
     margin: 0.25em;
     font-weight: lighter;
-    font-style: italic;
 }
 
 .honortable {
@@ -197,6 +198,20 @@ body {
     height: var(--size);
     font-size: var(--iconSize);
     padding: calc(var(--iconSize) * 0.5);
+    background-color: var(--outlineColor);
+    border-radius: 10px;
+    border: var(--lightBorder);
+}
+
+.biglogobutton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --size: calc(var(--bigIconSize) * 1.75);
+    width: var(--size);
+    height: var(--size);
+    font-size: var(--bigIconSize);
+    padding: calc(var(--bigIconSize) * 0.5);
     background-color: var(--outlineColor);
     border-radius: 10px;
     border: var(--lightBorder);
@@ -267,7 +282,7 @@ p {
 }
 
 button {
-    display: block;
+    display: inline-block;
     margin: 0;
     background-color: var(--darkBlue);
     color: var(--color);
@@ -279,7 +294,7 @@ button {
 
 button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 3px 10px 1px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 3px 16px 1px rgba(0, 0, 0, 0.6);
 }
 button:active {
     transform: none;
@@ -352,4 +367,22 @@ input[type=text] {
 .maintext {
     margin-left: var(--textBlockMargin);
     margin-right: var(--textBlockMargin);
+}
+
+.parallax {
+    overflow-x: hidden;
+    overflow-y: auto;
+    perspective: 1px;
+}
+
+.parallax-layer {
+    position: absolute;
+}
+
+.layer1 {
+    transform: translateZ(0);
+}
+
+.layer2 {
+    transform: translateZ(-1px);
 }
