@@ -1,7 +1,17 @@
 import axios from "axios";
+import { Errors } from "../errors/errors";
 
 const BASE_URL =
   "https://pathfinderhonormanager.azurewebsites.net/api/pathfinders";
+
+interface PathfinderHonorPostPut {
+  honorID: string;
+  status: string;
+}
+interface BulkAdd {
+  pathfinderID: string;
+  honors: PathfinderHonorPostPut[];
+}
 
 export default {
   getAll: (params = {}) => {
@@ -22,5 +32,9 @@ export default {
   },
   putPathfinderHonor: (id: string, honorid: string, data: JSON) => {
     return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
+  },
+  bulkAddPathfinderHonors: (data: BulkAdd[]) => {
+    axios
+      .post(BASE_URL + "/PathfinderHonors", data)
   },
 };

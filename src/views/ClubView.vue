@@ -3,6 +3,7 @@ import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import PathfinderComponent from "../components/PathfinderComponent.vue";
 import ModalComponent from "../components/ModalComponent.vue";
+import DetailTableItemComponent from "../components/DetailTableItemComponent.vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 
 const pathfinderStore = usePathfinderStore();
@@ -14,9 +15,6 @@ const creatingPathfinder = ref(false);
   <div class="content-box">
     <h3 class="title">Here, You Can View Your Club's Honors</h3>
     <p class="note">Individually expand pathfinders to view their honor statuses.</p>
-  </div>
-  <div style="display: flex; justify-content: right; padding-right: var(--content-padding);">
-    <button class="biglogobutton" @click="creatingPathfinder = true">+</button>
   </div>
   <ModalComponent
     header="Add a Pathfinder!"
@@ -34,6 +32,7 @@ const creatingPathfinder = ref(false);
           justify-content: center;
           align-items: center;
           flex-wrap: wrap-reverse;
+          margin: 0;
         "
       >
         <div>
@@ -53,10 +52,14 @@ const creatingPathfinder = ref(false);
           <input type="text" ref="email" />
         </div>
 
-        <input type="submit" style="font-size: 1.5em" class="button-like" />
+        <input type="submit" style="font-size: 1.5em; margin: 20px;" class="button-like" />
       </form>
     </div>
   </ModalComponent>
+
+  <div style="display: flex; justify-content: right; padding-right: var(--content-padding); z-index: 1;">
+    <button class="biglogobutton" @click="creatingPathfinder = true">+</button>
+  </div>
 
   <PathfinderComponent />
 </template>
@@ -69,6 +72,7 @@ import { Errors } from "../errors/errors";
 export default defineComponent({
   components: {
     ModalComponent,
+    DetailTableItemComponent,
   },
   methods: {
     postFormData: function () {

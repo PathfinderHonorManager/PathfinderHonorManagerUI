@@ -42,7 +42,7 @@
   </div>
 
   <div class="content-box right-align">
-    <button style="font-size: 1.2em; margin-bottom: 1em">
+    <button @click="addSelectedToClub" style="font-size: 1.2em; margin-bottom: 1em">
       Plan Selected ({{ selected.length }})
     </button>
     <p class="note">
@@ -87,11 +87,14 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useHonorStore } from "../stores/honors";
+import { usePathfinderStore } from "../stores/pathfinders";
 import { storeToRefs } from "pinia";
 
 export default defineComponent({
   setup() {
     const honorStore = useHonorStore();
+    const pathfinderStore = usePathfinderStore();
+
     const { loading, error, selected } = storeToRefs(honorStore);
     const honors = honorStore.getHonors();
 
@@ -106,6 +109,11 @@ export default defineComponent({
           : [];
     }
 
+    function addSelectedToClub() {
+      const recipients = pathfinderStore.pathfinders.map((p) => p.pathfinderID);
+      pathfinderStore.bulkAddPathfinderHonors(recipients, selectedHonors.value.map((h) => h.honorID));
+    }
+
     function toggleSelection(honorID) {
       honorStore.toggleSelection(honorID);
       selectedHonors.value = honorStore.getHonorsBySelection();
@@ -117,6 +125,7 @@ export default defineComponent({
       getHonors: honorStore.getHonors,
       getHonorsByQuery: honorStore.getHonorsByQuery,
       getHonorsBySelection: honorStore.getHonorsBySelection,
+      addSelectedToClub: addSelectedToClub,
       honorSearchResult,
       doHonorSearch: doHonorSearch,
       loading,

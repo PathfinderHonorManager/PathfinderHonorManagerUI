@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
+import { Errors } from "../errors/errors";
 
 export enum status {
   Planned = "Planned",
@@ -34,6 +35,11 @@ interface PathfinderHonors {
 interface PathfinderHonorPostPut {
   honorID: string;
   status: status;
+}
+
+interface BulkAdd {
+  pathfinderID: string;
+  honors: PathfinderHonorPostPut[];
 }
 
 export const usePathfinderStore = defineStore("pathfinder", {
@@ -80,7 +86,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.pathfinders[pathfinderIndex] = response.data;
       } catch (err) {
         this.error = true;
-        console.error(`Could not get pathfinders, because: ${err}`);
+        throw Errors.apiResponse.status(err);
       } finally {
         this.loading = false;
       }
@@ -91,7 +97,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       } catch (err) {
         console.error(`Can't post this pathfinder because: ${err}`);
       } finally {
-        await api.getPathfinders();
+        await api.getAll();
         this.loading = false;
       }
     },
@@ -110,6 +116,38 @@ export const usePathfinderStore = defineStore("pathfinder", {
         console.error(`Could add honor, because: ${err}`);
       } finally {
         await this.getPathfinderById(pathfinderID);
+        this.loading = false;
+      }
+    },
+    async bulkAddPathfinderHonors(pathfinderIDs: string[], postHonorIDs: string[]) {
+      this.loading = true;
+      this.error = false;
+
+      console.log(postHonorIDs);
+
+      let packageData = [] as BulkAdd[];
+      let honorSet = [] as PathfinderHonorPostPut[];
+
+      for (let i = 0; i < postHonorIDs.length; i++) {
+        honorSet.push({
+          honorID: postHonorIDs[i],
+          status: status.Planned,
+        })
+      }
+
+      for (let i = 0; i < pathfinderIDs.length; i++) {
+        packageData.push({
+          pathfinderID: pathfinderIDs[i],
+          honors: honorSet,
+        })
+      }
+
+      try {
+        await api.bulkAddPathfinderHonors(packageData);
+      } catch(err) {
+        console.log("ERRRRRROR: " + err)
+      } finally {
+        await this.getPathfinderById(pathfinderIDs[0]);
         this.loading = false;
       }
     },
