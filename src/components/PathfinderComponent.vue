@@ -1,7 +1,17 @@
 <template>
   <p v-if="error">Error!</p>
   <div v-if="pathfinders[0]" class="content-box">
+    
     <h3>Eagles Club, {{ pathfinders.length }} Members</h3>
+
+    <div
+      style="display: flex; justify-content: flex-end; margin: 0; padding: 0"
+    >
+      <button class="biglogobutton" @click="creatingPathfinder = true">
+        +
+      </button>
+    </div>
+
     <span class="loader" v-if="loading">Loading Pathfinders</span>
     <DetailTableItemComponent
       v-for="(pathfinder, i) in pathfinders"
@@ -16,7 +26,7 @@
       <button
         v-if="!showing[i]"
         @click="showing[i] = true"
-        class="outline"
+        class="outline button"
         style="margin: 0"
       >
         Show Honors ({{ pathfinder.pathfinderHonors?.length }})
@@ -24,12 +34,11 @@
       <button
         v-if="showing[i]"
         @click="showing[i] = false"
-        class="outline"
+        class="outline button"
         style="margin: 0"
       >
         Hide Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
-
 
       <PostPathfinderHonorComponent
         v-if="showing[i]"
@@ -53,6 +62,47 @@
       </div>
     </DetailTableItemComponent>
   </div>
+
+  <ModalComponent
+    header="Add a Pathfinder!"
+    :closed="!creatingPathfinder"
+    @modal-closed="creatingPathfinder = false"
+  >
+    <div class="outline">
+      <form
+        @submit.prevent="
+          postFormData();
+          creatingPathfinder = false;
+        "
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap-reverse;
+          margin: 0;
+        "
+      >
+        <div>
+          <h3>First Name:</h3>
+          <input type="text" ref="firstName" />
+        </div>
+        <div>
+          <h3>Last Name:</h3>
+          <input type="text" ref="lastName" />
+        </div>
+        <div>
+          <h3>Grade:</h3>
+          <input type="text" ref="grade" />
+        </div>
+        <div>
+          <h3>Email:</h3>
+          <input type="text" ref="email" />
+        </div>
+
+        <input type="submit" style="font-size: 1.5em; margin: 20px;" class="button-like" />
+      </form>
+    </div>
+  </ModalComponent>
 </template>
 
 <script lang="ts">
@@ -62,25 +112,29 @@ import { useHonorStore } from "../stores/honors";
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
+import ModalComponent from "./ModalComponent.vue";
 
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
+
+const pathfinderStore = usePathfinderStore();
+const honorStore = useHonorStore();
+
+pathfinderStore.getPathfinders();
+honorStore.getHonors();
+
+const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
+const { honors } = storeToRefs(honorStore);
 
 export default defineComponent({
   components: {
     PostPathfinderHonorComponent,
     PathfinderHonorComponent,
     DetailTableItemComponent,
+    ModalComponent,
   },
   setup() {
-    const pathfinderStore = usePathfinderStore();
-    const honorStore = useHonorStore();
-
-    pathfinderStore.getPathfinders();
-    honorStore.getHonors();
-
-    const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
-    const { honors } = storeToRefs(honorStore);
+    const creatingPathfinder = ref(false);
 
     const displays = [];
     const showing = ref(displays);
@@ -90,6 +144,7 @@ export default defineComponent({
       loading,
       error,
       pathfinders,
+      creatingPathfinder,
       postPathfinder: (fn: string, ln: string, em: string, gr: number) =>
         pathfinderStore.postPathfinder(fn, ln, em, gr),
       getPathfinders: pathfinderStore.getPathfinders,
@@ -99,5 +154,34 @@ export default defineComponent({
       showing: showing,
     };
   },
+  methods: {
+    postFormData: function () {
+      const refs = this.$refs;
+      function getRefValue(refName: string) {
+        return refs[refName].value;
+      }
+      const data = {
+        firstName: getRefValue("firstName"),
+        lastName: getRefValue("lastName"),
+        email: getRefValue("email"),
+        grade: Number(getRefValue("grade")),
+      };
+
+      if (data.firstName === "") {
+        throw Errors.postFormData.invalidFirstName;
+      }
+      if (data.lastName === "") {
+        throw Errors.postFormData.invalidLastName;
+      }
+      if ((data.grade < 4 && data.grade != 0) || data.grade > 12) {
+        throw Errors.postFormData.invalidGrade;
+      }
+      if (data.email === "" || !data.email.includes("@")) {
+        throw Errors.postFormData.invalidEmail;
+      }
+
+      pathfinderStore.postPathfinder(data);
+    },
+  }
 });
 </script>

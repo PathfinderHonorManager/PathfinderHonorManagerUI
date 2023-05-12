@@ -11,7 +11,7 @@
         :style="{
           borderColor: isSelected(honor.honorID)
             ? 'var(--blue)'
-            : 'var(--outlineColor)',
+            : 'var(--secondaryColor)',
         }"
       >
         <button
@@ -28,21 +28,34 @@
         <h3>{{ honor.name }}</h3>
       </div>
     </div>
+    <h3>Recipients</h3>
+    <div class="content-box">
+      <button
+        v-for="(recipient, i) in recipients"
+        :key="i"
+        class="primary button"
+      >
+        {{ recipient.firstName }} {{ recipient.lastName }}
+      </button>
+    </div>
   </div>
   <div class="outline" style="text-align: center">
-    <h3>Find and Add Honors</h3>
+    <h3>Find and Add Honors To Your Club</h3>
 
     <input
       id="honorform"
       @keyup="doHonorSearch"
       type="text"
       placeholder="Search. . . "
-      style="background-color: var(--outlineColor)"
+      style="background-color: var(--secondaryColor)"
     />
   </div>
 
   <div class="content-box right-align">
-    <button @click="addSelectedToClub" style="font-size: 1.2em; margin-bottom: 1em">
+    <button
+      @click="addSelectedToClub"
+      class="primary button"
+    >
       Plan Selected ({{ selected.length }})
     </button>
     <p class="note">
@@ -64,7 +77,7 @@
         :style="{
           borderColor: isSelected(honor.honorID)
             ? 'var(--blue)'
-            : 'var(--outlineColor)',
+            : 'var(--secondaryColor)',
         }"
       >
         <button
@@ -101,6 +114,8 @@ export default defineComponent({
     let honorSearchResult = ref(honors);
     let selectedHonors = ref(honorStore.getHonorsBySelection());
 
+    let recipients = storeToRefs(pathfinderStore).pathfinders;
+
     function doHonorSearch(event) {
       selectedHonors.value = honorStore.getHonorsBySelection();
       honorSearchResult.value =
@@ -110,8 +125,10 @@ export default defineComponent({
     }
 
     function addSelectedToClub() {
-      const recipients = pathfinderStore.pathfinders.map((p) => p.pathfinderID);
-      pathfinderStore.bulkAddPathfinderHonors(recipients, selectedHonors.value.map((h) => h.honorID));
+      pathfinderStore.bulkAddPathfinderHonors(
+        recipients.value,
+        selectedHonors.value.map((h) => h.honorID)
+      );
     }
 
     function toggleSelection(honorID) {
@@ -127,6 +144,7 @@ export default defineComponent({
       getHonorsBySelection: honorStore.getHonorsBySelection,
       addSelectedToClub: addSelectedToClub,
       honorSearchResult,
+      recipients,
       doHonorSearch: doHonorSearch,
       loading,
       error,
@@ -142,7 +160,7 @@ export default defineComponent({
 <style scoped>
 #honortableitem {
   width: 100%;
-  border-color: var(--outlineColor);
+  border-color: var(--secondaryColor);
   margin: 0;
   height: auto;
   overflow: hidden;
@@ -151,7 +169,7 @@ export default defineComponent({
 }
 
 #honortableitem:hover {
-  background-color: var(--outlineColor);
+  background-color: var(--secondaryColor);
 }
 
 .selected {

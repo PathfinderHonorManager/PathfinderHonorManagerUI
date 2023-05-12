@@ -25,7 +25,7 @@
 }
 
 .close-button {
-    background-color: var(--outlineColor);
+    background-color: var(--secondaryColor);
     border-radius: 10px;
     border: var(--lightBorder);
 }

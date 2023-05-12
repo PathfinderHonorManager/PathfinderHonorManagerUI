@@ -7,8 +7,11 @@ import ModalComponent from "./components/ModalComponent.vue";
 import { usePathfinderStore } from "./stores/pathfinders";
 import { useHonorStore } from "./stores/honors";
 
-const pathfinder = usePathfinderStore();
-const honors = useHonorStore();
+const pathfinderStore = usePathfinderStore();
+const honorStore = useHonorStore();
+
+pathfinderStore.getPathfinders();
+honorStore.getHonors();
 </script>
 
 <template>
@@ -22,7 +25,7 @@ const honors = useHonorStore();
   <aside id="menu">
     <UserProfileComponent />
     <RouterLink to="/">My Club</RouterLink>
-    <RouterLink to="/honors">Bulk-Add Honors</RouterLink>
+    <RouterLink to="/honors">Plan Honors</RouterLink>
   </aside>
 
   <div class="maintext">

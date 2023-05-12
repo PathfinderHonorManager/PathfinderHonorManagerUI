@@ -15,7 +15,7 @@
       >
       </vue3-simple-typeahead>
       <br/>
-      <button style="margin: var(--standard); margin-top: 0; padding: 0.75em;">Post New Honor</button>
+      <button class="primary button">Add Honor to Pathfinder</button>
     </form>
   </div>
 </template>

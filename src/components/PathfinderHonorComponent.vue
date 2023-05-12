@@ -51,7 +51,7 @@ export default defineComponent({
       this.style.pointerEvents = "none";
     }
 
-    const colors = ["var(--outlineColor)", "var(--orange)", "mediumseagreen"];
+    const colors = ["var(--secondaryColor)", "var(--orange)", "mediumseagreen"];
     function getSelectedIndex() {
       const s = this.selectedIndex;
       this.style.backgroundColor = colors[s];
