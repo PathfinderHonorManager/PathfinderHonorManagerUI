@@ -1,7 +1,8 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <p v-if="error">Error!</p>
   <div v-if="pathfinders[0]" class="content-box">
-    
+
     <h3>Eagles Club, {{ pathfinders.length }} Members</h3>
 
     <div
@@ -113,18 +114,10 @@ import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
+import { Errors } from "../errors/errors";
 
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
-
-const pathfinderStore = usePathfinderStore();
-const honorStore = useHonorStore();
-
-pathfinderStore.getPathfinders();
-honorStore.getHonors();
-
-const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
-const { honors } = storeToRefs(honorStore);
 
 export default defineComponent({
   components: {
@@ -134,6 +127,15 @@ export default defineComponent({
     ModalComponent,
   },
   setup() {
+    const pathfinderStore = usePathfinderStore();
+    const honorStore = useHonorStore();
+
+    pathfinderStore.getPathfinders();
+    honorStore.getHonors();
+
+    const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
+    const { honors } = storeToRefs(honorStore);
+
     const creatingPathfinder = ref(false);
 
     const displays = [];
@@ -182,6 +184,6 @@ export default defineComponent({
 
       pathfinderStore.postPathfinder(data);
     },
-  }
+  },
 });
 </script>

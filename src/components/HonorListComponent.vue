@@ -52,10 +52,7 @@
   </div>
 
   <div class="content-box right-align">
-    <button
-      @click="addSelectedToClub"
-      class="primary button"
-    >
+    <button @click="addSelectedToClub" class="primary button">
       Plan Selected ({{ selected.length }})
     </button>
     <p class="note">
@@ -103,18 +100,20 @@ import { useHonorStore } from "../stores/honors";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { storeToRefs } from "pinia";
 
+const pathfinderStore = usePathfinderStore();
+const honorStore = useHonorStore();
+
+const { loading, error, selected } = storeToRefs(honorStore);
+const honors = honorStore.getHonors();
+
 export default defineComponent({
   setup() {
-    const honorStore = useHonorStore();
-    const pathfinderStore = usePathfinderStore();
-
-    const { loading, error, selected } = storeToRefs(honorStore);
-    const honors = honorStore.getHonors();
 
     let honorSearchResult = ref(honors);
     let selectedHonors = ref(honorStore.getHonorsBySelection());
 
-    let recipients = storeToRefs(pathfinderStore).pathfinders;
+    pathfinderStore.selectAll();
+    let recipients = ref(pathfinderStore.getPathfindersBySelection());
 
     function doHonorSearch(event) {
       selectedHonors.value = honorStore.getHonorsBySelection();
@@ -136,6 +135,11 @@ export default defineComponent({
       selectedHonors.value = honorStore.getHonorsBySelection();
     }
 
+    function toggleRecipientSelection(pathfinderID) {
+      pathfinderStore.toggleSelection(pathfinderID);
+      recipients.value = pathfinderStore.getPathfindersBySelection();
+    }
+
     return {
       honors,
       selectedHonors,
@@ -152,6 +156,7 @@ export default defineComponent({
       isSelected: honorStore.isSelected,
       selectHonor: honorStore.selectHonor,
       toggleSelection: toggleSelection,
+      toggleRecipientSelection: toggleRecipientSelection,
     };
   },
 });

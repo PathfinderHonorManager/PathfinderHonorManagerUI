@@ -34,7 +34,7 @@ export const useHonorStore = defineStore("honorStore", {
       );
     },
     getHonorsBySelection: (state) => () => {
-      return state.honors.filter((h) => state.selected.includes(h.honorID));
+      return state.honors.filter((h) => state.selected.indexOf(h.honorID) > -1);
     },
     getSelected: (state) => () => {
       console.log(state.selected);
@@ -60,7 +60,7 @@ export const useHonorStore = defineStore("honorStore", {
       }
     },
     selectHonor(honorID: string) {
-      if (this.getSelected().indexOf(honorID) > -1) {
+      if (this.selected.includes(honorID)) {
         throw Errors.selectHonor.alreadySelected;
       }
       this.selected = [...this.selected, honorID];

@@ -49,12 +49,22 @@ export const usePathfinderStore = defineStore("pathfinder", {
     pathfinders: [] as Pathfinder[],
     loading: false,
     error: false,
+    selected: [] as string[],
   }),
   getters: {
     // getters are functions that return values from the state
     // they are used to calculate values from the state, like a filtered list or a sum
     getPathfindersByGrade: (state) => (grade: number) => {
       return state.pathfinders.filter((p) => p.grade === grade);
+    },
+    getPathfindersBySelection: (state) => () => {
+      return state.pathfinders.filter((p) => state.selected.indexOf(p.pathfinderID) > -1);
+    },
+    getSelected: (state) => () => {
+      return state.selected;
+    },
+    isSelected: (state) => (pathfinderID: string) => {
+      return state.selected.indexOf(pathfinderID) > -1;
     },
   },
   actions: {
@@ -172,6 +182,28 @@ export const usePathfinderStore = defineStore("pathfinder", {
         await this.getPathfinderById(pathfinderID);
         this.loading = false;
       }
+    },
+    selectPathfinder(pathfinderID: string) {
+      if (this.selected.includes(pathfinderID)) {
+        throw Errors.selectHonor.alreadySelected;
+      }
+      this.selected = [...this.selected, pathfinderID];
+      return;
+    },
+    selectAll() {
+      this.selected = this.pathfinders.map((p) => p.pathfinderID);
+    },
+    toggleSelection(pathfinderID: string) {
+      const s = this.getSelected();
+      if (s.indexOf(pathfinderID) > -1) {
+        this.selected = s.filter((p) => p !== pathfinderID);
+      } else {
+        this.selectPathfinder(pathfinderID);
+      }
+      console.log(this.getSelected());
+    },
+    clearSelection() {
+      this.selected = [] as string[];
     },
   },
 });
