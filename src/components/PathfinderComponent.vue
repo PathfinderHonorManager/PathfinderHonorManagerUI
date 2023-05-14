@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, inject } from "vue";
 import { usePathfinderStore } from "../stores/pathfinders";
 import { useHonorStore } from "../stores/honors";
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
@@ -115,9 +115,7 @@ import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
 import { Errors } from "../errors/errors";
-
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
 
 export default defineComponent({
   components: {
@@ -127,6 +125,9 @@ export default defineComponent({
     ModalComponent,
   },
   setup() {
+    const usePathfinderStore = inject("usePathfinderStore");
+    const useHonorStore = inject("useHonorStore");
+
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
 

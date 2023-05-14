@@ -95,21 +95,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useHonorStore } from "../stores/honors";
-import { usePathfinderStore } from "../stores/pathfinders";
+import { defineComponent, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
-
-const pathfinderStore = usePathfinderStore();
-const honorStore = useHonorStore();
-
-const { loading, error, selected } = storeToRefs(honorStore);
-const honors = honorStore.getHonors();
 
 export default defineComponent({
   setup() {
+    //use injected stores
+    const usePathfinderStore = inject("usePathfinderStore");
+    const useHonorStore = inject("useHonorStore");
 
-    let honorSearchResult = ref(honors);
+    const pathfinderStore = usePathfinderStore();
+    const honorStore = useHonorStore();
+
+    honorStore.getHonors()
+
+    let { honors, selected, loading, error } = storeToRefs(honorStore);
+
+    let honorSearchResult = ref([]);
     let selectedHonors = ref(honorStore.getHonorsBySelection());
 
     pathfinderStore.selectAll();
@@ -125,7 +127,7 @@ export default defineComponent({
 
     function addSelectedToClub() {
       pathfinderStore.bulkAddPathfinderHonors(
-        recipients.value,
+        recipients.value.map((p) => p.pathfinderID),
         selectedHonors.value.map((h) => h.honorID)
       );
     }

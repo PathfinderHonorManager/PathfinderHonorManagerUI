@@ -34,12 +34,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { usePathfinderStore } from "../stores/pathfinders";
+import { defineComponent, inject } from "vue";
 import { storeToRefs } from "pinia";
 
 export default defineComponent({
   setup() {
+    const usePathfinderStore = inject("usePathfinderStore");
     const pathfinderStore = usePathfinderStore();
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);

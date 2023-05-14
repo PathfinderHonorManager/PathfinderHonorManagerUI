@@ -3,12 +3,6 @@ import Authentication from "@/components/Authentication.vue";
 import RequestLoginModal from "./components/RequestLoginModal.vue";
 import { RouterLink, RouterView } from "vue-router";
 import UserProfileComponent from "./components/UserProfileComponent.vue"
-// import { usePathfinderStore } from "./stores/pathfinders";
-// import { useHonorStore } from "./stores/honors";
-
-// const pathfinderStore = usePathfinderStore();
-// const honorStore = useHonorStore();
-
 </script>
 
 <template>

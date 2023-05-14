@@ -21,13 +21,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { usePathfinderStore } from "../stores/pathfinders";
-import { useHonorStore } from "../stores/honors";
+import { defineComponent, inject } from "@vue/runtime-core";
 import { storeToRefs } from "pinia";
 
 export default defineComponent({
   setup() {
+    const usePathfinderStore = inject("usePathfinderStore");
+    const useHonorStore = inject("useHonorStore");
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
     const postHonorID = "";
