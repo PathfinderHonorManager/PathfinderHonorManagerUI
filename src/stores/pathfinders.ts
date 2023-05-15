@@ -192,6 +192,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
     },
     selectAll() {
       this.selected = this.pathfinders.map((p) => p.pathfinderID);
+      console.log(this.selected);
     },
     toggleSelection(pathfinderID: string) {
       const s = this.getSelected();

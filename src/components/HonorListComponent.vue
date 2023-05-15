@@ -28,16 +28,26 @@
         <h3>{{ honor.name }}</h3>
       </div>
     </div>
+    <div class="content-box" style="display: flex; justify-content: center;">
+      <img src="public/down-arrow.svg" style=" position: absolute;" />
+    </div>
     <h3>Recipients</h3>
-    <div class="content-box">
+    <div class="outline">
       <button
-        v-for="(recipient, i) in recipients"
+        v-for="(recipient, i) in pathfinders"
         :key="i"
-        class="primary button"
+        class="button"
+        :style="{
+          backgroundColor: recipients.includes(recipient) ? 'var(--blue)' : 'var(--secondaryColor)',
+        }"
+        @click="toggleRecipientSelection(recipient.pathfinderID)"
       >
         {{ recipient.firstName }} {{ recipient.lastName }}
       </button>
     </div>
+    <p>{{ recipients.length }} recipients selected</p>
+    <p v-if="recipients.length == 1" class="note">When planning honors for individuals, we recommend doing it in the My Club page.</p>
+
   </div>
   <div class="outline" style="text-align: center">
     <h3>Find and Add Honors To Your Club</h3>
@@ -56,7 +66,7 @@
       Plan Selected ({{ selected.length }})
     </button>
     <p class="note">
-      This will add your selection of honors as a planned honor for every member
+      This will add your selection of honors as a planned honor for every selected member
       in your club.
     </p>
   </div>
@@ -107,14 +117,15 @@ export default defineComponent({
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
 
-    honorStore.getHonors()
+    honorStore.honors? honorStore.getHonors() : undefined;
+    pathfinderStore.pathfinders? pathfinderStore.getPathfinders() : undefined;
 
     let { honors, selected, loading, error } = storeToRefs(honorStore);
+    const { pathfinders } = storeToRefs(pathfinderStore);
 
     let honorSearchResult = ref([]);
     let selectedHonors = ref(honorStore.getHonorsBySelection());
 
-    pathfinderStore.selectAll();
     let recipients = ref(pathfinderStore.getPathfindersBySelection());
 
     function doHonorSearch(event) {
@@ -144,6 +155,7 @@ export default defineComponent({
 
     return {
       honors,
+      pathfinders,
       selectedHonors,
       getHonors: honorStore.getHonors,
       getHonorsByQuery: honorStore.getHonorsByQuery,
