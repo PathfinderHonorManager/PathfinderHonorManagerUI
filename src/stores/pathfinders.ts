@@ -42,6 +42,21 @@ interface BulkAdd {
   honors: PathfinderHonorPostPut[];
 }
 
+// Response interfaces
+interface BulkAddResponse {
+  status: number;
+  error?: string;
+  pathfinderHonor?: {
+    pathfinderHonorID: string;
+    pathfinderID: string;
+    honorID: string;
+    name: string;
+    status: status;
+    patchFilename: string;
+    wikiPath: string;
+  };
+}
+
 export const usePathfinderStore = defineStore("pathfinder", {
   state: () => ({
     // define the data shape of the store using the interface above
