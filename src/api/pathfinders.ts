@@ -34,7 +34,10 @@ export default {
     return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
   },
   bulkAddPathfinderHonors: (data: BulkAdd[]) => {
+    let response;
     axios
       .post(BASE_URL + "/PathfinderHonors", data)
+      .then((res) => (response = res));
+    return response;
   },
 };

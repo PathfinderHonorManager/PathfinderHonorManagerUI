@@ -207,11 +207,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    --size: calc(var(--iconSize) * 1.75);
-    width: var(--size);
-    height: var(--size);
+    width: var(--iconSize);
+    height: var(--iconSize);
     font-size: var(--iconSize);
-    padding: calc(var(--iconSize) * 0.5);
+    padding: 5px;
     background-color: var(--secondaryColor);
     border-radius: 10px;
     border: var(--lightBorder);

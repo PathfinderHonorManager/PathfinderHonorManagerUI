@@ -1,54 +1,4 @@
 <template>
-  <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
-    <h3>Selected Honors</h3>
-    <div class="honortable">
-      <div
-        v-for="(honor, i) in selectedHonors"
-        :key="i"
-        id="honortableitem"
-        class="outline"
-        @click="toggleSelection(honor.honorID)"
-        :style="{
-          borderColor: isSelected(honor.honorID)
-            ? 'var(--blue)'
-            : 'var(--secondaryColor)',
-        }"
-      >
-        <button
-          v-if="isSelected(honor.honorID)"
-          class="deselect-button"
-        ></button>
-        <img
-          :src="
-            'https://pathfinderhonor.azureedge.net/assets/small/' +
-            honor.patchFilename
-          "
-          class="patchimage"
-        />
-        <h3>{{ honor.name }}</h3>
-      </div>
-    </div>
-    <div class="content-box" style="display: flex; justify-content: center;">
-      <img src="public/down-arrow.svg" style=" position: absolute;" />
-    </div>
-    <h3>Recipients</h3>
-    <div class="outline">
-      <button
-        v-for="(recipient, i) in pathfinders"
-        :key="i"
-        class="button"
-        :style="{
-          backgroundColor: recipients.includes(recipient) ? 'var(--blue)' : 'var(--secondaryColor)',
-        }"
-        @click="toggleRecipientSelection(recipient.pathfinderID)"
-      >
-        {{ recipient.firstName }} {{ recipient.lastName }}
-      </button>
-    </div>
-    <p>{{ recipients.length }} recipients selected</p>
-    <p v-if="recipients.length == 1" class="note">When planning honors for individuals, we recommend doing it in the My Club page.</p>
-
-  </div>
   <div class="outline" style="text-align: center">
     <h3>Find and Add Honors To Your Club</h3>
 
@@ -59,16 +9,6 @@
       placeholder="Search. . . "
       style="background-color: var(--secondaryColor)"
     />
-  </div>
-
-  <div class="content-box right-align">
-    <button @click="addSelectedToClub" class="primary button">
-      Plan Selected ({{ selected.length }})
-    </button>
-    <p class="note">
-      This will add your selection of honors as a planned honor for every selected member
-      in your club.
-    </p>
   </div>
 
   <span class="loader" v-if="loading">Loading Honors</span>
@@ -102,6 +42,61 @@
       </div>
     </div>
   </div>
+  <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
+
+    <h3>Selected Honors</h3>
+    <div class="outline" style="display: flex">
+      <button
+        v-for="(honor, i) in selectedHonors"
+        :key="i"
+        class="secondary button"
+        @click="toggleSelection(honor.honorID)"
+        style="
+          display: flex;
+          flex-grow: 1;
+          justify-content: space-between;
+          align-items: center;
+          --iconSize: 16px;
+        "
+      >
+        <span>{{ honor.name }}</span>
+        <span class="logobutton"><img src="close-icon.svg" /></span>
+      </button>
+    </div>
+
+    <h3>Recipients</h3>
+    <div class="outline" style="display: flex">
+      <button
+        v-for="(recipient, i) in pathfinders"
+        :key="i"
+        class="button"
+        :style="{
+          backgroundColor: pathfinderStore.isSelected(recipient.pathfinderID)
+            ? 'var(--blue)'
+            : 'var(--secondaryColor)',
+          flexGrow: 1,
+        }"
+        @click="toggleRecipientSelection(recipient.pathfinderID)"
+      >
+        {{ recipient.firstName }} {{ recipient.lastName }}
+      </button>
+    </div>
+    <p>{{ recipients.length }} recipients selected</p>
+    <p v-if="recipients.length == 1" class="note">
+      When planning honors for individuals, we recommend doing it in the My Club
+      page.
+    </p>
+  </div>
+
+  <div class="content-box center-align">
+    <button @click="addSelectedToClub" class="primary button">
+      Plan Selected ({{ selected.length }})
+    </button>
+    <p class="note">
+      This will add your selection of honors as a planned honor for every
+      selected member in your club.
+    </p>
+  </div>
 </template>
 
 <script lang="ts">
@@ -117,8 +112,8 @@ export default defineComponent({
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
 
-    honorStore.honors? honorStore.getHonors() : undefined;
-    pathfinderStore.pathfinders? pathfinderStore.getPathfinders() : undefined;
+    honorStore.honors ? honorStore.getHonors() : undefined;
+    pathfinderStore.pathfinders ? pathfinderStore.getPathfinders() : undefined;
 
     let { honors, selected, loading, error } = storeToRefs(honorStore);
     const { pathfinders } = storeToRefs(pathfinderStore);
@@ -154,6 +149,8 @@ export default defineComponent({
     }
 
     return {
+      honorStore,
+      pathfinderStore,
       honors,
       pathfinders,
       selectedHonors,

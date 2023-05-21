@@ -170,7 +170,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       try {
         await api.bulkAddPathfinderHonors(packageData);
       } catch(err) {
-        console.log("ERRRRRROR: " + err)
+        console.error(`Could not bulk add honors, because: ${err}`);
       } finally {
         await this.getPathfinderById(pathfinderIDs[0]);
         this.loading = false;

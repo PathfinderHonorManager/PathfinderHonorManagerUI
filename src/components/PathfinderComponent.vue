@@ -3,11 +3,10 @@
   <p v-if="error">Error!</p>
   <div v-if="pathfinders[0]" class="content-box">
 
-    <h3>Eagles Club, {{ pathfinders.length }} Members</h3>
-
     <div
-      style="display: flex; justify-content: flex-end; margin: 0; padding: 0"
+      style="display: flex; justify-content: space-between; align-items: flex-end; margin: 0; padding: 0"
     >
+      <h3 style="margin: 0;">Eagles Club, {{ pathfinders.length }} Members</h3>
       <button class="biglogobutton" @click="creatingPathfinder = true">
         +
       </button>
@@ -108,8 +107,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, inject } from "vue";
-import { usePathfinderStore } from "../stores/pathfinders";
-import { useHonorStore } from "../stores/honors";
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
