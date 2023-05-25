@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { AxiosResponse } from "axios";
 import { Errors } from "../errors/errors";
 
 const BASE_URL =
@@ -34,10 +35,11 @@ export default {
     return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
   },
   bulkAddPathfinderHonors: (data: BulkAdd[]) => {
-    let response;
-    axios
+    const response = axios
       .post(BASE_URL + "/PathfinderHonors", data)
-      .then((res) => (response = res));
+      .then((res: AxiosResponse) => {
+        return res;
+      });
     return response;
   },
 };

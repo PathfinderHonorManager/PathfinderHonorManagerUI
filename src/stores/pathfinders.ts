@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
 import { Errors } from "../errors/errors";
+import type { AxiosResponse } from "axios";
 
 export enum status {
   Planned = "Planned",
@@ -18,10 +19,10 @@ interface Pathfinder {
 }
 
 interface PutPathfinder {
-  firstName: string,
-  lastName: string,
-  email: string,
-  grade?: number,
+  firstName: string;
+  lastName: string;
+  email: string;
+  grade?: number;
 }
 
 interface PathfinderHonors {
@@ -46,15 +47,7 @@ interface BulkAdd {
 interface BulkAddResponse {
   status: number;
   error?: string;
-  pathfinderHonor?: {
-    pathfinderHonorID: string;
-    pathfinderID: string;
-    honorID: string;
-    name: string;
-    status: status;
-    patchFilename: string;
-    wikiPath: string;
-  };
+  pathfinderHonor?: PathfinderHonors[];
 }
 
 export const usePathfinderStore = defineStore("pathfinder", {
@@ -73,7 +66,9 @@ export const usePathfinderStore = defineStore("pathfinder", {
       return state.pathfinders.filter((p) => p.grade === grade);
     },
     getPathfindersBySelection: (state) => () => {
-      return state.pathfinders.filter((p) => state.selected.indexOf(p.pathfinderID) > -1);
+      return state.pathfinders.filter(
+        (p) => state.selected.indexOf(p.pathfinderID) > -1
+      );
     },
     getSelected: (state) => () => {
       return state.selected;
@@ -88,13 +83,19 @@ export const usePathfinderStore = defineStore("pathfinder", {
     async getPathfinders() {
       this.loading = true;
       this.error = false;
-
       try {
         const response = await api.getAll();
         this.pathfinders = response.data;
-      } catch (err) {
+      } catch (err: any) {
         this.error = true;
-        console.error(`Could not get pathfinders, because: ${err}`);
+        if (err.response && err.response.status) {
+          throw Errors.apiResponse.status(err.response.status);
+        } else {
+          console.error(`Could not get pathfinders, because: ${err}`);
+          throw Errors.apiResponse.body(
+            `Could not get pathfinders, because: ${err}`
+          );
+        }
       } finally {
         this.loading = false;
       }
@@ -144,57 +145,42 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
-    async bulkAddPathfinderHonors(pathfinderIDs: string[], postHonorIDs: string[]) {
+    async bulkAddPathfinderHonors(pathfinderIDs: string[], honorIDs: string[]) {
       this.loading = true;
       this.error = false;
 
-      console.log(postHonorIDs);
-
-      let packageData = [] as BulkAdd[];
-      let honorSet = [] as PathfinderHonorPostPut[];
-
-      for (let i = 0; i < postHonorIDs.length; i++) {
-        honorSet.push({
-          honorID: postHonorIDs[i],
-          status: status.Planned,
-        })
-      }
-
-      for (let i = 0; i < pathfinderIDs.length; i++) {
-        packageData.push({
-          pathfinderID: pathfinderIDs[i],
-          honors: honorSet,
-        })
-      }
-
       try {
-        await api.bulkAddPathfinderHonors(packageData);
-      } catch(err) {
-        console.error(`Could not bulk add honors, because: ${err}`);
-      } finally {
-        await this.getPathfinderById(pathfinderIDs[0]);
-        this.loading = false;
-      }
-    },
-    async putPathfinderHonor(
-      pathfinderID: string,
-      honorId: string,
-      status: status
-    ) {
-      this.loading = true;
-      this.error = false;
-      const putData: PathfinderHonorPostPut = {
-        honorID: honorId,
-        status: status,
-      };
+        const postData: BulkAdd[] = pathfinderIDs.map((pathfinderID) => ({
+          pathfinderID,
+          honors: honorIDs.map((honorID) => ({
+            honorID,
+            status: status.Planned,
+          })),
+        }));
 
-      try {
-        await api.putPathfinderHonor(pathfinderID, honorId, putData);
+        const response = await api.bulkAddPathfinderHonors(postData);
+
+        if (response && response.data) {
+          response.data.forEach((result: BulkAddResponse, index: number) => {
+            if (result.status === 201 && result.pathfinderHonor) {
+              const pathfinderIndex = this.pathfinders.findIndex(
+                (p) => p.pathfinderID === pathfinderIDs[index]
+              );
+              if (pathfinderIndex !== -1) {
+                const newHonors: PathfinderHonors[] = result.pathfinderHonor;
+                this.pathfinders[pathfinderIndex].pathfinderHonors.push(
+                  ...newHonors
+                );
+              }
+            } else if (result.error) {
+              console.error(`Could not add honor, because: ${result.error}`);
+            }
+          });
+        }
       } catch (err) {
         this.error = true;
-        console.error(`Could not modify honor, because: ${err}`);
+        console.error(`Could not add pathfinder honors, because: ${err}`);
       } finally {
-        await this.getPathfinderById(pathfinderID);
         this.loading = false;
       }
     },
