@@ -173,7 +173,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
                 );
               }
             } else if (result.error) {
-              console.error(`Could not add honor, because: ${result.error}`);
+              console.error(`Could not add honors, because: ${result.error}`);
             }
           });
         }

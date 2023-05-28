@@ -97,13 +97,20 @@
       selected member in your club.
     </p>
   </div>
+
+  <ToasterComponent v-if="bulkAdd" message="Your honors have been added to your club" />
 </template>
 
 <script lang="ts">
+import ToasterComponent from "./ToasterComponent.vue";
+
 import { defineComponent, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 
 export default defineComponent({
+  components: {
+    ToasterComponent,
+  },
   setup() {
     //use injected stores
     const usePathfinderStore = inject("usePathfinderStore");
@@ -122,6 +129,7 @@ export default defineComponent({
     let selectedHonors = ref(honorStore.getHonorsBySelection());
 
     let recipients = ref(pathfinderStore.getPathfindersBySelection());
+    let bulkAdd = ref(false);
 
     function doHonorSearch(event) {
       selectedHonors.value = honorStore.getHonorsBySelection();
@@ -132,20 +140,25 @@ export default defineComponent({
     }
 
     function addSelectedToClub() {
+      bulkAdd.value = true;
       pathfinderStore.bulkAddPathfinderHonors(
         recipients.value.map((p) => p.pathfinderID),
         selectedHonors.value.map((h) => h.honorID)
       );
+      pathfinderStore.selected = [];
+      honorStore.selected = [];
     }
 
     function toggleSelection(honorID) {
       honorStore.toggleSelection(honorID);
       selectedHonors.value = honorStore.getHonorsBySelection();
+      bulkAdd.value = false;
     }
 
     function toggleRecipientSelection(pathfinderID) {
       pathfinderStore.toggleSelection(pathfinderID);
       recipients.value = pathfinderStore.getPathfindersBySelection();
+      bulkAdd.value = false;
     }
 
     return {
@@ -154,12 +167,13 @@ export default defineComponent({
       honors,
       pathfinders,
       selectedHonors,
+      recipients,
+      bulkAdd,
       getHonors: honorStore.getHonors,
       getHonorsByQuery: honorStore.getHonorsByQuery,
       getHonorsBySelection: honorStore.getHonorsBySelection,
       addSelectedToClub: addSelectedToClub,
       honorSearchResult,
-      recipients,
       doHonorSearch: doHonorSearch,
       loading,
       error,
