@@ -10,6 +10,8 @@
     },
     "types": [
       "pinia-plugin-persist"
-    ]
+    ],
+    "ignoreDeprecations": "5.0",
+    "verbatimModuleSyntax": true
   }
 }
