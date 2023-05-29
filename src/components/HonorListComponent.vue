@@ -60,7 +60,7 @@
         "
       >
         <span>{{ honor.name }}</span>
-        <span class="logobutton"><img src="close-icon.svg" /></span>
+        <span class="logobutton"><img src="@/assets/close-icon.svg" /></span>
       </button>
     </div>
 
@@ -214,7 +214,7 @@ export default defineComponent({
   margin: 0;
   height: 25px;
   width: 25px;
-  background-image: url("public/close-icon.svg");
+  background-image: url("~@/assets/close-icon.svg");
   background-size: 22.5px;
   background-repeat: no-repeat;
   background-position: -0.5125px -0.5125px;

@@ -1,7 +1,7 @@
 <template>
   <div class="modal" v-if="!closed">
     <div class="modal-content">
-      <img src="public\close-icon.svg" class="close-button" @click="$emit('modal-closed')" />
+      <img src="~@/assets/close-icon.svg" class="close-button" @click="$emit('modal-closed')" />
 
       <h1>{{ header }}</h1>
       <slot></slot>
