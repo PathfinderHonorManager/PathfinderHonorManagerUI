@@ -1,6 +1,17 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <p v-if="error">Error!</p>
   <div v-if="pathfinders[0]" class="content-box">
+
+    <div
+      style="display: flex; justify-content: space-between; align-items: flex-end; margin: 0; padding: 0"
+    >
+      <h3 style="margin: 0;">Eagles Club, {{ pathfinders.length }} Members</h3>
+      <button class="biglogobutton" @click="creatingPathfinder = true">
+        +
+      </button>
+    </div>
+
     <span class="loader" v-if="loading">Loading Pathfinders</span>
     <DetailTableItemComponent
       v-for="(pathfinder, i) in pathfinders"
@@ -15,18 +26,18 @@
       <button
         v-if="!showing[i]"
         @click="showing[i] = true"
-        class="plain"
+        class="outline button"
         style="margin: 0"
       >
-        Show {{ pathfinder.pathfinderHonors?.length }} Honors +
+        Show Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
       <button
         v-if="showing[i]"
         @click="showing[i] = false"
-        class="plain"
+        class="outline button"
         style="margin: 0"
       >
-        Hide {{ pathfinder.pathfinderHonors?.length }} Honors -
+        Hide Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
 
       <PostPathfinderHonorComponent
@@ -51,26 +62,69 @@
       </div>
     </DetailTableItemComponent>
   </div>
+
+  <ModalComponent
+    header="Add a Pathfinder!"
+    :closed="!creatingPathfinder"
+    @modal-closed="creatingPathfinder = false"
+  >
+    <div class="outline">
+      <form
+        @submit.prevent="
+          postFormData();
+          creatingPathfinder = false;
+        "
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap-reverse;
+          margin: 0;
+        "
+      >
+        <div>
+          <h3>First Name:</h3>
+          <input type="text" ref="firstName" />
+        </div>
+        <div>
+          <h3>Last Name:</h3>
+          <input type="text" ref="lastName" />
+        </div>
+        <div>
+          <h3>Grade:</h3>
+          <input type="text" ref="grade" />
+        </div>
+        <div>
+          <h3>Email:</h3>
+          <input type="text" ref="email" />
+        </div>
+
+        <input type="submit" style="font-size: 1.5em; margin: 20px;" class="button-like" />
+      </form>
+    </div>
+  </ModalComponent>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { usePathfinderStore } from "../stores/pathfinders";
-import { useHonorStore } from "../stores/honors";
+import { defineComponent, ref, inject } from "vue";
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
-
+import ModalComponent from "./ModalComponent.vue";
+import { Errors } from "../errors/errors";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
 
 export default defineComponent({
   components: {
     PostPathfinderHonorComponent,
     PathfinderHonorComponent,
     DetailTableItemComponent,
+    ModalComponent,
   },
   setup() {
+    const usePathfinderStore = inject("usePathfinderStore");
+    const useHonorStore = inject("useHonorStore");
+
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
 
@@ -80,6 +134,8 @@ export default defineComponent({
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
     const { honors } = storeToRefs(honorStore);
 
+    const creatingPathfinder = ref(false);
+
     const displays = [];
     const showing = ref(displays);
     console.log(showing);
@@ -88,6 +144,7 @@ export default defineComponent({
       loading,
       error,
       pathfinders,
+      creatingPathfinder,
       postPathfinder: (fn: string, ln: string, em: string, gr: number) =>
         pathfinderStore.postPathfinder(fn, ln, em, gr),
       getPathfinders: pathfinderStore.getPathfinders,
@@ -96,6 +153,35 @@ export default defineComponent({
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
       showing: showing,
     };
+  },
+  methods: {
+    postFormData: function () {
+      const refs = this.$refs;
+      function getRefValue(refName: string) {
+        return refs[refName].value;
+      }
+      const data = {
+        firstName: getRefValue("firstName"),
+        lastName: getRefValue("lastName"),
+        email: getRefValue("email"),
+        grade: Number(getRefValue("grade")),
+      };
+
+      if (data.firstName === "") {
+        throw Errors.postFormData.invalidFirstName;
+      }
+      if (data.lastName === "") {
+        throw Errors.postFormData.invalidLastName;
+      }
+      if ((data.grade < 4 && data.grade != 0) || data.grade > 12) {
+        throw Errors.postFormData.invalidGrade;
+      }
+      if (data.email === "" || !data.email.includes("@")) {
+        throw Errors.postFormData.invalidEmail;
+      }
+
+      pathfinderStore.postPathfinder(data);
+    },
   },
 });
 </script>

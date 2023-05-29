@@ -46,8 +46,8 @@ export default defineComponent({
 img {
   display: inline;
   margin-bottom: 0.25em;
-  width: 50px;
-  height: auto;
+  width: auto;
+  height: 50px;
   border-radius: 50%;
 }
 
@@ -60,7 +60,7 @@ button {
   margin: 0;
   margin-top: 1em;
   margin-bottom: 2em;
-  background-color: var(--outlineColor);
+  background-color: var(--secondaryColor);
   color: var(--color);
   width: 65%;
   border: none;

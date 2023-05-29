@@ -2,13 +2,7 @@
 import Authentication from "@/components/Authentication.vue";
 import RequestLoginModal from "./components/RequestLoginModal.vue";
 import { RouterLink, RouterView } from "vue-router";
-import UserProfileComponent from "./components/UserProfileComponent.vue";
-import ModalComponent from "./components/ModalComponent.vue";
-import { usePathfinderStore } from "./stores/pathfinders";
-import { useHonorStore } from "./stores/honors";
-
-const pathfinder = usePathfinderStore();
-const honors = useHonorStore();
+import UserProfileComponent from "./components/UserProfileComponent.vue"
 </script>
 
 <template>
@@ -21,10 +15,8 @@ const honors = useHonorStore();
 
   <aside id="menu">
     <UserProfileComponent />
-    <RouterLink to="/" ref="homeLink">Home</RouterLink>
-    <RouterLink to="/club">My Club</RouterLink>
-    <RouterLink to="/honors">All Honors</RouterLink>
-    <!-- <RouterLink to="/planner">Planner</RouterLink> -->
+    <RouterLink to="/">My Club</RouterLink>
+    <RouterLink to="/honors">Plan Honors</RouterLink>
   </aside>
 
   <div class="maintext">

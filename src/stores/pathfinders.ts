@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
+import { Errors } from "../errors/errors";
+import type { AxiosResponse } from "axios";
 
 export enum status {
   Planned = "Planned",
@@ -17,10 +19,10 @@ interface Pathfinder {
 }
 
 interface PutPathfinder {
-  firstName: string,
-  lastName: string,
-  email: string,
-  grade?: number,
+  firstName: string;
+  lastName: string;
+  email: string;
+  grade?: number;
 }
 
 interface PathfinderHonors {
@@ -36,6 +38,18 @@ interface PathfinderHonorPostPut {
   status: status;
 }
 
+interface BulkAdd {
+  pathfinderID: string;
+  honors: PathfinderHonorPostPut[];
+}
+
+// Response interfaces
+interface BulkAddResponse {
+  status: number;
+  error?: string;
+  pathfinderHonor?: PathfinderHonors[];
+}
+
 export const usePathfinderStore = defineStore("pathfinder", {
   state: () => ({
     // define the data shape of the store using the interface above
@@ -43,12 +57,24 @@ export const usePathfinderStore = defineStore("pathfinder", {
     pathfinders: [] as Pathfinder[],
     loading: false,
     error: false,
+    selected: [] as string[],
   }),
   getters: {
     // getters are functions that return values from the state
     // they are used to calculate values from the state, like a filtered list or a sum
     getPathfindersByGrade: (state) => (grade: number) => {
       return state.pathfinders.filter((p) => p.grade === grade);
+    },
+    getPathfindersBySelection: (state) => () => {
+      return state.pathfinders.filter(
+        (p) => state.selected.indexOf(p.pathfinderID) > -1
+      );
+    },
+    getSelected: (state) => () => {
+      return state.selected;
+    },
+    isSelected: (state) => (pathfinderID: string) => {
+      return state.selected.indexOf(pathfinderID) > -1;
     },
   },
   actions: {
@@ -57,13 +83,19 @@ export const usePathfinderStore = defineStore("pathfinder", {
     async getPathfinders() {
       this.loading = true;
       this.error = false;
-
       try {
         const response = await api.getAll();
         this.pathfinders = response.data;
-      } catch (err) {
+      } catch (err: any) {
         this.error = true;
-        console.error(`Could not get pathfinders, because: ${err}`);
+        if (err.response && err.response.status) {
+          throw Errors.apiResponse.status(err.response.status);
+        } else {
+          console.error(`Could not get pathfinders, because: ${err}`);
+          throw Errors.apiResponse.body(
+            `Could not get pathfinders, because: ${err}`
+          );
+        }
       } finally {
         this.loading = false;
       }
@@ -80,7 +112,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.pathfinders[pathfinderIndex] = response.data;
       } catch (err) {
         this.error = true;
-        console.error(`Could not get pathfinders, because: ${err}`);
+        throw Errors.apiResponse.status(err);
       } finally {
         this.loading = false;
       }
@@ -91,7 +123,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       } catch (err) {
         console.error(`Can't post this pathfinder because: ${err}`);
       } finally {
-        await api.getPathfinders();
+        await api.getAll();
         this.loading = false;
       }
     },
@@ -113,27 +145,67 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
-    async putPathfinderHonor(
-      pathfinderID: string,
-      honorId: string,
-      status: status
-    ) {
+    async bulkAddPathfinderHonors(pathfinderIDs: string[], honorIDs: string[]) {
       this.loading = true;
       this.error = false;
-      const putData: PathfinderHonorPostPut = {
-        honorID: honorId,
-        status: status,
-      };
 
       try {
-        await api.putPathfinderHonor(pathfinderID, honorId, putData);
+        const postData: BulkAdd[] = pathfinderIDs.map((pathfinderID) => ({
+          pathfinderID,
+          honors: honorIDs.map((honorID) => ({
+            honorID,
+            status: status.Planned,
+          })),
+        }));
+
+        const response = await api.bulkAddPathfinderHonors(postData);
+
+        if (response && response.data) {
+          response.data.forEach((result: BulkAddResponse, index: number) => {
+            if (result.status === 201 && result.pathfinderHonor) {
+              const pathfinderIndex = this.pathfinders.findIndex(
+                (p) => p.pathfinderID === pathfinderIDs[index]
+              );
+              if (pathfinderIndex !== -1) {
+                const newHonors: PathfinderHonors[] = result.pathfinderHonor;
+                this.pathfinders[pathfinderIndex].pathfinderHonors.push(
+                  ...newHonors
+                );
+              }
+            } else if (result.error) {
+              console.error(`Could not add honors, because: ${result.error}`);
+            }
+          });
+        }
       } catch (err) {
         this.error = true;
-        console.error(`Could not modify honor, because: ${err}`);
+        console.error(`Could not add pathfinder honors, because: ${err}`);
       } finally {
-        await this.getPathfinderById(pathfinderID);
         this.loading = false;
       }
+    },
+    selectPathfinder(pathfinderID: string) {
+      if (this.selected.includes(pathfinderID)) {
+        throw Errors.selectHonor.alreadySelected;
+      }
+      this.selected = [...this.selected, pathfinderID];
+      return;
+    },
+    selectAll() {
+      this.selected = this.pathfinders.map((p) => p.pathfinderID);
+      console.log(this.selected);
+    },
+    toggleSelection(pathfinderID: string) {
+      const s = this.getSelected();
+      if (s.indexOf(pathfinderID) > -1) {
+        this.selected = s.filter((p) => p !== pathfinderID);
+      } else {
+        this.selectPathfinder(pathfinderID);
+      }
+      console.log(this.getSelected());
+    },
+    clearSelection() {
+      this.selected = [] as string[];
     },
   },
 });

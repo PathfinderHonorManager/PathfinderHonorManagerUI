@@ -15,17 +15,17 @@
       class="power"
       style="
         position: fixed;
-        height: 300px;
+        height: 400px;
         width: 600px;
         margin: 0;
         left: calc(50% - 300px);
-        top: calc(50% - 150px);
+        top: calc(50% - 200px);
         text-align: center;
         box-shadow: 0 0 200px black;
-        z-index: 3;
+        z-index: 4;
       "
     >
-      <p class="light">Log In</p>
+      <p class="light" style="font-size: 1.2em">Log In</p>
       <h1 style="margin: 0.5em">View club members, and add or edit honors!</h1>
       <button
         @click="login"

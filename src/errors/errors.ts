@@ -46,11 +46,16 @@ function apiResponseErrInstance(message: string) {
 
 export const Errors = {
   //API RESPONSE ERRORS
+  apiResponse: {
+    status: (status: string) => apiResponseErrInstance(`Status: ${status}`),
+    body: (body: string) => apiResponseErrInstance(`Body: ${body}`),
+  },
   //INTERNAL ERRORS
   //TEST ERRORS
   test: {
     //general test errors
     testError: testErrInstance("This is a test error."),
+    bulkAddReport: (status: string[]) => testErrInstance(`Bulk Add Status: \n ${status}`),
   },
   //USER ERRORS
   selectHonor: {
