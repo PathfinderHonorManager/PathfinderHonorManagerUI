@@ -1,3 +1,7 @@
+<!-- eslint-disable vue/valid-template-root -->
+<template>
+  <!---->
+</template>
 <script setup lang="ts">
 import { useAuth0 } from "@auth0/auth0-vue";
 import axios from "axios";
@@ -12,7 +16,7 @@ axios.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log(error);
+    console.log("Error:", error);
     return Promise.reject(error);
   }
 );

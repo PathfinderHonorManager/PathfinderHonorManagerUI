@@ -13,15 +13,17 @@ const pinia = createPinia();
 pinia.use(piniaPersist);
 const app = createApp(App);
 
-app.use(
-  createAuth0({
-    domain: "pathfinderhonormanager.us.auth0.com",
-    client_id: "mfTYOD64ySERkhLAatJBxWIULeq892fK",
-    redirect_uri: window.location.origin,
-    audience: "https://pathfinderhonormanager.azurewebsites.net/api/",
-    cacheLocation: "localstorage",
-  })
-);
+const auth0Config = {
+  domain: "pathfinderhonormanager.us.auth0.com",  
+  client_id: "mfTYOD64ySERkhLAatJBxWIULeq892fK",  
+  authorizationParams: {
+    redirect_uri: window.location.origin,  
+    audience: "https://pathfinderhonormanager.azurewebsites.net/api/",  
+  },
+  cacheLocation: "localstorage"
+};
+
+app.use(createAuth0(auth0Config));
 
 app.use(pinia);
 
@@ -32,7 +34,6 @@ app.use(SimpleTypeahead);
 //provide honors and pathfinder to all components
 app.provide("usePathfinderStore", usePathfinderStore);
 app.provide("useHonorStore", useHonorStore);
-
 
 console.log(app)
 
