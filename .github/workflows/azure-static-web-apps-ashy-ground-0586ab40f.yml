@@ -13,7 +13,7 @@ jobs:
     name: Build and Deploy Job
     if: github.event.pull_request.merged == true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: true
       - name: Build And Deploy
