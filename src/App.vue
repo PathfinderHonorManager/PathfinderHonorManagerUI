@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Authentication from "@/components/Authentication.vue";
+import Authentication from "@/components/AuthenticationComponent.vue";
 import RequestLoginModal from "./components/RequestLoginModal.vue";
 import { RouterLink, RouterView } from "vue-router";
 import UserProfileComponent from "./components/UserProfileComponent.vue"
