@@ -43,7 +43,6 @@
     </div>
   </div>
   <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
-
     <h3>Selected Honors</h3>
     <div class="outline" style="display: flex">
       <button
@@ -98,7 +97,10 @@
     </p>
   </div>
 
-  <ToasterComponent v-if="bulkAdd" message="Your honors have been added to your club" />
+  <ToasterComponent
+    v-if="bulkAdd"
+    message="Your honors have been added to your club"
+  />
 </template>
 
 <script lang="ts">
