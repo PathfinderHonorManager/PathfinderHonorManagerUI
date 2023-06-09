@@ -84,7 +84,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       this.loading = true;
       this.error = false;
       try {
-        let response = await api.getAll();
+        const response = await api.getAll();
         this.pathfinders = response.data;
       } catch (err: any) {
         this.error = true;
