@@ -1,6 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <p v-if="error">Error!</p>
+  <span class="loader" v-if="loading">Loading Pathfinders</span>
   <div v-if="pathfinders[0]" class="content-box">
 
     <div
@@ -12,7 +13,6 @@
       </button>
     </div>
 
-    <span class="loader" v-if="loading">Loading Pathfinders</span>
     <DetailTableItemComponent
       v-for="(pathfinder, i) in pathfinders"
       :key="i"
@@ -139,6 +139,7 @@ export default defineComponent({
     const displays = [];
     const showing = ref(displays);
     console.log(showing);
+
 
     return {
       loading,

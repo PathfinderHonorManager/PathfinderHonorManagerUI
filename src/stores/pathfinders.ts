@@ -84,12 +84,14 @@ export const usePathfinderStore = defineStore("pathfinder", {
       this.loading = true;
       this.error = false;
       try {
-        const response = await api.getAll();
+        let response = await api.getAll();
         this.pathfinders = response.data;
       } catch (err: any) {
         this.error = true;
         if (err.response && err.response.status) {
-          throw Errors.apiResponse.status(err.response.status);
+          if (err.response.status === 404) {
+            throw Errors.apiResponse.status(err.response.status);
+          }
         } else {
           console.error(`Could not get pathfinders, because: ${err}`);
           throw Errors.apiResponse.body(
