@@ -2,12 +2,19 @@
   <div>
     <div id="profile-hunk">
       <div v-if="isAuthenticated">
-        <img v-bind:src="user.picture"> 
+        <img v-bind:src="user.picture" />
         <h1>{{ user.name }}</h1>
-        <button @click="logout" style="background-color: inherit; border: var(--lightBorder);">Log out</button>
+        <button
+          @click="logout"
+          style="background-color: inherit; border: var(--lightBorder)"
+        >
+          Log out
+        </button>
       </div>
       <div v-else>
-        <button @click="login" style="background-color: var(--darkBlue);">Log in</button>
+        <button @click="login" style="background-color: var(--darkBlue)">
+          Log in
+        </button>
       </div>
     </div>
   </div>

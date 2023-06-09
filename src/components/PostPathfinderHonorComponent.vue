@@ -14,7 +14,7 @@
         "
       >
       </vue3-simple-typeahead>
-      <br/>
+      <br />
       <button class="primary button">Add Honor to Pathfinder</button>
     </form>
   </div>

@@ -55,7 +55,8 @@ export const Errors = {
   test: {
     //general test errors
     testError: testErrInstance("This is a test error."),
-    bulkAddReport: (status: string[]) => testErrInstance(`Bulk Add Status: \n ${status}`),
+    bulkAddReport: (status: string[]) =>
+      testErrInstance(`Bulk Add Status: \n ${status}`),
   },
   //USER ERRORS
   selectHonor: {
@@ -66,7 +67,9 @@ export const Errors = {
     //From ClubView.vue form poster function
     invalidFirstName: userErrInstance("Invalid first name"),
     invalidLastName: userErrInstance("Invalid last name"),
-    invalidGrade: userErrInstance("The grade field must be between 5 and 12. If you are submitting a staff member, please leave this field blank."),
+    invalidGrade: userErrInstance(
+      "The grade field must be between 5 and 12. If you are submitting a staff member, please leave this field blank."
+    ),
     invalidEmail: userErrInstance("Invalid email"),
     alreadyExists: userErrInstance("Pathfinder already exists"),
   },
@@ -76,7 +79,7 @@ export const Errors = {
 //The second level will be the name of the error that was thrown.
 
 //this object contains all instances of errors that have been thrown in the app
-let errorInstances = [] as ErrorInstance[];
+const errorInstances = [] as ErrorInstance[];
 
 //catch throw events in the app
 window.addEventListener("error", (event) => {
@@ -93,4 +96,3 @@ window.addEventListener("error", (event) => {
     );
   }
 });
-

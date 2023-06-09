@@ -84,7 +84,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       this.loading = true;
       this.error = false;
       try {
-        let response = await api.getAll();
+        const response = await api.getAll();
         this.pathfinders = response.data;
       } catch (err: any) {
         this.error = true;
@@ -163,19 +163,31 @@ export const usePathfinderStore = defineStore("pathfinder", {
         const response = await api.bulkAddPathfinderHonors(postData);
 
         if (response && response.data) {
-          response.data.forEach((result: BulkAddResponse, index: number) => {
+          const tempPathfinderHonors = {};
+
+          response.data.forEach((result: BulkAddResponse) => {
             if (result.status === 201 && result.pathfinderHonor) {
-              const pathfinderIndex = this.pathfinders.findIndex(
-                (p) => p.pathfinderID === pathfinderIDs[index]
-              );
-              if (pathfinderIndex !== -1) {
-                const newHonors: PathfinderHonors[] = result.pathfinderHonor;
-                this.pathfinders[pathfinderIndex].pathfinderHonors.push(
-                  ...newHonors
-                );
+              const pathfinderID = result.pathfinderHonor.pathfinderID;
+              if (!tempPathfinderHonors[pathfinderID]) {
+                tempPathfinderHonors[pathfinderID] = [];
               }
+              tempPathfinderHonors[pathfinderID].push(result.pathfinderHonor);
             } else if (result.error) {
               console.error(`Could not add honors, because: ${result.error}`);
+            }
+          });
+
+          this.pathfinders = this.pathfinders.map((pathfinder) => {
+            if (tempPathfinderHonors[pathfinder.pathfinderID]) {
+              return {
+                ...pathfinder,
+                pathfinderHonors: [
+                  ...pathfinder.pathfinderHonors,
+                  ...tempPathfinderHonors[pathfinder.pathfinderID],
+                ],
+              };
+            } else {
+              return pathfinder;
             }
           });
         }

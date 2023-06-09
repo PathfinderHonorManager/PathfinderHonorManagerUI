@@ -27,7 +27,9 @@
           <option value="Earned">Earned</option>
           <option value="Awarded">Awarded</option>
         </select>
-        <button class="outline" style="pointer-events: none; color: grey;">Update Status <strong>&check;</strong></button>
+        <button class="outline" style="pointer-events: none; color: grey">
+          Update Status <strong>&check;</strong>
+        </button>
       </div>
     </form>
   </div>
@@ -67,7 +69,9 @@ export default defineComponent({
 
     async function colorAll() {
       await document.getElementsByClassName("statusselector");
-      const el = document.getElementsByClassName("statusselector") as HTMLCollectionOf<HTMLElement>;
+      const el = document.getElementsByClassName(
+        "statusselector"
+      ) as HTMLCollectionOf<HTMLElement>;
       for (let i = 0; i < el.length; i++) {
         el[i].style.backgroundColor = colors[el[i].selectedIndex];
         el[i].addEventListener("change", getSelectedIndex);

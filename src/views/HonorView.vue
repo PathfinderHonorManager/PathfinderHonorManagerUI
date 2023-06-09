@@ -4,5 +4,5 @@ import HonorListComponent from "../components/HonorListComponent.vue";
 
 <template>
   <h1>Plan Honors</h1>
-  <HonorListComponent/>
+  <HonorListComponent />
 </template>
