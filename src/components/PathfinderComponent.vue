@@ -128,8 +128,9 @@ export default defineComponent({
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
 
-    honorStore.honors ? honorStore.getHonors() : undefined;
-    pathfinderStore.pathfinders ? pathfinderStore.getPathfinders() : undefined;
+    honorStore.honors.length === 0 ? honorStore.getHonors() : undefined;
+    pathfinderStore.pathfinders.length === 0 ? pathfinderStore.getPathfinders() : undefined;
+
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
     const { honors } = storeToRefs(honorStore);
