@@ -128,8 +128,13 @@ export default defineComponent({
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
 
-    pathfinderStore.getPathfinders();
-    honorStore.getHonors();
+    if (!pathfinderStore.pathfinders.length) {
+      pathfinderStore.getPathfinders();
+    }
+
+    if (!honorStore.honors.length) {
+      honorStore.getHonors();
+    }
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
     const { honors } = storeToRefs(honorStore);
@@ -139,7 +144,6 @@ export default defineComponent({
     const displays = [];
     const showing = ref(displays);
     console.log(showing);
-
 
     return {
       loading,
