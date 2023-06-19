@@ -7,7 +7,7 @@
     <div
       style="display: flex; justify-content: space-between; align-items: flex-end; margin: 0; padding: 0"
     >
-      <h3 style="margin: 0;">Eagles Club, {{ pathfinders.length }} Members</h3>
+      <h3 style="margin: 0;">{{ pathfinders.length }} Members</h3>
       <button class="biglogobutton" @click="creatingPathfinder = true">
         +
       </button>
@@ -140,7 +140,6 @@ export default defineComponent({
 
     const displays = [];
     const showing = ref(displays);
-    console.log(showing);
 
     return {
       loading,

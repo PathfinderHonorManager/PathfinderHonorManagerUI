@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from "vue/dist/vue.esm-bundler";
 import { useAuth0 } from "@auth0/auth0-vue";
 
 export default defineComponent({
@@ -33,7 +33,7 @@ export default defineComponent({
         loginWithRedirect();
       },
       logout: () => {
-        logout({ returnTo: window.location.origin });
+        logout({ logoutParams: { returnTo: window.location.origin } });
       },
       user,
       isAuthenticated,

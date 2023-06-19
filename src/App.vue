@@ -7,16 +7,18 @@ import { RouterLink, RouterView } from "vue-router";
 import UserProfileComponent from "./components/UserProfileComponent.vue";
 import { useHonorStore } from "./stores/honors";
 import { usePathfinderStore } from "./stores/pathfinders";
+import { useUserStore } from "./stores/users";
 
 const { isAuthenticated } = useAuth0();
 const honorStore = useHonorStore();
 const pathfinderStore = usePathfinderStore();
+const userStore = useUserStore();
+const { getAccessTokenSilently } = useAuth0();
 
 watchEffect(async () => {
   if (isAuthenticated.value) {
-    // User is authenticated, perform API request
+    await userStore.decodeToken(getAccessTokenSilently);
     await honorStore.getHonors();
-    await pathfinderStore.getPathfinders();
   }
 });
 </script>
