@@ -5,6 +5,7 @@ import piniaPersist from "pinia-plugin-persist";
 import SimpleTypeahead from "vue3-simple-typeahead";
 import { useHonorStore } from "./stores/honors";
 import { usePathfinderStore } from "./stores/pathfinders";
+import { useUserStore } from "./stores/users";
 import App from "./App.vue";
 import router from "./router";
 
@@ -33,6 +34,7 @@ app.use(SimpleTypeahead);
 //provide honors and pathfinder to all components
 app.provide("usePathfinderStore", usePathfinderStore);
 app.provide("useHonorStore", useHonorStore);
+app.provide("useUserStore", useUserStore);
 
 console.log(app);
 
