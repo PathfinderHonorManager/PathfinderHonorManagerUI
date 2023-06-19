@@ -8,7 +8,7 @@
       style="display: flex; justify-content: space-between; align-items: flex-end; margin: 0; padding: 0"
     >
       <h3 style="margin: 0;">{{ pathfinders.length }} Members</h3>
-      <button class="biglogobutton" @click="creatingPathfinder = true">
+      <button class="biglogobutton" @click="creatingPathfinder = true" v-if="canCreatePathfinder">
         +
       </button>
     </div>
@@ -41,9 +41,10 @@
       </button>
 
       <PostPathfinderHonorComponent
-        v-if="showing[i]"
-        :pathfinderID="pathfinder.pathfinderID"
+       v-if="showing[i] && canUpdatePathfinder"
+      :pathfinderID="pathfinder.pathfinderID"
       />
+
 
       <div class="content-box">
         <div v-if="showing[i]" class="honortable">
@@ -106,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, inject } from "vue";
+import { defineComponent, ref, inject, computed } from "vue";
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
@@ -124,9 +125,11 @@ export default defineComponent({
   setup() {
     const usePathfinderStore = inject("usePathfinderStore");
     const useHonorStore = inject("useHonorStore");
+    const useUserStore = inject("useUserStore");
 
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
+    const userStore = useUserStore();
 
     honorStore.honors.length === 0 ? honorStore.getHonors() : undefined;
     pathfinderStore.pathfinders.length === 0
@@ -141,6 +144,13 @@ export default defineComponent({
     const displays = [];
     const showing = ref(displays);
 
+    const canCreatePathfinder = computed(() =>
+      userStore.permissions.includes("create:pathfinders")
+    );
+    const canUpdatePathfinder = computed(() =>
+      userStore.permissions.includes("update:pathfinders")
+    );
+
     return {
       loading,
       error,
@@ -153,6 +163,8 @@ export default defineComponent({
       getHonors: honorStore.getHonors,
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
       showing: showing,
+      canCreatePathfinder,
+      canUpdatePathfinder,
     };
   },
   methods: {
