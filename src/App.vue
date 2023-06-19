@@ -17,10 +17,9 @@ const { getAccessTokenSilently } = useAuth0();
 
 watchEffect(async () => {
   if (isAuthenticated.value) {
-    // User is authenticated, perform API request
+    await userStore.decodeToken(getAccessTokenSilently);
     await honorStore.getHonors();
-    // await pathfinderStore.getPathfinders();
-    await userStore.decodeToken(getAccessTokenSilently);  }
+    }
 });
 </script>
 

@@ -7,7 +7,7 @@ export const useUserStore = defineStore({
   state: () => ({
     permissions: [],
     clubCode: "",
-    clubName: "This didn't work",
+    clubName: "",
   }),
   actions: {
     setPermissions(permissions) {
