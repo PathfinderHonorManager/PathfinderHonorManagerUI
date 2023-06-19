@@ -19,7 +19,7 @@ watchEffect(async () => {
   if (isAuthenticated.value) {
     await userStore.decodeToken(getAccessTokenSilently);
     await honorStore.getHonors();
-    }
+  }
 });
 </script>
 

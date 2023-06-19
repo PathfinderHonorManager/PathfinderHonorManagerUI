@@ -2,11 +2,10 @@
 import { ref, onMounted } from "vue";
 import PathfinderComponent from "../components/PathfinderComponent.vue";
 import { useUserStore } from "../stores/users.ts";
-import {computed} from "vue";
+import { computed } from "vue";
 
 const userStore = useUserStore(); // Initialize store
 const clubName = computed(() => userStore.clubName);
-
 </script>
 
 <template>
