@@ -147,6 +147,24 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
+    async putPathfinderHonor(pathfinderID: string, honorID: string, status: status) {
+      this.loading = true;
+      this.error = false;
+      const postData: PathfinderHonorPostPut = {
+        honorID: honorID,
+        status: status,
+      };
+      try {
+        await api.putPathfinderHonor(pathfinderID, honorID, postData);
+        await this.getPathfinderById(pathfinderID);
+      } catch (err) {
+        this.error = true;
+        console.error(`Could not update honor, because: ${err}`);
+        throw err; // You can handle or rethrow the error as per your needs
+      } finally {
+        this.loading = false;
+      }
+    },
     async bulkAddPathfinderHonors(pathfinderIDs: string[], honorIDs: string[]) {
       this.loading = true;
       this.error = false;
