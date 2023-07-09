@@ -58,6 +58,7 @@
             v-bind:status="pathfinderHonor.status"
             v-bind:display="true"
             v-bind:image="pathfinderHonor.patchFilename"
+            :canUpdatePathfinder="canUpdatePathfinder"
           ></PathfinderHonorComponent>
         </div>
       </div>
