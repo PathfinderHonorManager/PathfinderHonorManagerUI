@@ -17,24 +17,24 @@
     "pinia": "^2.1.4",
     "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.2",
+    "vue-router": "^4.2.4",
     "vue3-simple-typeahead": "^1.0.11"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.3.2",
     "@types/jsdom": "^20.0.1",
-    "@types/node": "^20.3.1",
+    "@types/node": "^20.4.0",
     "@vitejs/plugin-vue": "^2.3.4",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^10.0.0",
-    "@vue/test-utils": "^2.3.2",
-    "eslint": "^8.43.0",
+    "@vue/test-utils": "^2.4.0",
+    "eslint": "^8.44.0",
     "eslint-plugin-vue": "^8.7.1",
     "jsdom": "^22.1.0",
     "prettier": "^2.8.8",
-    "typescript": "~5.1.3",
+    "typescript": "~5.1.6",
     "vite": "^2.9.14",
-    "vitest": "^0.32.2",
+    "vitest": "^0.33.0",
     "vue-tsc": "^0.40.13"
   }
 }
