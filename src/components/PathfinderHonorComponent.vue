@@ -27,7 +27,11 @@
           <option value="Earned">Earned</option>
           <option value="Awarded">Awarded</option>
         </select>
-        <button class="outline" style="pointer-events: none; color: grey">
+        <button
+          v-if="canUpdatePathfinder"
+          class="outline"
+          style="pointer-events: none; color: grey"
+        >
           Update Status <strong>&check;</strong>
         </button>
       </div>
@@ -40,7 +44,7 @@ import { defineComponent, inject } from "vue";
 import { storeToRefs } from "pinia";
 
 export default defineComponent({
-  setup() {
+  setup(props) {
     const usePathfinderStore = inject("usePathfinderStore");
     const pathfinderStore = usePathfinderStore();
 
@@ -80,6 +84,8 @@ export default defineComponent({
 
     colorAll();
 
+    const canUpdatePathfinder = props.canUpdatePathfinder;
+
     return {
       loading,
       error,
@@ -89,6 +95,7 @@ export default defineComponent({
       putPathfinderHonor: pathfinderStore.putPathfinderHonor,
       getSelectedIndex,
       resetButtonStyle,
+      canUpdatePathfinder,
     };
   },
   props: {
@@ -115,6 +122,10 @@ export default defineComponent({
     image: {
       type: String,
       required: false,
+    },
+    canUpdatePathfinder: {
+      type: Boolean,
+      required: true,
     },
   },
   data() {
