@@ -26,19 +26,16 @@ watchEffect(async () => {
 <template>
   <Authentication />
   <RequestLoginModal />
-  <header>
-    <!--This will be used a some point-->
-    <div class="wrapper"></div>
-  </header>
+  <div id="grid">
+    <div id="sidebar">
+      <UserProfileComponent />
+      <RouterLink to="/">My Club</RouterLink>
+      <RouterLink to="/honors">Plan Honors</RouterLink>
+    </div>
 
-  <aside id="menu">
-    <UserProfileComponent />
-    <RouterLink to="/">My Club</RouterLink>
-    <RouterLink to="/honors">Plan Honors</RouterLink>
-  </aside>
-
-  <div class="maintext">
-    <RouterView />
+    <div id="content">
+      <RouterView />
+    </div>
   </div>
 </template>
 
