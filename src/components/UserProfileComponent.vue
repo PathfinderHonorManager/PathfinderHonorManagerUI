@@ -1,21 +1,14 @@
 <template>
-  <div>
-    <div id="profile-hunk">
-      <div v-if="isAuthenticated">
-        <img v-bind:src="user.picture" />
-        <h1>{{ user.name }}</h1>
-        <button
-          @click="logout"
-          style="background-color: inherit; border: var(--lightBorder)"
-        >
-          Log out
-        </button>
-      </div>
-      <div v-else>
-        <button @click="login" style="background-color: var(--darkBlue)">
-          Log in
-        </button>
-      </div>
+  <div id="profile-hunk">
+    <div v-if="isAuthenticated">
+      <img v-bind:src="user.picture" />
+      <h1>{{ user.name }}</h1>
+      <button @click="logout" style="background-color: inherit">Log out</button>
+    </div>
+    <div v-else>
+      <button @click="login" style="background-color: var(--darkBlue)">
+        Log in
+      </button>
     </div>
   </div>
 </template>
@@ -46,32 +39,46 @@ export default defineComponent({
 @import "/src/assets/general.css";
 
 #profile-hunk {
-  margin-top: 4em;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
   text-align: center;
 }
 
 img {
-  display: inline;
-  margin-bottom: 0.25em;
   width: auto;
   height: 50px;
   border-radius: 50%;
+  margin: 0.5em;
 }
 
 h1 {
-  margin: 0;
+  font-size: 1.8em;
+  margin: var(--itemMargin);
+  margin-bottom: 1em;
+  margin-top: 0;
 }
 
 button {
-  display: inline;
   margin: 0;
-  margin-top: 1em;
-  margin-bottom: 2em;
   background-color: var(--secondaryColor);
   color: var(--color);
-  width: 65%;
-  border: none;
-  padding: 1em;
+  width: 100%;
+  height: 50px;
+  padding: var(--itemMargin);
   font-weight: bolder;
+  font-size: 1.2em;
+  text-align: left;
+}
+
+@media screen and (max-width: 1080px) {
+  #profile-hunk {
+    width: 100%;
+    grid-column: span 2;
+  }
+  button {
+    text-align: center;
+    border: var(--lightBorder);
+  }
 }
 </style>
