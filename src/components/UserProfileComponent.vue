@@ -3,10 +3,10 @@
     <div v-if="isAuthenticated">
       <img v-bind:src="user.picture" />
       <h1>{{ user.name }}</h1>
-      <button @click="logout" style="background-color: inherit">Log out</button>
+      <button @click="logout">Log out</button>
     </div>
     <div v-else>
-      <button @click="login" style="background-color: var(--darkBlue)">
+      <button @click="login" style="background-color: var(--actionColor)">
         Log in
       </button>
     </div>
@@ -61,7 +61,7 @@ h1 {
 
 button {
   margin: 0;
-  background-color: var(--secondaryColor);
+  background-color: inherit;
   color: var(--color);
   width: 100%;
   height: 50px;
@@ -69,6 +69,12 @@ button {
   font-weight: bolder;
   font-size: 1.2em;
   text-align: left;
+}
+
+button:hover {
+  box-shadow: none;
+  transform: none;
+  background-color: var(--grey);
 }
 
 @media screen and (max-width: 1080px) {

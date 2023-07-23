@@ -57,13 +57,13 @@ export default defineComponent({
       this.style.pointerEvents = "none";
     }
 
-    const colors = ["var(--secondaryColor)", "var(--orange)", "mediumseagreen"];
+    const colors = ["var(--grey)", "var(--orange)", "mediumseagreen"];
     function getSelectedIndex() {
       const s = this.selectedIndex;
       this.style.backgroundColor = colors[s];
       let siblingButton = this.nextSibling;
       siblingButton.style.color = "var(--color)";
-      siblingButton.style.backgroundColor = "var(--blue)";
+      siblingButton.style.backgroundColor = "var(--actionColor)";
       siblingButton.style.border = "";
       siblingButton.style.pointerEvents = "auto";
       if (siblingButton.getAttribute("listener") !== true) {

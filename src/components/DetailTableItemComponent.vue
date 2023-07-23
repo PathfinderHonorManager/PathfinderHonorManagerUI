@@ -1,22 +1,11 @@
 <template>
-  <div
-    style="
-      display: grid;
-      grid-template-columns: 33% 66%;
-      overflow: hidden;
-      padding: 0;
-    "
-    class="outline"
-  >
-    <div
-      class="power"
-      style="margin: 0 var(--content-padding) 0 0; border-radius: 0"
-    >
-      <h2 style="margin: 0">
+  <div id="item-template" class="outline">
+    <div class="power" id="item-sidebar">
+      <h2>
         {{ header }}
       </h2>
     </div>
-    <div>
+    <div id="item-content">
       <slot>. . .</slot>
     </div>
   </div>
@@ -37,3 +26,39 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+#item-template {
+  display: grid;
+  grid-template-columns: 25vw auto;
+  overflow: hidden;
+  word-wrap: break-word;
+  padding: 0;
+}
+
+#item-sidebar {
+  margin: 0;
+  border-right: var(--lightBorder);
+  border-radius: 0;
+  padding: var(--content-padding);
+}
+
+@media screen and (max-width: 1080px) {
+  #item-template {
+    grid-template-rows: 150px auto;
+    grid-template-columns: auto;
+  }
+  #item-sidebar {
+    border-right: none;
+    border-bottom: var(--lightBorder);
+  }
+}
+
+#item-content {
+  padding: var(--content-padding);
+}
+
+h2 {
+  margin: var(--itemMargin) 0;
+}
+</style>

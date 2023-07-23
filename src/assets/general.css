@@ -39,20 +39,19 @@ other
     --spacePBelow: 1em;
 
     /*COLOR PALLETTE*/
-    --bgColor: #152a43;
-    --secondaryColor: rgba(138, 138, 255, 0.2);
-    --grey: #3f4a54;
+    --bgColor: #0F1624;
+    --lightGrey: #333747;
+    --grey: #22242F;
     --noteColor: #aec3cd;
-    --color: #F5F5F5;
+    --color: #EFF1F3;
     --yellow: #FFBB00;
     --orange: #F77D1B;
     --red: #EF3E36;
-    --blue: #3185FC;
-    --darkBlue: #3772FF;
+    --actionColor: #3956F9;
     --blueGradient: linear-gradient(90deg, #3185FC 0%, #004cff 100%);
 
     /*BORDER*/
-    --lightBorder: 2px solid var(--secondaryColor);
+    --lightBorder: 2px solid var(--lightGrey);
 
     /*PADDING*/
     --aside-left-padding: 0;
@@ -152,8 +151,7 @@ body {
 }
 
 #sidebar > a:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 3px 20px 2px rgba(0, 0, 0, 0.3);
+    background-color: var(--grey);
 }
 
 @media screen and (max-width: 1080px) {
@@ -189,8 +187,9 @@ body {
 	text-align: center;
     font-weight: bold;
 	border-radius: 2em;
-    background-color: var(--secondaryColor);
+    background-color: var(--grey);
 	border: none;
+    height: 2em;
 	overflow: hidden;
 	animation: load 3s infinite cubic-bezier(0.075, 0.82, 0.165, 1);
 }
@@ -207,18 +206,7 @@ body {
     box-sizing: border-box;
     margin-top: 10px;
     margin-bottom: 10px;
-    background-color: var(--secondaryColor);
-    backdrop-filter: var(--glassMorph);
-    border-radius: 10px;
-    padding: var(--content-padding);
-}
-
-.unpower {
-    box-sizing: border-box;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color: var(--secondaryColor);
-    backdrop-filter: brightness(50%);
+    background-color: var(--grey);
     border-radius: 10px;
     padding: var(--content-padding);
 }
@@ -228,6 +216,16 @@ body {
     margin-top: 10px;
     margin-bottom: 10px;
     background-color: var(--bgColor);
+    border: var(--lightBorder);
+    border-radius: 10px;
+    padding: var(--content-padding);
+}
+
+.power-outline {
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: var(--grey);
     border: var(--lightBorder);
     border-radius: 10px;
     padding: var(--content-padding);
@@ -281,9 +279,8 @@ body {
     height: var(--iconSize);
     font-size: var(--iconSize);
     padding: 5px;
-    background-color: var(--secondaryColor);
+    background-color: var(--lightGrey);
     border-radius: 10px;
-    border: var(--lightBorder);
 }
 
 .biglogobutton {
@@ -295,13 +292,14 @@ body {
     height: var(--size);
     font-size: var(--bigIconSize);
     padding: calc(var(--bigIconSize) * 0.5);
-    background-color: var(--secondaryColor);
+    background-color: var(--grey);
+    border: var(--lightBorder);
     border-radius: 10px;
 }
 
 .button-like {
     display: inline-block;
-    background-color: var(--blue);
+    background-color: var(--actionColor);
     color: var(--color);
     border: none;
     border-radius: 5px;
@@ -384,7 +382,7 @@ p {
 
 button {
     display: inline-block;
-    background-color: var(--blue);
+    background-color: var(--actionColor);
     color: var(--color);
     border: none;
     border-radius: 5px;
@@ -411,7 +409,7 @@ button:active {
 
 input[type=text] {
   margin: var(--itemMargin);
-  background-color: var(--bgColor);
+  background-color: var(--grey);
   color: var(--color);
   font-weight: bold;
   width: 65%;
@@ -426,6 +424,7 @@ input[type=text] {
     overflow-y: scroll;
     display: grid;
     grid-area: content;
+    padding: 8vw;
 }
 
 .button {
@@ -438,12 +437,12 @@ input[type=text] {
 }
 
 .primary {
-    background-color: var(--blue);
+    background-color: var(--actionColor);
     border: none;
 }
 
 .secondary {
-    background-color: var(--secondaryColor);
+    background-color: var(--grey);
     border: none;
 }
 
