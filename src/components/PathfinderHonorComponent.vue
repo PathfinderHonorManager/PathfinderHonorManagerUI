@@ -1,27 +1,18 @@
 <template>
-  <div
-    class="outline"
-    v-if="display"
-    style="
-      display: grid;
-      width: 100%;
-      margin: 0;
-      height: auto;
-      overflow: hidden;
-      text-align: center;
-    "
-  >
+  <div class="outline" v-if="display" id="grid-item-parent">
+    <div id="honor-info">
+      <img
+        :src="'https://pathfinderhonor.azureedge.net/assets/small/' + image"
+        class="patchimage"
+      />
+      <h3>{{ name }}</h3>
+    </div>
+
     <form
       id="honorform"
       @submit.prevent="putPathfinderHonor(pathfinderID, honorID, newStatus)"
     >
       <div class="selectcontainer">
-        <img
-          :src="'https://pathfinderhonor.azureedge.net/assets/small/' + image"
-          class="patchimage"
-        />
-        <br />
-        <h3>{{ name }}</h3>
         <select v-model="newStatus" class="statusselector">
           <option value="Planned">Planned</option>
           <option value="Earned">Earned</option>
@@ -136,7 +127,23 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+#grid-item-parent {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 100%;
+}
+
+#honor-info {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  font-size: 0.8em;
+}
+
 button > strong {
   position: absolute;
   opacity: 0;
@@ -148,9 +155,14 @@ button:focus > strong {
   opacity: 1;
 }
 
+form {
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
 select {
-  margin-bottom: var(--standard);
-  margin-top: var(--standard);
+  margin: var(--itemMargin) 0;
   background-color: var(--bgColor);
   color: var(--color);
   font-weight: bold;
@@ -158,7 +170,6 @@ select {
   border: none;
   outline: none;
   border-radius: 5px;
-  padding: 0.75em;
   transition: 0.2s;
 }
 
@@ -169,7 +180,12 @@ select:focus > option {
 }
 
 .selectcontainer {
-  margin-bottom: 0.5em;
+  margin: 0;
+
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 100%;
+  align-self: flex-end;
 }
 
 .selectcontainer > button {

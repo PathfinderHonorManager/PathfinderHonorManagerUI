@@ -16,7 +16,7 @@ other
     /*MARGINS*/
     --topMargin: 4em;
     --leftMargin: 16vw;
-    --textBlockMargin: 12vw;
+    --textBlockMargin: 6vw;
     --itemMargin: 10px;
 
     /*SIZES*/
@@ -410,6 +410,11 @@ button:active {
     100% {transform: translateX(calc(-100% - 1em)) translateY(1.3em); width: 1em;}
 }
 
+form {
+    margin: 0;
+    padding: 0;
+}
+
 input[type=text] {
   margin: var(--itemMargin);
   background-color: var(--bgColor);
@@ -425,6 +430,7 @@ input[type=text] {
 /*CLASSES*/
 #content {
     overflow-y: scroll;
+    padding: var(--textBlockMargin);
 
     display: grid;
     grid-area: content;
