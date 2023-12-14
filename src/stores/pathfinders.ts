@@ -120,9 +120,12 @@ export const usePathfinderStore = defineStore("pathfinder", {
       }
     },
     async postPathfinder(data: PutPathfinder) {
+      console.log('Attempting to post new pathfinder with data:', data);
       try {
-        await api.post(data);
+        const response = await api.post(data);
+        console.log('postPathfinder request successful:', response);
       } catch (err) {
+        console.error('Post pathfinder request failed:', err);
         console.error(`Can't post this pathfinder because: ${err}`);
       } finally {
         await api.getAll();
