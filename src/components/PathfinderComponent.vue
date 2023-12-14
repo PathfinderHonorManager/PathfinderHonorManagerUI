@@ -194,7 +194,9 @@ export default defineComponent({
         throw Errors.postFormData.invalidEmail;
       }
 
+      console.log('Post data for new pathfinder:', data);
       pathfinderStore.postPathfinder(data);
+      console.log('postPathfinder function called with above data.');
     },
   },
 });
