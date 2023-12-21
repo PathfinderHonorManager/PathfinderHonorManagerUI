@@ -84,22 +84,22 @@
           margin: 0;
         "
       >
-        <div>
-          <h3>First Name:</h3>
-          <input type="text" ref="firstName" />
-        </div>
-        <div>
-          <h3>Last Name:</h3>
-          <input type="text" ref="lastName" />
-        </div>
-        <div>
-          <h3>Grade:</h3>
-          <input type="text" ref="grade" />
-        </div>
-        <div>
-          <h3>Email:</h3>
-          <input type="text" ref="email" />
-        </div>
+      <div>
+        <h3>First Name:</h3>
+        <input type="text" v-model="firstName" />
+      </div>
+      <div>
+        <h3>Last Name:</h3>
+        <input type="text" v-model="lastName" />
+      </div>
+      <div>
+        <h3>Email:</h3>
+        <input type="text" v-model="email" />
+      </div>
+      <div>
+        <h3>Grade:</h3>
+        <input type="text" v-model="grade" />
+      </div>
 
         <input type="submit" style="font-size: 1.5em; margin: 20px;" class="button-like" />
       </form>
@@ -151,6 +151,10 @@ export default defineComponent({
     const canUpdatePathfinder = computed(() =>
       userStore.permissions.includes("update:pathfinders")
     );
+    const firstName = ref('');
+    const lastName = ref('');
+    const email = ref('');
+    const grade = ref('');
 
     return {
       loading,
@@ -166,20 +170,20 @@ export default defineComponent({
       showing: showing,
       canCreatePathfinder,
       canUpdatePathfinder,
+      firstName,
+      lastName,
+      email,
+      grade,
     };
   },
   methods: {
     postFormData: function () {
-      const refs = this.$refs;
-      function getRefValue(refName: string) {
-        return refs[refName].value;
-      }
-      const data = {
-        firstName: getRefValue("firstName"),
-        lastName: getRefValue("lastName"),
-        email: getRefValue("email"),
-        grade: Number(getRefValue("grade")),
-      };
+    const data = {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      grade: Number(this.grade),
+    };
 
       if (data.firstName === "") {
         throw Errors.postFormData.invalidFirstName;
@@ -193,8 +197,7 @@ export default defineComponent({
       if (data.email === "" || !data.email.includes("@")) {
         throw Errors.postFormData.invalidEmail;
       }
-
-      pathfinderStore.postPathfinder(data);
+      this.postPathfinder(data);
     },
   },
 });

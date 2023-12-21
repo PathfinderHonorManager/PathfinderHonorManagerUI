@@ -32,7 +32,6 @@ export const useUserStore = defineStore({
       try {
         const response = await clubApi.getClub({ clubcode: clubCode });
         this.setClubName(response.data.name);
-        console.log(this.clubName);
       } catch (err) {
         console.error(`Could not get club name, because: ${err}`);
       }

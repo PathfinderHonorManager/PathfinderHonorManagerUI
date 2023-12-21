@@ -2,53 +2,15 @@ import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
 import { Errors } from "../errors/errors";
 import type { AxiosResponse } from "axios";
-
-export enum status {
-  Planned = "Planned",
-  Earned = "Earned",
-  Awarded = "Awarded",
-}
-
-interface Pathfinder {
-  pathfinderID: string;
-  firstName: string;
-  lastName: string;
-  className: string;
-  grade: number;
-  pathfinderHonors: PathfinderHonors[];
-}
-
-interface PutPathfinder {
-  firstName: string;
-  lastName: string;
-  email: string;
-  grade?: number;
-}
-
-interface PathfinderHonors {
-  pathfinderHonorID: string;
-  honorID: string;
-  name: string;
-  status: string;
-  patchPath: string;
-}
-
-interface PathfinderHonorPostPut {
-  honorID: string;
-  status: status;
-}
-
-interface BulkAdd {
-  pathfinderID: string;
-  honors: PathfinderHonorPostPut[];
-}
-
-// Response interfaces
-interface BulkAddResponse {
-  status: number;
-  error?: string;
-  pathfinderHonor?: PathfinderHonors[];
-}
+import {
+  Pathfinder,
+  PathfinderPost,
+  PathfinderHonors,
+  PathfinderHonorPostPut,
+  BulkAdd,
+  BulkAddResponse,
+  status,
+} from "@/models/pathfinder";
 
 export const usePathfinderStore = defineStore("pathfinder", {
   state: () => ({
@@ -119,9 +81,9 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
-    async postPathfinder(data: PutPathfinder) {
+    async postPathfinder(data: PathfinderPost) {
       try {
-        await api.post(data);
+        const response = await api.post(data);
       } catch (err) {
         console.error(`Can't post this pathfinder because: ${err}`);
       } finally {
@@ -147,7 +109,11 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
-    async putPathfinderHonor(pathfinderID: string, honorID: string, status: status) {
+    async putPathfinderHonor(
+      pathfinderID: string,
+      honorID: string,
+      status: status
+    ) {
       this.loading = true;
       this.error = false;
       const postData: PathfinderHonorPostPut = {
