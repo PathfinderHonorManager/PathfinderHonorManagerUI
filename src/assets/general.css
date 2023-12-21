@@ -16,7 +16,7 @@ other
     /*MARGINS*/
     --topMargin: 4em;
     --leftMargin: 16vw;
-    --textBlockMargin: 12vw;
+    --textBlockMargin: 6vw;
     --itemMargin: 10px;
 
     /*SIZES*/
@@ -112,11 +112,12 @@ body {
 
     background-color: var(--bgColor);
     color: var(--color);
+
+    overflow: hidden;
 }
 
 #grid {
     display: grid;
-    overflow: auto;
     grid-template-areas: "sidebar content";
     grid-template-columns: var(--asideWidth) 1fr;
     grid-template-rows: 100vh;
@@ -407,6 +408,11 @@ button:active {
     100% {transform: translateX(calc(-100% - 1em)) translateY(1.3em); width: 1em;}
 }
 
+form {
+    margin: 0;
+    padding: 0;
+}
+
 input[type=text] {
   margin: var(--itemMargin);
   background-color: var(--grey);
@@ -422,6 +428,8 @@ input[type=text] {
 /*CLASSES*/
 #content {
     overflow-y: scroll;
+    padding: var(--textBlockMargin);
+
     display: grid;
     grid-area: content;
     padding: 8vw;
