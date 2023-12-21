@@ -182,7 +182,7 @@ export default defineComponent({
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
-      grade: Number(this.grade),
+      grade: this.grade === '' ? null : Number(this.grade),
     };
 
       if (data.firstName === "") {
@@ -191,8 +191,8 @@ export default defineComponent({
       if (data.lastName === "") {
         throw Errors.postFormData.invalidLastName;
       }
-      if ((data.grade < 4 && data.grade != 0) || data.grade > 12) {
-        throw Errors.postFormData.invalidGrade;
+      if (data.grade !== null && (data.grade < 4 || data.grade > 12)) {
+      throw Errors.postFormData.invalidGrade;
       }
       if (data.email === "" || !data.email.includes("@")) {
         throw Errors.postFormData.invalidEmail;
