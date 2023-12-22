@@ -16,9 +16,13 @@ const userStore = useUserStore();
 const { getAccessTokenSilently } = useAuth0();
 
 watchEffect(async () => {
-  if (isAuthenticated.value) {
-    await userStore.decodeToken(getAccessTokenSilently);
-    await honorStore.getHonors();
+  try {
+    if (isAuthenticated.value) {
+      await userStore.decodeToken(getAccessTokenSilently);
+      await honorStore.getHonors();
+    }
+  } catch (error) {
+    console.error(error);
   }
 });
 </script>

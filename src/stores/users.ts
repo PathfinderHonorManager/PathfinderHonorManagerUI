@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import clubApi from "@/api/clubs";
 
 export const useUserStore = defineStore({
@@ -22,7 +22,7 @@ export const useUserStore = defineStore({
     },
     async decodeToken(getAccessTokenSilently) {
       const token = await getAccessTokenSilently();
-      const decodedToken = jwt_decode(token);
+      const decodedToken = jwtDecode(token);
       this.setPermissions(decodedToken.permissions);
       this.setClubCode(decodedToken.clubCode);
 
