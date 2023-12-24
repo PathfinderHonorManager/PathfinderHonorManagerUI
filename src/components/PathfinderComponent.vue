@@ -151,10 +151,10 @@ export default defineComponent({
     const canUpdatePathfinder = computed(() =>
       userStore.permissions.includes("update:pathfinders")
     );
-    const firstName = ref('');
-    const lastName = ref('');
-    const email = ref('');
-    const grade = ref('');
+    const firstName = ref("");
+    const lastName = ref("");
+    const email = ref("");
+    const grade = ref("");
 
     return {
       loading,
@@ -178,12 +178,12 @@ export default defineComponent({
   },
   methods: {
     postFormData: function () {
-    const data = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      grade: this.grade === '' ? null : Number(this.grade),
-    };
+      const data = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        grade: this.grade === "" ? null : Number(this.grade),
+      };
 
       if (data.firstName === "") {
         throw Errors.postFormData.invalidFirstName;
@@ -192,7 +192,7 @@ export default defineComponent({
         throw Errors.postFormData.invalidLastName;
       }
       if (data.grade !== null && (data.grade < 4 || data.grade > 12)) {
-      throw Errors.postFormData.invalidGrade;
+        throw Errors.postFormData.invalidGrade;
       }
       if (data.email === "" || !data.email.includes("@")) {
         throw Errors.postFormData.invalidEmail;

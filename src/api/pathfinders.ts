@@ -30,11 +30,11 @@ export default {
   },
   async postPathfinder(data: PathfinderPost) {
     try {
-      await axios.post(data);
+      await this.post(data);
     } catch (err) {
       console.error(`Can't post this pathfinder because: ${err}`);
     } finally {
-      await axios.getAll();
+      await this.getAll();
       this.loading = false;
     }
   },

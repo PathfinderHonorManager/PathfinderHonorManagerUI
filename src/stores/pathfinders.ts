@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
 import { Errors } from "../errors/errors";
-import type { AxiosResponse } from "axios";
 import {
   Pathfinder,
   PathfinderPost,
