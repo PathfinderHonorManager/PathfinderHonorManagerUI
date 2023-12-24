@@ -13,6 +13,27 @@ interface IHonor {
   wikiPath: Url;
 }
 
+export type HonorStoreType = {
+  // State
+  honors: IHonor[];
+  loading: boolean;
+  error: boolean;
+  selected: string[];
+
+  // Getters
+  getHonorsByLevel: (level: number) => IHonor[];
+  getHonorsByQuery: (query: string) => IHonor[];
+  getHonorsBySelection: () => IHonor[];
+  getSelected: () => string[];
+  isSelected: (honorID: string) => boolean;
+
+  // Actions
+  getHonors: () => Promise<void>;
+  selectHonor: (honorID: string) => void;
+  toggleSelection: (honorID: string) => void;
+  clearSelection: () => void;
+};
+
 export const useHonorStore = defineStore("honorStore", {
   state: () => ({
     honors: [] as IHonor[],

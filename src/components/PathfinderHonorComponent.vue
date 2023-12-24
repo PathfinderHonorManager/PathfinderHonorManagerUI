@@ -31,13 +31,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import { storeToRefs } from "pinia";
+import { usePathfinderStore } from "@/stores/pathfinders";
 
 export default defineComponent({
   setup(props) {
-    const usePathfinderStore = inject("usePathfinderStore");
     const pathfinderStore = usePathfinderStore();
+    if (!pathfinderStore) {
+      throw new Error("PathfinderStore is not provided");
+    }
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
 

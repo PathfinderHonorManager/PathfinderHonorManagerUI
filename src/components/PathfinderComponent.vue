@@ -108,13 +108,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, inject, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
 import { Errors } from "../errors/errors";
 import { storeToRefs } from "pinia";
+import { usePathfinderStore } from "@/stores/pathfinders";
+import { useHonorStore } from "@/stores/honors";
+import { useUserStore } from "@/stores/users";
+
 
 export default defineComponent({
   components: {
@@ -124,13 +128,20 @@ export default defineComponent({
     ModalComponent,
   },
   setup() {
-    const usePathfinderStore = inject("usePathfinderStore");
-    const useHonorStore = inject("useHonorStore");
-    const useUserStore = inject("useUserStore");
-
     const pathfinderStore = usePathfinderStore();
+    if (!pathfinderStore) {
+      throw new Error("PathfinderStore is not provided");
+    }
+
     const honorStore = useHonorStore();
+    if (!honorStore) {
+      throw new Error("HonorStore is not provided");
+    }
+
     const userStore = useUserStore();
+    if (!userStore) {
+      throw new Error("UserStore is not provided");
+    }
 
     honorStore.honors.length === 0 ? honorStore.getHonors() : undefined;
     pathfinderStore.pathfinders.length === 0

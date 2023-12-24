@@ -11,6 +11,40 @@ import {
   status,
 } from "@/models/pathfinder";
 
+// Define the type
+export type PathfinderStoreType = {
+  // State
+  pathfinders: Pathfinder[];
+  loading: boolean;
+  error: boolean;
+  selected: string[];
+
+  // Getters
+  getPathfindersByGrade: (grade: number) => Pathfinder[];
+  getPathfindersBySelection: () => Pathfinder[];
+  getSelected: () => string[];
+  isSelected: (pathfinderID: string) => boolean;
+
+  // Actions
+  getPathfinders: () => Promise<void>;
+  getPathfinderById: (pathfinderID: string) => Promise<void>;
+  postPathfinder: (data: PathfinderPost) => Promise<void>;
+  postPathfinderHonor: (pathfinderID: string, honorId: string) => Promise<void>;
+  putPathfinderHonor: (
+    pathfinderID: string,
+    honorID: string,
+    status: status
+  ) => Promise<void>;
+  bulkAddPathfinderHonors: (
+    pathfinderIDs: string[],
+    honorIDs: string[]
+  ) => Promise<void>;
+  selectPathfinder: (pathfinderID: string) => void;
+  selectAll: () => void;
+  toggleSelection: (pathfinderID: string) => void;
+  clearSelection: () => void;
+};
+
 export const usePathfinderStore = defineStore("pathfinder", {
   state: () => ({
     // define the data shape of the store using the interface above
