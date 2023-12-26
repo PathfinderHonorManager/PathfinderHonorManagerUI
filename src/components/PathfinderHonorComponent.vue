@@ -20,8 +20,10 @@
         </select>
         <button
           v-if="canUpdatePathfinder"
-          class="outline"
-          style="pointer-events: none; color: grey"
+          :class="canEdit ? 'primary button' : 'outline'"
+          :style="{
+            'pointer-events': canEdit ? 'auto' : 'none',
+          }"
         >
           Update Status <strong>&check;</strong>
         </button>
@@ -36,7 +38,7 @@ import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 
 export default defineComponent({
-  setup(props) {
+  setup() {
     const pathfinderStore = usePathfinderStore();
     if (!pathfinderStore) {
       throw new Error("PathfinderStore is not provided");
@@ -51,35 +53,6 @@ export default defineComponent({
       this.style.pointerEvents = "none";
     }
 
-    const colors = ["var(--secondaryColor)", "var(--orange)", "mediumseagreen"];
-    function getSelectedIndex() {
-      const s = this.selectedIndex;
-      this.style.backgroundColor = colors[s];
-      let siblingButton = this.nextSibling;
-      siblingButton.style.color = "var(--color)";
-      siblingButton.style.backgroundColor = "var(--blue)";
-      siblingButton.style.border = "";
-      siblingButton.style.pointerEvents = "auto";
-      if (siblingButton.getAttribute("listener") !== true) {
-        siblingButton.addEventListener("click", resetButtonStyle);
-      }
-    }
-
-    async function colorAll() {
-      await document.getElementsByClassName("statusselector");
-      const el = document.getElementsByClassName(
-        "statusselector"
-      ) as HTMLCollectionOf<HTMLElement>;
-      for (let i = 0; i < el.length; i++) {
-        el[i].style.backgroundColor = colors[el[i].selectedIndex];
-        el[i].addEventListener("change", getSelectedIndex);
-      }
-    }
-
-    colorAll();
-
-    const canUpdatePathfinder = props.canUpdatePathfinder;
-
     return {
       loading,
       error,
@@ -87,9 +60,7 @@ export default defineComponent({
       getPathfinders: pathfinderStore.getPathfinders,
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
       putPathfinderHonor: pathfinderStore.putPathfinderHonor,
-      getSelectedIndex,
       resetButtonStyle,
-      canUpdatePathfinder,
     };
   },
   props: {
@@ -126,6 +97,24 @@ export default defineComponent({
     return {
       newStatus: this.status,
     };
+  },
+  computed: {
+    selectedColor() {
+      const colors = {
+        Planned: "var(--secondaryColor)",
+        Earned: "var(--orange)",
+        Awarded: "mediumseagreen",
+      };
+      return colors[this.newStatus];
+    },
+    canEdit() {
+      return this.canUpdatePathfinder && this.newStatus !== this.status;
+    },
+  },
+  methods: {
+    updateColor(event) {
+      this.newStatus = event.target.value;
+    },
   },
 });
 </script>
@@ -189,6 +178,10 @@ select:focus > option {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 100%;
   align-self: flex-end;
+}
+
+.selectcontainer > select {
+  background-color: v-bind(selectedColor);
 }
 
 .selectcontainer > button {

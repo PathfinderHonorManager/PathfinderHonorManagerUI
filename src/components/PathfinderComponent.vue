@@ -119,7 +119,6 @@ import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";
 import { useUserStore } from "@/stores/users";
 
-
 export default defineComponent({
   components: {
     PostPathfinderHonorComponent,

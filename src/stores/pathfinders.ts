@@ -4,13 +4,11 @@ import { Errors } from "../errors/errors";
 import {
   Pathfinder,
   PathfinderPost,
-  PathfinderHonors,
   PathfinderHonorPostPut,
   BulkAdd,
   BulkAddResponse,
   status,
 } from "@/models/pathfinder";
-
 // Define the type
 export type PathfinderStoreType = {
   // State
@@ -81,9 +79,14 @@ export const usePathfinderStore = defineStore("pathfinder", {
       try {
         const response = await api.getAll();
         this.pathfinders = response.data;
-      } catch (err: any) {
+      } catch (err) {
         this.error = true;
-        if (err.response && err.response.status) {
+        if (
+          typeof err === "object" &&
+          err !== null &&
+          "response" in err &&
+          "status" in err.response
+        ) {
           if (err.response.status === 404) {
             throw Errors.apiResponse.status(err.response.status);
           }

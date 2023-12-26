@@ -1,14 +1,9 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
-import { Errors } from "../errors/errors";
 import {
-  Pathfinder,
   PathfinderPost,
-  PathfinderHonors,
   PathfinderHonorPostPut,
   BulkAdd,
-  BulkAddResponse,
-  status,
 } from "@/models/pathfinder";
 
 const BASE_URL =
@@ -38,7 +33,10 @@ export default {
       this.loading = false;
     }
   },
-  async postPathfinderHonor(pathfinderID: string, postData: string) {
+  async postPathfinderHonor(
+    pathfinderID: string,
+    postData: PathfinderHonorPostPut
+  ) {
     this.loading = true;
     this.error = false;
     try {
@@ -53,7 +51,11 @@ export default {
       this.loading = false;
     }
   },
-  putPathfinderHonor: (id: string, honorid: string, data: JSON) => {
+  putPathfinderHonor: (
+    id: string,
+    honorid: string,
+    data: PathfinderHonorPostPut
+  ) => {
     return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
   },
   bulkAddPathfinderHonors: (data: BulkAdd[]) => {
