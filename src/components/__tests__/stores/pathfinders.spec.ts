@@ -1,7 +1,20 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { createPinia, setActivePinia } from "pinia";
 import { status } from "@/models/pathfinder";
+import api from "@/api/pathfinders";
+// mockAxiosResponse.ts
+
+import { AxiosResponse, AxiosHeaders } from "axios";
+
+export const mockAxiosResponse = <T>(data: T): AxiosResponse<T> => ({
+  data,
+  status: 200,
+  statusText: "OK",
+  headers: {},
+  config: { headers: {} as AxiosHeaders },
+  request: {},
+});
 
 describe("Pathfinder Store", () => {
   let store;
@@ -25,7 +38,7 @@ describe("Pathfinder Store", () => {
           pathfinderID: "34f93233-7c0a-48a7-81fc-2fa56473874a",
           honorID: "1c82e3ae-1968-11ec-ae66-d7248c0cf660",
           name: "Animal Tracking",
-          status: status.Earned,
+          status: status.Planned,
           patchPath: "Animal_Tracking_Honor.png",
         },
         {
@@ -70,9 +83,7 @@ describe("Pathfinder Store", () => {
           status: status.Planned,
           patchPath: "Optics_Honor.png",
         },
-        // Add other honors if needed
       ],
-      // Add other pathfinders if needed
     },
   ];
 
@@ -139,5 +150,141 @@ describe("Pathfinder Store", () => {
       expect(isSelected).toBe(true);
       // This test expects the pathfinder with the given ID to be selected
     });
+  });
+
+  describe("Actions", () => {
+    beforeEach(() => {
+      store.$reset();
+      vi.resetAllMocks();
+      store.pathfinders = mockPathfinders;
+    });
+
+    it("getPathfinders should update pathfinders and reset loading and error", async () => {
+      vi.spyOn(api, "getAll").mockResolvedValue(
+        mockAxiosResponse(mockPathfinders)
+      );
+
+      await store.getPathfinders();
+
+      expect(store.pathfinders).toEqual(mockPathfinders);
+      expect(store.loading).toBe(false);
+      expect(store.error).toBe(false);
+    });
+
+    it("post should add a new pathfinder to the store", async () => {
+      const newPathfinder = {
+        firstName: "Peter",
+        lastName: "Cottontail",
+        className: "Guide",
+        grade: 10,
+      };
+
+      // Use the mockAxiosResponse function to create a mock response
+      vi.spyOn(api, "post").mockResolvedValue(mockAxiosResponse(newPathfinder));
+
+      await store.postPathfinder(newPathfinder);
+
+      // Assuming the store's `pathfinders` array is updated after calling post
+      expect(store.pathfinders).toContainEqual(newPathfinder);
+    });
+
+    it("putPathfinderHonor should update an honor's status for a specific pathfinder", async () => {
+      const pathfinderID = mockPathfinders[0].pathfinderID;
+      const honorToUpdate = mockPathfinders[0].pathfinderHonors[0];
+      const updatedHonor = { ...honorToUpdate, status: status.Earned };
+
+      // Mock the putPathfinderHonor API call with an empty response
+      vi.spyOn(api, "putPathfinderHonor").mockResolvedValue(
+        mockAxiosResponse({})
+      );
+
+      // Prepare updated pathfinder data for the mock get response
+      const updatedPathfinderData = {
+        ...mockPathfinders[0],
+        pathfinderHonors: mockPathfinders[0].pathfinderHonors.map((honor) =>
+          honor.pathfinderHonorID === honorToUpdate.pathfinderHonorID
+            ? updatedHonor
+            : honor
+        ),
+      };
+
+      // Mock the get API call used in getPathfinderById
+      vi.spyOn(api, "get").mockResolvedValue(
+        mockAxiosResponse(updatedPathfinderData)
+      );
+
+      // Act
+      await store.putPathfinderHonor(
+        pathfinderID,
+        honorToUpdate.honorID,
+        updatedHonor.status
+      );
+
+      // Wait for the store to update
+      await store.getPathfinderById(pathfinderID);
+
+      // Assert
+      const updatedPathfinder = store.pathfinders.find(
+        (p) => p.pathfinderID === pathfinderID
+      );
+      const updatedHonorInStore = updatedPathfinder.pathfinderHonors.find(
+        (h) => h.pathfinderHonorID === honorToUpdate.pathfinderHonorID
+      );
+      expect(updatedHonorInStore.status).toBe(status.Earned);
+    });
+
+    // it("bulkAddPathfinderHonors should add multiple honors to multiple pathfinders", async () => {
+    //   const pathfinderIDs = [
+    //     mockPathfinders[0].pathfinderID,
+    //     mockPathfinders[1].pathfinderID,
+    //   ];
+
+    //   const honorIDs = [
+    //     "ba61fbec-0575-47bd-8732-a6d74314beba",
+    //     "b267e7d8-f2a6-4eb9-99ac-e5054de0b804",
+    //   ]; // Randomly generated GUIDs
+
+    //   // Prepare bulk add data
+    //   const bulkAddData = pathfinderIDs.map((id) => ({
+    //     pathfinderID: id,
+    //     honors: honorIDs.map((honorID) => ({
+    //       honorID,
+    //       status: status.Planned,
+    //     })),
+    //   }));
+
+    //   // Mock response for bulkAddPathfinderHonors
+    //   const mockBulkAddResponse = bulkAddData.flatMap((item) =>
+    //     item.honors.map((honor) => ({
+    //       status: 201, // Assuming a successful addition
+    //       pathfinderHonor: {
+    //         ...honor,
+    //         pathfinderHonorID: `mockHonorID-${honor.honorID}`,
+    //       },
+    //     }))
+    //   );
+
+    //   vi.spyOn(api, "bulkAddPathfinderHonors").mockResolvedValue(
+    //     mockAxiosResponse(mockBulkAddResponse)
+    //   );
+    //   console.log(mockPathfinders);
+    //   // Act
+    //   await store.bulkAddPathfinderHonors(pathfinderIDs, honorIDs);
+
+    //   // Assert
+    //   pathfinderIDs.forEach((pathfinderID) => {
+    //     const pathfinder = store.pathfinders.find(
+    //       (p) => p.pathfinderID === pathfinderID
+    //     );
+
+    //     // Check if the pathfinder's honors contain the new honor IDs
+    //     const hasNewHonors = honorIDs.every((honorID) =>
+    //       pathfinder.pathfinderHonors.some((honor) => honor.honorID === honorID)
+    //     );
+    //     console.log(mockPathfinders);
+
+    //     expect(hasNewHonors).toBeTruthy();
+    //   });
+    // });
   });
 });
