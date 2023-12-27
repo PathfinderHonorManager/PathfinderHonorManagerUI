@@ -233,58 +233,60 @@ describe("Pathfinder Store", () => {
       expect(updatedHonorInStore.status).toBe(status.Earned);
     });
 
-    // it("bulkAddPathfinderHonors should add multiple honors to multiple pathfinders", async () => {
-    //   const pathfinderIDs = [
-    //     mockPathfinders[0].pathfinderID,
-    //     mockPathfinders[1].pathfinderID,
-    //   ];
+    it("bulkAddPathfinderHonors should add multiple honors to multiple pathfinders", async () => {
+      const pathfinderIDs = [
+        mockPathfinders[0].pathfinderID,
+        mockPathfinders[1].pathfinderID,
+      ];
 
-    //   const honorIDs = [
-    //     "ba61fbec-0575-47bd-8732-a6d74314beba",
-    //     "b267e7d8-f2a6-4eb9-99ac-e5054de0b804",
-    //   ]; // Randomly generated GUIDs
+      const honorIDs = [
+        "ba61fbec-0575-47bd-8732-a6d74314beba",
+        "b267e7d8-f2a6-4eb9-99ac-e5054de0b804",
+      ]; // Randomly generated GUIDs
 
-    //   // Prepare bulk add data
-    //   const bulkAddData = pathfinderIDs.map((id) => ({
-    //     pathfinderID: id,
-    //     honors: honorIDs.map((honorID) => ({
-    //       honorID,
-    //       status: status.Planned,
-    //     })),
-    //   }));
+      // Prepare bulk add data
+      const bulkAddData = pathfinderIDs.map((id) => ({
+        pathfinderID: id,
+        honors: honorIDs.map((honorID) => ({
+          honorID,
+          status: status.Planned,
+        })),
+      }));
 
-    //   // Mock response for bulkAddPathfinderHonors
-    //   const mockBulkAddResponse = bulkAddData.flatMap((item) =>
-    //     item.honors.map((honor) => ({
-    //       status: 201, // Assuming a successful addition
-    //       pathfinderHonor: {
-    //         ...honor,
-    //         pathfinderHonorID: `mockHonorID-${honor.honorID}`,
-    //       },
-    //     }))
-    //   );
+      // Mock response for bulkAddPathfinderHonors
+      const mockBulkAddResponse = bulkAddData.flatMap((item) =>
+        item.honors.map((honor) => ({
+          status: 201,
+          pathfinderHonor: {
+            pathfinderHonorID: honor.honorID,
+            pathfinderID: item.pathfinderID,
+            honorID: honor.honorID,
+            name: "Mock Honor Name",
+            status: "Planned",
+            patchFilename: "mock_patch_filename.png",
+            wikiPath: "https://wiki.pathfindersonline.org/mock_honor",
+          },
+        }))
+      );
 
-    //   vi.spyOn(api, "bulkAddPathfinderHonors").mockResolvedValue(
-    //     mockAxiosResponse(mockBulkAddResponse)
-    //   );
-    //   console.log(mockPathfinders);
-    //   // Act
-    //   await store.bulkAddPathfinderHonors(pathfinderIDs, honorIDs);
+      vi.spyOn(api, "bulkAddPathfinderHonors").mockResolvedValue(
+        mockAxiosResponse(mockBulkAddResponse)
+      );
+      // Act
+      await store.bulkAddPathfinderHonors(pathfinderIDs, honorIDs);
+      // Assert
+      pathfinderIDs.forEach((pathfinderID) => {
+        const pathfinder = store.pathfinders.find(
+          (p) => p.pathfinderID === pathfinderID
+        );
 
-    //   // Assert
-    //   pathfinderIDs.forEach((pathfinderID) => {
-    //     const pathfinder = store.pathfinders.find(
-    //       (p) => p.pathfinderID === pathfinderID
-    //     );
+        // Check if the pathfinder's honors contain the new honor IDs
+        const hasNewHonors = honorIDs.every((honorID) =>
+          pathfinder.pathfinderHonors.some((honor) => honor.honorID === honorID)
+        );
 
-    //     // Check if the pathfinder's honors contain the new honor IDs
-    //     const hasNewHonors = honorIDs.every((honorID) =>
-    //       pathfinder.pathfinderHonors.some((honor) => honor.honorID === honorID)
-    //     );
-    //     console.log(mockPathfinders);
-
-    //     expect(hasNewHonors).toBeTruthy();
-    //   });
-    // });
+        expect(hasNewHonors).toBeTruthy();
+      });
+    });
   });
 });
