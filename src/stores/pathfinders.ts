@@ -1,16 +1,47 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
 import { Errors } from "../errors/errors";
-import type { AxiosResponse } from "axios";
 import {
   Pathfinder,
   PathfinderPost,
-  PathfinderHonors,
   PathfinderHonorPostPut,
   BulkAdd,
   BulkAddResponse,
   status,
 } from "@/models/pathfinder";
+// Define the type
+export type PathfinderStoreType = {
+  // State
+  pathfinders: Pathfinder[];
+  loading: boolean;
+  error: boolean;
+  selected: string[];
+
+  // Getters
+  getPathfindersByGrade: (grade: number) => Pathfinder[];
+  getPathfindersBySelection: () => Pathfinder[];
+  getSelected: () => string[];
+  isSelected: (pathfinderID: string) => boolean;
+
+  // Actions
+  getPathfinders: () => Promise<void>;
+  getPathfinderById: (pathfinderID: string) => Promise<void>;
+  postPathfinder: (data: PathfinderPost) => Promise<void>;
+  postPathfinderHonor: (pathfinderID: string, honorId: string) => Promise<void>;
+  putPathfinderHonor: (
+    pathfinderID: string,
+    honorID: string,
+    status: status
+  ) => Promise<void>;
+  bulkAddPathfinderHonors: (
+    pathfinderIDs: string[],
+    honorIDs: string[]
+  ) => Promise<void>;
+  selectPathfinder: (pathfinderID: string) => void;
+  selectAll: () => void;
+  toggleSelection: (pathfinderID: string) => void;
+  clearSelection: () => void;
+};
 
 export const usePathfinderStore = defineStore("pathfinder", {
   state: () => ({
@@ -48,9 +79,14 @@ export const usePathfinderStore = defineStore("pathfinder", {
       try {
         const response = await api.getAll();
         this.pathfinders = response.data;
-      } catch (err: any) {
+      } catch (err) {
         this.error = true;
-        if (err.response && err.response.status) {
+        if (
+          typeof err === "object" &&
+          err !== null &&
+          "response" in err &&
+          "status" in err.response
+        ) {
           if (err.response.status === 404) {
             throw Errors.apiResponse.status(err.response.status);
           }

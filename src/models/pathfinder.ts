@@ -7,6 +7,7 @@ export enum status {
 
 export interface PathfinderHonors {
   pathfinderHonorID: string;
+  pathfinderID: string;
   honorID: string;
   name: string;
   status: status;

@@ -2,6 +2,20 @@ import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
 import clubApi from "@/api/clubs";
 
+export type UserStoreType = {
+  // State
+  permissions: any[];
+  clubCode: string;
+  clubName: string;
+
+  // Actions
+  setPermissions: (permissions: any[]) => void;
+  setClubCode: (clubCode: string) => void;
+  setClubName: (clubName: string) => void;
+  decodeToken: (getAccessTokenSilently: any) => Promise<void>;
+  getClubName: (clubCode: string) => Promise<void>;
+};
+
 export const useUserStore = defineStore({
   id: "clubUser",
   state: () => ({

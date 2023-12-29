@@ -20,8 +20,10 @@
         </select>
         <button
           v-if="canUpdatePathfinder"
-          class="outline"
-          style="pointer-events: none; color: grey"
+          :class="canEdit ? 'primary button' : 'outline'"
+          :style="{
+            'pointer-events': canEdit ? 'auto' : 'none',
+          }"
         >
           Update Status <strong>&check;</strong>
         </button>
@@ -31,13 +33,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import { storeToRefs } from "pinia";
+import { usePathfinderStore } from "@/stores/pathfinders";
 
 export default defineComponent({
-  setup(props) {
-    const usePathfinderStore = inject("usePathfinderStore");
+  setup() {
     const pathfinderStore = usePathfinderStore();
+    if (!pathfinderStore) {
+      throw new Error("PathfinderStore is not provided");
+    }
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
 
@@ -47,6 +52,8 @@ export default defineComponent({
       this.style.border = "var(lightBorder)";
       this.style.pointerEvents = "none";
     }
+
+
 
     const colors = ["var(--grey)", "var(--orange)", "mediumseagreen"];
     function getSelectedIndex() {
@@ -77,6 +84,7 @@ export default defineComponent({
 
     const canUpdatePathfinder = props.canUpdatePathfinder;
 
+
     return {
       loading,
       error,
@@ -84,9 +92,7 @@ export default defineComponent({
       getPathfinders: pathfinderStore.getPathfinders,
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
       putPathfinderHonor: pathfinderStore.putPathfinderHonor,
-      getSelectedIndex,
       resetButtonStyle,
-      canUpdatePathfinder,
     };
   },
   props: {
@@ -123,6 +129,24 @@ export default defineComponent({
     return {
       newStatus: this.status,
     };
+  },
+  computed: {
+    selectedColor() {
+      const colors = {
+        Planned: "var(--secondaryColor)",
+        Earned: "var(--orange)",
+        Awarded: "mediumseagreen",
+      };
+      return colors[this.newStatus];
+    },
+    canEdit() {
+      return this.canUpdatePathfinder && this.newStatus !== this.status;
+    },
+  },
+  methods: {
+    updateColor(event) {
+      this.newStatus = event.target.value;
+    },
   },
 });
 </script>
@@ -186,6 +210,10 @@ select:focus > option {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 100%;
   align-self: flex-end;
+}
+
+.selectcontainer > select {
+  background-color: v-bind(selectedColor);
 }
 
 .selectcontainer > button {

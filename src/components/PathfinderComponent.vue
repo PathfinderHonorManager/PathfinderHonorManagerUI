@@ -1,14 +1,22 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <p v-if="error">Error!</p>
   <span class="loader" v-if="loading">Loading Pathfinders</span>
   <div v-if="pathfinders[0]" class="content-box">
-
     <div
-      style="display: flex; justify-content: space-between; align-items: flex-end; margin: 0; padding: 0"
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin: 0;
+        padding: 0;
+      "
     >
-      <h3 style="margin: 0;">{{ pathfinders.length }} Members</h3>
-      <button class="biglogobutton" @click="creatingPathfinder = true" v-if="canCreatePathfinder">
+      <h3 style="margin: 0">{{ pathfinders.length }} Members</h3>
+      <button
+        class="biglogobutton"
+        @click="creatingPathfinder = true"
+        v-if="canCreatePathfinder"
+      >
         +
       </button>
     </div>
@@ -41,10 +49,9 @@
       </button>
 
       <PostPathfinderHonorComponent
-       v-if="showing[i] && canUpdatePathfinder"
-      :pathfinderID="pathfinder.pathfinderID"
+        v-if="showing[i] && canUpdatePathfinder"
+        :pathfinderID="pathfinder.pathfinderID"
       />
-
 
       <div class="content-box">
         <div v-if="showing[i]" class="honortable">
@@ -72,10 +79,7 @@
   >
     <div class="outline">
       <form
-        @submit.prevent="
-          postFormData();
-          creatingPathfinder = false;
-        "
+        @submit.prevent="postFormData()"
         style="
           display: flex;
           justify-content: center;
@@ -84,37 +88,47 @@
           margin: 0;
         "
       >
-      <div>
-        <h3>First Name:</h3>
-        <input type="text" v-model="firstName" />
-      </div>
-      <div>
-        <h3>Last Name:</h3>
-        <input type="text" v-model="lastName" />
-      </div>
-      <div>
-        <h3>Email:</h3>
-        <input type="text" v-model="email" />
-      </div>
-      <div>
-        <h3>Grade:</h3>
-        <input type="text" v-model="grade" />
-      </div>
+        <div>
+          <h3>First Name:</h3>
+          <input type="text" v-model="firstName" />
+          <p v-if="firstNameError">{{ firstNameError }}</p>
+        </div>
+        <div>
+          <h3>Last Name:</h3>
+          <input type="text" v-model="lastName" />
+          <p v-if="lastNameError">{{ lastNameError }}</p>
+        </div>
+        <div>
+          <h3>Email:</h3>
+          <input type="text" v-model="email" />
+          <p v-if="emailError">{{ emailError }}</p>
+        </div>
+        <div>
+          <h3>Grade:</h3>
+          <input type="text" v-model="grade" />
+          <p v-if="gradeError">{{ gradeError }}</p>
+        </div>
 
-        <input type="submit" style="font-size: 1.5em; margin: 20px;" class="button-like" />
+        <input
+          type="submit"
+          style="font-size: 1.5em; margin: 20px"
+          class="button-like"
+        />
       </form>
     </div>
   </ModalComponent>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, inject, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
-import { Errors } from "../errors/errors";
 import { storeToRefs } from "pinia";
+import { usePathfinderStore } from "@/stores/pathfinders";
+import { useHonorStore } from "@/stores/honors";
+import { useUserStore } from "@/stores/users";
 
 export default defineComponent({
   components: {
@@ -124,13 +138,20 @@ export default defineComponent({
     ModalComponent,
   },
   setup() {
-    const usePathfinderStore = inject("usePathfinderStore");
-    const useHonorStore = inject("useHonorStore");
-    const useUserStore = inject("useUserStore");
-
     const pathfinderStore = usePathfinderStore();
+    if (!pathfinderStore) {
+      throw new Error("PathfinderStore is not provided");
+    }
+
     const honorStore = useHonorStore();
+    if (!honorStore) {
+      throw new Error("HonorStore is not provided");
+    }
+
     const userStore = useUserStore();
+    if (!userStore) {
+      throw new Error("UserStore is not provided");
+    }
 
     honorStore.honors.length === 0 ? honorStore.getHonors() : undefined;
     pathfinderStore.pathfinders.length === 0
@@ -151,10 +172,14 @@ export default defineComponent({
     const canUpdatePathfinder = computed(() =>
       userStore.permissions.includes("update:pathfinders")
     );
-    const firstName = ref('');
-    const lastName = ref('');
-    const email = ref('');
-    const grade = ref('');
+    const firstName = ref("");
+    const lastName = ref("");
+    const email = ref("");
+    const grade = ref("");
+    const firstNameError = ref("");
+    const lastNameError = ref("");
+    const emailError = ref("");
+    const gradeError = ref("");
 
     return {
       loading,
@@ -174,30 +199,53 @@ export default defineComponent({
       lastName,
       email,
       grade,
+      firstNameError,
+      lastNameError,
+      emailError,
+      gradeError,
     };
   },
   methods: {
     postFormData: function () {
-    const data = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      grade: this.grade === '' ? null : Number(this.grade),
-    };
+      const data = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        grade: this.grade === "" ? null : Number(this.grade),
+      };
 
+      // Validate the form data
+      let isValid = true;
       if (data.firstName === "") {
-        throw Errors.postFormData.invalidFirstName;
+        this.firstNameError = "First name is required";
+        isValid = false;
+      } else {
+        this.firstNameError = "";
       }
       if (data.lastName === "") {
-        throw Errors.postFormData.invalidLastName;
+        this.lastNameError = "Last name is required";
+        isValid = false;
+      } else {
+        this.lastNameError = "";
       }
       if (data.grade !== null && (data.grade < 4 || data.grade > 12)) {
-      throw Errors.postFormData.invalidGrade;
+        this.gradeError = "Grade must be between 4 and 12";
+        isValid = false;
+      } else {
+        this.gradeError = "";
       }
       if (data.email === "" || !data.email.includes("@")) {
-        throw Errors.postFormData.invalidEmail;
+        this.emailError = "Invalid email";
+        isValid = false;
+      } else {
+        this.emailError = "";
       }
-      this.postPathfinder(data);
+
+      // Only submit the form if it is valid
+      if (isValid) {
+        this.postPathfinder(data);
+        this.creatingPathfinder = false;
+      }
     },
   },
 });
