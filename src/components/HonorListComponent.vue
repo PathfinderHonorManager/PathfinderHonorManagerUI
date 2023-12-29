@@ -7,7 +7,6 @@
       @keyup="doHonorSearch"
       type="text"
       placeholder="Search. . . "
-      style="background-color: var(--secondaryColor)"
     />
   </div>
 
@@ -23,14 +22,14 @@
         @click="toggleSelection(honor.honorID)"
         :style="{
           borderColor: isSelected(honor.honorID)
-            ? 'var(--blue)'
-            : 'var(--secondaryColor)',
+            ? 'var(--actionColor)'
+            : 'var(--lightGrey)',
         }"
       >
         <button
           v-if="isSelected(honor.honorID)"
           class="deselect-button"
-        ></button>
+        ><img src="@/assets/close-icon.svg" /></button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +
@@ -44,7 +43,7 @@
   </div>
   <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
     <h3>Selected Honors</h3>
-    <div class="outline" style="display: flex">
+    <div class="outline" style="display: flex; flex-wrap: wrap;">
       <button
         v-for="(honor, i) in selectedHonors"
         :key="i"
@@ -71,8 +70,8 @@
         class="button"
         :style="{
           backgroundColor: pathfinderStore.isSelected(recipient.pathfinderID)
-            ? 'var(--blue)'
-            : 'var(--secondaryColor)',
+            ? 'var(--actionColor)'
+            : 'var(--lightGrey)',
           flexGrow: 1,
         }"
         @click="toggleRecipientSelection(recipient.pathfinderID)"
@@ -194,7 +193,7 @@ export default defineComponent({
 <style scoped>
 #honortableitem {
   width: 100%;
-  border-color: var(--secondaryColor);
+  border-color: var(--lightBorder);
   margin: 0;
   height: auto;
   overflow: hidden;
@@ -203,24 +202,18 @@ export default defineComponent({
 }
 
 #honortableitem:hover {
-  background-color: var(--secondaryColor);
+  background-color: var(--grey);
 }
 
 .selected {
-  border-color: var(--blue);
+  border-color: var(--actionColor);
 }
 
 .deselect-button {
-  display: block;
-  background-color: var(--blue);
-  border: 2px solid var(--blue);
-  padding: 0;
-  margin: 0;
-  height: 25px;
-  width: 25px;
-  background-image: url("~@/assets/close-icon.svg");
-  background-size: 22.5px;
-  background-repeat: no-repeat;
-  background-position: -0.5125px -0.5125px;
+  display: flex;
+  justify-self: start;
+  align-self: left;
+  font-size: 0.45em;
+  background-color: var(--actionColor);
 }
 </style>

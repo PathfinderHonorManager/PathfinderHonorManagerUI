@@ -53,6 +53,38 @@ export default defineComponent({
       this.style.pointerEvents = "none";
     }
 
+
+
+    const colors = ["var(--grey)", "var(--orange)", "mediumseagreen"];
+    function getSelectedIndex() {
+      const s = this.selectedIndex;
+      this.style.backgroundColor = colors[s];
+      let siblingButton = this.nextSibling;
+      siblingButton.style.color = "var(--color)";
+      siblingButton.style.backgroundColor = "var(--actionColor)";
+      siblingButton.style.border = "";
+      siblingButton.style.pointerEvents = "auto";
+      if (siblingButton.getAttribute("listener") !== true) {
+        siblingButton.addEventListener("click", resetButtonStyle);
+      }
+    }
+
+    async function colorAll() {
+      await document.getElementsByClassName("statusselector");
+      const el = document.getElementsByClassName(
+        "statusselector"
+      ) as HTMLCollectionOf<HTMLElement>;
+      for (let i = 0; i < el.length; i++) {
+        el[i].style.backgroundColor = colors[el[i].selectedIndex];
+        el[i].addEventListener("change", getSelectedIndex);
+      }
+    }
+
+    colorAll();
+
+    const canUpdatePathfinder = props.canUpdatePathfinder;
+
+
     return {
       loading,
       error,
