@@ -36,7 +36,7 @@ export type PathfinderStoreType = {
   bulkAddPathfinderHonors: (
     pathfinderIDs: string[],
     honorIDs: string[]
-  ) => Promise<void>;
+  ) => Promise<{ successful: any[], failed: any[] }>;
   selectPathfinder: (pathfinderID: string) => void;
   selectAll: () => void;
   toggleSelection: (pathfinderID: string) => void;
@@ -185,6 +185,8 @@ export const usePathfinderStore = defineStore("pathfinder", {
 
         if (response && response.data) {
           const tempPathfinderHonors = {};
+          const successful = [];
+          const failed = [];
 
           response.data.forEach((result: BulkAddResponse) => {
             if (result.status === 201 && result.pathfinderHonor) {
@@ -193,8 +195,10 @@ export const usePathfinderStore = defineStore("pathfinder", {
                 tempPathfinderHonors[pathfinderID] = [];
               }
               tempPathfinderHonors[pathfinderID].push(result.pathfinderHonor);
+              successful.push(result.pathfinderHonor);
             } else if (result.error) {
               console.error(`Could not add honors, because: ${result.error}`);
+              failed.push(result.error);
             }
           });
 
@@ -211,6 +215,9 @@ export const usePathfinderStore = defineStore("pathfinder", {
               return pathfinder;
             }
           });
+
+          // Return the successful and failed operations
+          return { successful, failed };
         }
       } catch (err) {
         this.error = true;

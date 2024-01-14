@@ -142,12 +142,14 @@ export default defineComponent({
           : [];
     }
 
-    function addSelectedToClub() {
+    async function addSelectedToClub() {
       bulkAdd.value = true;
-      pathfinderStore.bulkAddPathfinderHonors(
+      const { successful, failed } = await pathfinderStore.bulkAddPathfinderHonors(
         recipients.value.map((p) => p.pathfinderID),
         selectedHonors.value.map((h) => h.honorID)
       );
+      console.log(`${successful.length} honors were successfully added.`);
+      console.log(`${failed.length} honors failed to add.`, failed);
       pathfinderStore.selected = [];
       honorStore.selected = [];
     }
