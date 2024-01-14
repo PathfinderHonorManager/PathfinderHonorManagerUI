@@ -69,12 +69,15 @@
         :key="i"
         class="button"
         :style="{
-          backgroundColor: pathfinderStore.isSelected(recipient.pathfinderID)
-            ? 'var(--actionColor)'
-            : 'var(--lightGrey)',
+          backgroundColor: pathfinderHasSelectedHonor(recipient.pathfinderID)
+            ? 'var(--red)'
+            : pathfinderStore.isSelected(recipient.pathfinderID)
+              ? 'var(--actionColor)'
+              : 'var(--lightGrey)',
           flexGrow: 1,
         }"
-        @click="toggleRecipientSelection(recipient.pathfinderID)"
+        @click="pathfinderHasSelectedHonor(recipient.pathfinderID) ? null : toggleRecipientSelection(recipient.pathfinderID)"
+        :title="pathfinderHasSelectedHonor(recipient.pathfinderID) ? 'This pathfinder already has the selected honor' : ''"
       >
         {{ recipient.firstName }} {{ recipient.lastName }}
       </button>
@@ -166,6 +169,11 @@ export default defineComponent({
       bulkAdd.value = false;
     }
 
+    function pathfinderHasSelectedHonor(pathfinderID) {
+      const pathfinder = pathfinders.value.find(p => p.pathfinderID === pathfinderID);
+      return pathfinder.pathfinderHonors.some(h => selected.value.includes(h.honorID));
+    }
+
     return {
       honorStore,
       pathfinderStore,
@@ -187,6 +195,7 @@ export default defineComponent({
       selectHonor: honorStore.selectHonor,
       toggleSelection: toggleSelection,
       toggleRecipientSelection: toggleRecipientSelection,
+      pathfinderHasSelectedHonor: pathfinderHasSelectedHonor,
     };
   },
 });
