@@ -33,33 +33,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 
 export default defineComponent({
-  setup() {
+  setup(props) {
     const pathfinderStore = usePathfinderStore();
     if (!pathfinderStore) {
       throw new Error("PathfinderStore is not provided");
     }
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
-
-    function resetButtonStyle() {
-      this.style.color = "grey";
-      this.style.backgroundColor = "inherit";
-      this.style.border = "var(lightBorder)";
-      this.style.pointerEvents = "none";
-    }
-
-
+    const newStatus = ref(props.status);
 
     const colors = ["var(--grey)", "var(--orange)", "mediumseagreen"];
-    function getSelectedIndex() {
-      const s = this.selectedIndex;
-      this.style.backgroundColor = colors[s];
-      let siblingButton = this.nextSibling;
+
+    const resetButtonStyle = (event) => {
+      const target = event.currentTarget;
+      target.style.color = "grey";
+      target.style.backgroundColor = "inherit";
+      target.style.border = "var(lightBorder)";
+      target.style.pointerEvents = "none";
+    };
+
+    const getSelectedIndex = (event) => {
+      const target = event.target;
+      const s = target.selectedIndex;
+      target.style.backgroundColor = colors[s];
+      let siblingButton = target.nextSibling;
       siblingButton.style.color = "var(--color)";
       siblingButton.style.backgroundColor = "var(--actionColor)";
       siblingButton.style.border = "";
@@ -67,23 +69,36 @@ export default defineComponent({
       if (siblingButton.getAttribute("listener") !== true) {
         siblingButton.addEventListener("click", resetButtonStyle);
       }
-    }
+    };
 
-    async function colorAll() {
-      await document.getElementsByClassName("statusselector");
-      const el = document.getElementsByClassName(
-        "statusselector"
-      ) as HTMLCollectionOf<HTMLElement>;
+    const colorAll = async () => {
+      const el = document.getElementsByClassName("statusselector") as HTMLCollectionOf<HTMLElement>;
       for (let i = 0; i < el.length; i++) {
         el[i].style.backgroundColor = colors[el[i].selectedIndex];
         el[i].addEventListener("change", getSelectedIndex);
       }
-    }
+    };
 
-    colorAll();
+    onMounted(() => {
+      colorAll();
+    });
 
-    const canUpdatePathfinder = props.canUpdatePathfinder;
+    const selectedColor = computed(() => {
+      const colors = {
+        Planned: "var(--secondaryColor)",
+        Earned: "var(--orange)",
+        Awarded: "mediumseagreen",
+      };
+      return colors[newStatus.value];
+    });
 
+    const canEdit = computed(() => {
+      return props.canUpdatePathfinder && newStatus.value !== props.status;
+    });
+
+    const updateColor = (event) => {
+      newStatus.value = event.target.value;
+    };
 
     return {
       loading,
@@ -92,7 +107,10 @@ export default defineComponent({
       getPathfinders: pathfinderStore.getPathfinders,
       postPathfinderHonor: pathfinderStore.postPathfinderHonor,
       putPathfinderHonor: pathfinderStore.putPathfinderHonor,
-      resetButtonStyle,
+      newStatus,
+      selectedColor,
+      canEdit,
+      updateColor,
     };
   },
   props: {
@@ -123,29 +141,6 @@ export default defineComponent({
     canUpdatePathfinder: {
       type: Boolean,
       required: true,
-    },
-  },
-  data() {
-    return {
-      newStatus: this.status,
-    };
-  },
-  computed: {
-    selectedColor() {
-      const colors = {
-        Planned: "var(--secondaryColor)",
-        Earned: "var(--orange)",
-        Awarded: "mediumseagreen",
-      };
-      return colors[this.newStatus];
-    },
-    canEdit() {
-      return this.canUpdatePathfinder && this.newStatus !== this.status;
-    },
-  },
-  methods: {
-    updateColor(event) {
-      this.newStatus = event.target.value;
     },
   },
 });

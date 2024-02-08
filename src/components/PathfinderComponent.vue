@@ -32,16 +32,16 @@
       <h3 v-else>Staff</h3>
 
       <button
-        v-if="!showing[i]"
-        @click="showing[i] = true"
+        v-if="!showing[pathfinder.pathfinderID]"
+        @click="showing[pathfinder.pathfinderID] = true"
         class="outline button"
         style="margin: 0"
       >
         Show Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
       <button
-        v-if="showing[i]"
-        @click="showing[i] = false"
+        v-if="showing[pathfinder.pathfinderID]"
+        @click="showing[pathfinder.pathfinderID] = false"
         class="outline button"
         style="margin: 0"
       >
@@ -49,12 +49,12 @@
       </button>
 
       <PostPathfinderHonorComponent
-        v-if="showing[i] && canUpdatePathfinder"
+        v-if="showing[pathfinder.pathfinderID] && canUpdatePathfinder"
         :pathfinderID="pathfinder.pathfinderID"
       />
 
       <div class="content-box">
-        <div v-if="showing[i]" class="honortable">
+        <div v-if="showing[pathfinder.pathfinderID]" class="honortable">
           <PathfinderHonorComponent
             v-for="pathfinderHonor in pathfinder.pathfinderHonors"
             :key="pathfinderHonor.pathfinderHonorID"
@@ -163,8 +163,7 @@ export default defineComponent({
 
     const creatingPathfinder = ref(false);
 
-    const displays = [];
-    const showing = ref(displays);
+    const showing = ref({});
 
     const canCreatePathfinder = computed(() =>
       userStore.permissions.includes("create:pathfinders")
@@ -250,3 +249,4 @@ export default defineComponent({
   },
 });
 </script>
+

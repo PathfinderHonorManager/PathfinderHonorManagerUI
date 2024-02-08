@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import PathfinderComponent from "../components/PathfinderComponent.vue";
-import { useUserStore } from "../stores/users.ts";
+import { useUserStore } from "../stores/users";
 import { computed } from "vue";
 
-const userStore = useUserStore(); // Initialize store
+const userStore = useUserStore();
 const clubName = computed(() => userStore.clubName);
 </script>
 
