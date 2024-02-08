@@ -435,6 +435,14 @@ input[type=text] {
     padding: 8vw;
 }
 
+@media screen and (max-width: 1080px) {
+    #content {
+        overflow-y: auto;
+        height: 100vh;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
 .button {
     color: var(--color);
     border-radius: 5px;
