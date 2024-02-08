@@ -51,7 +51,7 @@ export const useHonorStore = defineStore("honorStore", {
       return state.honors.filter(
         (h) =>
           tokens.filter((t) => h.name.toLowerCase().indexOf(t) > -1).length ===
-          tokens.length
+          tokens.length,
       );
     },
     getHonorsBySelection: (state) => () => {

@@ -46,7 +46,7 @@ export default defineComponent({
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
     const newStatus = ref(props.status);
-    
+
     const colors = ["var(--grey)", "var(--orange)", "mediumseagreen"];
 
     const resetButtonStyle = (event) => {
@@ -72,10 +72,13 @@ export default defineComponent({
     };
 
     const colorAll = () => {
-      const el = document.getElementsByClassName("statusselector") as HTMLCollectionOf<HTMLElement>;
+      const el = document.getElementsByClassName(
+        "statusselector",
+      ) as HTMLCollectionOf<HTMLElement>;
       for (let i = 0; i < el.length; i++) {
         const selectElement = el[i] as HTMLSelectElement;
-        selectElement.style.backgroundColor = colors[selectElement.selectedIndex];
+        selectElement.style.backgroundColor =
+          colors[selectElement.selectedIndex];
         selectElement.addEventListener("change", getSelectedIndex);
       }
     };
@@ -112,7 +115,7 @@ export default defineComponent({
       selectedColor,
       canEdit,
       updateColor,
-          };
+    };
   },
   props: {
     pathfinderID: {

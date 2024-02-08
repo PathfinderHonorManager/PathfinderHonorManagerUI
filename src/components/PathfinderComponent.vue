@@ -166,10 +166,10 @@ export default defineComponent({
     const showing = ref({});
 
     const canCreatePathfinder = computed(() =>
-      userStore.permissions.includes("create:pathfinders")
+      userStore.permissions.includes("create:pathfinders"),
     );
     const canUpdatePathfinder = computed(() =>
-      userStore.permissions.includes("update:pathfinders")
+      userStore.permissions.includes("update:pathfinders"),
     );
     const firstName = ref("");
     const lastName = ref("");
@@ -249,4 +249,3 @@ export default defineComponent({
   },
 });
 </script>
-

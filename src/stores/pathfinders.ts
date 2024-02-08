@@ -31,12 +31,12 @@ export type PathfinderStoreType = {
   putPathfinderHonor: (
     pathfinderID: string,
     honorID: string,
-    status: status
+    status: status,
   ) => Promise<void>;
   bulkAddPathfinderHonors: (
     pathfinderIDs: string[],
-    honorIDs: string[]
-  ) => Promise<{ successful: any[], failed: any[] }>;
+    honorIDs: string[],
+  ) => Promise<{ successful: any[]; failed: any[] }>;
   selectPathfinder: (pathfinderID: string) => void;
   selectAll: () => void;
   toggleSelection: (pathfinderID: string) => void;
@@ -60,7 +60,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
     },
     getPathfindersBySelection: (state) => () => {
       return state.pathfinders.filter(
-        (p) => state.selected.indexOf(p.pathfinderID) > -1
+        (p) => state.selected.indexOf(p.pathfinderID) > -1,
       );
     },
     getSelected: (state) => () => {
@@ -93,7 +93,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         } else {
           console.error(`Could not get pathfinders, because: ${err}`);
           throw Errors.apiResponse.body(
-            `Could not get pathfinders, because: ${err}`
+            `Could not get pathfinders, because: ${err}`,
           );
         }
       } finally {
@@ -107,7 +107,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       try {
         const response = await api.get(pathfinderID);
         const pathfinderIndex = this.pathfinders.findIndex(
-          (p) => p.pathfinderID === pathfinderID
+          (p) => p.pathfinderID === pathfinderID,
         );
         this.pathfinders[pathfinderIndex] = response.data;
       } catch (err) {
@@ -149,7 +149,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
     async putPathfinderHonor(
       pathfinderID: string,
       honorID: string,
-      status: status
+      status: status,
     ) {
       this.loading = true;
       this.error = false;

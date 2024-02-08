@@ -26,10 +26,9 @@
             : 'var(--lightGrey)',
         }"
       >
-        <button
-          v-if="isSelected(honor.honorID)"
-          class="deselect-button"
-        ><img src="@/assets/close-icon.svg" /></button>
+        <button v-if="isSelected(honor.honorID)" class="deselect-button">
+          <img src="@/assets/close-icon.svg" />
+        </button>
         <img
           :src="
             'https://pathfinderhonor.azureedge.net/assets/small/' +
@@ -43,7 +42,7 @@
   </div>
   <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
     <h3>Selected Honors</h3>
-    <div class="outline" style="display: flex; flex-wrap: wrap;">
+    <div class="outline" style="display: flex; flex-wrap: wrap">
       <button
         v-for="(honor, i) in selectedHonors"
         :key="i"
@@ -76,8 +75,16 @@
               : 'var(--lightGrey)',
           flexGrow: 1,
         }"
-        @click="pathfinderHasSelectedHonor(recipient.pathfinderID) ? null : toggleRecipientSelection(recipient.pathfinderID)"
-        :title="pathfinderHasSelectedHonor(recipient.pathfinderID) ? 'This pathfinder already has the selected honor' : ''"
+        @click="
+          pathfinderHasSelectedHonor(recipient.pathfinderID)
+            ? null
+            : toggleRecipientSelection(recipient.pathfinderID)
+        "
+        :title="
+          pathfinderHasSelectedHonor(recipient.pathfinderID)
+            ? 'This pathfinder already has the selected honor'
+            : ''
+        "
       >
         {{ recipient.firstName }} {{ recipient.lastName }}
       </button>
@@ -147,10 +154,11 @@ export default defineComponent({
 
     async function addSelectedToClub() {
       bulkAdd.value = true;
-      const { successful, failed } = await pathfinderStore.bulkAddPathfinderHonors(
-        recipients.value.map((p) => p.pathfinderID),
-        selectedHonors.value.map((h) => h.honorID)
-      );
+      const { successful, failed } =
+        await pathfinderStore.bulkAddPathfinderHonors(
+          recipients.value.map((p) => p.pathfinderID),
+          selectedHonors.value.map((h) => h.honorID),
+        );
       console.log(`${successful.length} honors were successfully added.`);
       console.log(`${failed.length} honors failed to add.`, failed);
       pathfinderStore.selected = [];
@@ -170,8 +178,12 @@ export default defineComponent({
     }
 
     function pathfinderHasSelectedHonor(pathfinderID) {
-      const pathfinder = pathfinders.value.find(p => p.pathfinderID === pathfinderID);
-      return pathfinder.pathfinderHonors.some(h => selected.value.includes(h.honorID));
+      const pathfinder = pathfinders.value.find(
+        (p) => p.pathfinderID === pathfinderID,
+      );
+      return pathfinder.pathfinderHonors.some((h) =>
+        selected.value.includes(h.honorID),
+      );
     }
 
     return {

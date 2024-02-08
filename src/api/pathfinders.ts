@@ -35,14 +35,14 @@ export default {
   },
   async postPathfinderHonor(
     pathfinderID: string,
-    postData: PathfinderHonorPostPut
+    postData: PathfinderHonorPostPut,
   ) {
     this.loading = true;
     this.error = false;
     try {
       await axios.post(
         BASE_URL + `/${pathfinderID}/PathfinderHonors`,
-        postData
+        postData,
       );
     } catch (err) {
       this.error = true;
@@ -54,7 +54,7 @@ export default {
   putPathfinderHonor: (
     id: string,
     honorid: string,
-    data: PathfinderHonorPostPut
+    data: PathfinderHonorPostPut,
   ) => {
     return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
   },

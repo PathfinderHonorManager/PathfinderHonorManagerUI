@@ -35,7 +35,9 @@ export default defineComponent({
   height: 100%;
   z-index: 100;
   pointer-events: none;
-  animation: 0.5s ease 0s 1 both slideIn, 2s ease 6s 1 forwards reverse slideIn;
+  animation:
+    0.5s ease 0s 1 both slideIn,
+    2s ease 6s 1 forwards reverse slideIn;
 }
 
 @keyframes slideIn {
