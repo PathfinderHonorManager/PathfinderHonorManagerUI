@@ -39,7 +39,7 @@ export default defineComponent({
 
         const validateGrade = () => {
             const gradeValue = formPathfinder.grade;
-            if (gradeValue !== null && (gradeValue < 4 || gradeValue > 12)) {
+            if (gradeValue !== null && (gradeValue < 5 || gradeValue > 12)) {
                 gradeError.value = "Grade must be between 5 and 12";
                 return false;
             }
