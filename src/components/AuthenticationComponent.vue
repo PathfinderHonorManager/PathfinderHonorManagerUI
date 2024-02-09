@@ -18,6 +18,6 @@ axios.interceptors.request.use(
   (error) => {
     console.log("Error:", error);
     return Promise.reject(error);
-  }
+  },
 );
 </script>

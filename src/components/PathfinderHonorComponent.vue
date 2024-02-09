@@ -71,11 +71,15 @@ export default defineComponent({
       }
     };
 
-    const colorAll = async () => {
-      const el = document.getElementsByClassName("statusselector") as HTMLCollectionOf<HTMLElement>;
+    const colorAll = () => {
+      const el = document.getElementsByClassName(
+        "statusselector",
+      ) as HTMLCollectionOf<HTMLElement>;
       for (let i = 0; i < el.length; i++) {
-        el[i].style.backgroundColor = colors[el[i].selectedIndex];
-        el[i].addEventListener("change", getSelectedIndex);
+        const selectElement = el[i] as HTMLSelectElement;
+        selectElement.style.backgroundColor =
+          colors[selectElement.selectedIndex];
+        selectElement.addEventListener("change", getSelectedIndex);
       }
     };
 

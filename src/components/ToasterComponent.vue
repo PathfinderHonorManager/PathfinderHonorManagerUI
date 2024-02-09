@@ -7,17 +7,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, PropType, emits } from "vue";
 
 export default defineComponent({
-  setup() {
-    return;
-  },
+  emits: ['hide'],
   props: {
     message: {
       type: String,
       required: true,
     },
+  },
+  setup(props, { emit }) {
+    onMounted(() => {
+      setTimeout(() => {
+        emit('hide');
+      }, 10000);
+    });
   },
 });
 </script>
@@ -35,7 +40,9 @@ export default defineComponent({
   height: 100%;
   z-index: 100;
   pointer-events: none;
-  animation: 0.5s ease 0s 1 both slideIn, 2s ease 6s 1 forwards reverse slideIn;
+  animation:
+    0.5s ease 0s 1 both slideIn,
+    2s ease 6s 1 forwards reverse slideIn;
 }
 
 @keyframes slideIn {

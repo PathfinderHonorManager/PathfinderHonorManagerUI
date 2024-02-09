@@ -68,7 +68,7 @@ export const Errors = {
     invalidFirstName: userErrInstance("Invalid first name"),
     invalidLastName: userErrInstance("Invalid last name"),
     invalidGrade: userErrInstance(
-      "The grade field must be between 5 and 12. If you are submitting a staff member, please leave this field blank."
+      "The grade field must be between 5 and 12. If you are submitting a staff member, please leave this field blank.",
     ),
     invalidEmail: userErrInstance("Invalid email"),
     alreadyExists: userErrInstance("Pathfinder already exists"),
@@ -92,7 +92,7 @@ window.addEventListener("error", (event) => {
     //1. Any errors that do not have a type are probably syntax or version errors, which are assumed not to exist in the app bc of DependaBot and testing.
     //2. this is an anonymous catch-all for any errors that do not have a type, which should not exist in the app, so it can't be assigned a case.
     console.log(
-      internalErrInstance("An error with an invalid type was thrown.")
+      internalErrInstance("An error with an invalid type was thrown."),
     );
   }
 });

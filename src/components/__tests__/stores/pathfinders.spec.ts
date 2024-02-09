@@ -161,7 +161,7 @@ describe("Pathfinder Store", () => {
 
     it("getPathfinders should update pathfinders and reset loading and error", async () => {
       vi.spyOn(api, "getAll").mockResolvedValue(
-        mockAxiosResponse(mockPathfinders)
+        mockAxiosResponse(mockPathfinders),
       );
 
       await store.getPathfinders();
@@ -195,7 +195,7 @@ describe("Pathfinder Store", () => {
 
       // Mock the putPathfinderHonor API call with an empty response
       vi.spyOn(api, "putPathfinderHonor").mockResolvedValue(
-        mockAxiosResponse({})
+        mockAxiosResponse({}),
       );
 
       // Prepare updated pathfinder data for the mock get response
@@ -204,20 +204,20 @@ describe("Pathfinder Store", () => {
         pathfinderHonors: mockPathfinders[0].pathfinderHonors.map((honor) =>
           honor.pathfinderHonorID === honorToUpdate.pathfinderHonorID
             ? updatedHonor
-            : honor
+            : honor,
         ),
       };
 
       // Mock the get API call used in getPathfinderById
       vi.spyOn(api, "get").mockResolvedValue(
-        mockAxiosResponse(updatedPathfinderData)
+        mockAxiosResponse(updatedPathfinderData),
       );
 
       // Act
       await store.putPathfinderHonor(
         pathfinderID,
         honorToUpdate.honorID,
-        updatedHonor.status
+        updatedHonor.status,
       );
 
       // Wait for the store to update
@@ -225,10 +225,10 @@ describe("Pathfinder Store", () => {
 
       // Assert
       const updatedPathfinder = store.pathfinders.find(
-        (p) => p.pathfinderID === pathfinderID
+        (p) => p.pathfinderID === pathfinderID,
       );
       const updatedHonorInStore = updatedPathfinder.pathfinderHonors.find(
-        (h) => h.pathfinderHonorID === honorToUpdate.pathfinderHonorID
+        (h) => h.pathfinderHonorID === honorToUpdate.pathfinderHonorID,
       );
       expect(updatedHonorInStore.status).toBe(status.Earned);
     });
@@ -266,23 +266,25 @@ describe("Pathfinder Store", () => {
             patchFilename: "mock_patch_filename.png",
             wikiPath: "https://wiki.pathfindersonline.org/mock_honor",
           },
-        }))
+        })),
       );
 
       vi.spyOn(api, "bulkAddPathfinderHonors").mockResolvedValue(
-        mockAxiosResponse(mockBulkAddResponse)
+        mockAxiosResponse(mockBulkAddResponse),
       );
       // Act
       await store.bulkAddPathfinderHonors(pathfinderIDs, honorIDs);
       // Assert
       pathfinderIDs.forEach((pathfinderID) => {
         const pathfinder = store.pathfinders.find(
-          (p) => p.pathfinderID === pathfinderID
+          (p) => p.pathfinderID === pathfinderID,
         );
 
         // Check if the pathfinder's honors contain the new honor IDs
         const hasNewHonors = honorIDs.every((honorID) =>
-          pathfinder.pathfinderHonors.some((honor) => honor.honorID === honorID)
+          pathfinder.pathfinderHonors.some(
+            (honor) => honor.honorID === honorID,
+          ),
         );
 
         expect(hasNewHonors).toBeTruthy();
