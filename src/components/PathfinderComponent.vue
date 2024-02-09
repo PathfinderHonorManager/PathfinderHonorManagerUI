@@ -2,92 +2,56 @@
   <p v-if="error">Error!</p>
   <span class="loader" v-if="loading">Loading Pathfinders</span>
   <div v-if="pathfinders[0]" class="content-box">
-    <div
-      style="
+    <div style="
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
         margin: 0;
         padding: 0;
-      "
-    >
+      ">
       <h3 style="margin: 0">{{ pathfinders.length }} Members</h3>
-      <button
-        class="biglogobutton"
-        @click="creatingPathfinder = true"
-        v-if="canCreatePathfinder"
-      >
+      <button class="biglogobutton" @click="creatingPathfinder = true" v-if="canCreatePathfinder">
         +
       </button>
     </div>
 
-    <DetailTableItemComponent
-      v-for="(pathfinder, i) in pathfinders"
-      :key="i"
-      :header="pathfinder.firstName + ' ' + pathfinder.lastName"
-    >
+    <DetailTableItemComponent v-for="(pathfinder, i) in pathfinders" :key="i"
+      :header="pathfinder.firstName + ' ' + pathfinder.lastName">
       <h3 v-if="pathfinder.className">
         {{ pathfinder.className }} (Grade {{ pathfinder.grade }})
+        <FontAwesomeIcon v-if="canUpdatePathfinder" :icon="faPencil" @click="openEditModal(pathfinder)" size="xs" />
       </h3>
       <h3 v-else>Staff</h3>
 
-      <button
-        v-if="!showing[pathfinder.pathfinderID]"
-        @click="showing[pathfinder.pathfinderID] = true"
-        class="outline button"
-        style="margin: 0"
-      >
+      <button v-if="!showing[pathfinder.pathfinderID]" @click="showing[pathfinder.pathfinderID] = true"
+        class="outline button" style="margin: 0">
         Show Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
-      <button
-        v-if="showing[pathfinder.pathfinderID]"
-        @click="showing[pathfinder.pathfinderID] = false"
-        class="outline button"
-        style="margin: 0"
-      >
+      <button v-if="showing[pathfinder.pathfinderID]" @click="showing[pathfinder.pathfinderID] = false"
+        class="outline button" style="margin: 0">
         Hide Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
 
-      <PostPathfinderHonorComponent
-        v-if="showing[pathfinder.pathfinderID] && canUpdatePathfinder"
-        :pathfinderID="pathfinder.pathfinderID"
-      />
+      <PostPathfinderHonorComponent v-if="showing[pathfinder.pathfinderID] && canUpdatePathfinder"
+        :pathfinderID="pathfinder.pathfinderID" />
 
       <div class="content-box">
         <div v-if="showing[pathfinder.pathfinderID]" class="honortable">
-          <PathfinderHonorComponent
-            v-for="pathfinderHonor in pathfinder.pathfinderHonors"
-            :key="pathfinderHonor.pathfinderHonorID"
-            :item="postPathfinderHonor"
-            v-bind:pathfinderID="pathfinder.pathfinderID"
-            v-bind:honorID="pathfinderHonor.honorID"
-            v-bind:name="pathfinderHonor.name"
-            v-bind:status="pathfinderHonor.status"
-            v-bind:display="true"
-            v-bind:image="pathfinderHonor.patchFilename"
-            :canUpdatePathfinder="canUpdatePathfinder"
-          ></PathfinderHonorComponent>
+          <PathfinderHonorComponent v-for="pathfinderHonor in pathfinder.pathfinderHonors"
+            :key="pathfinderHonor.pathfinderHonorID" :item="postPathfinderHonor"
+            v-bind:pathfinderID="pathfinder.pathfinderID" v-bind:honorID="pathfinderHonor.honorID"
+            v-bind:name="pathfinderHonor.name" v-bind:status="pathfinderHonor.status" v-bind:display="true"
+            v-bind:image="pathfinderHonor.patchFilename" :canUpdatePathfinder="canUpdatePathfinder">
+          </PathfinderHonorComponent>
         </div>
       </div>
     </DetailTableItemComponent>
   </div>
 
-  <ModalComponent
-    header="Add a Pathfinder!"
-    :closed="!creatingPathfinder"
-    @modal-closed="creatingPathfinder = false"
-  >
-    <div class="outline">
-      <form
-        @submit.prevent="postFormData()"
-        style="
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-wrap: wrap-reverse;
-          margin: 0;
-        "
-      >
+  <ModalComponent header="Add a Pathfinder!" :closed="!creatingPathfinder" @modal-closed="creatingPathfinder = false">
+    <div class="outline"> <!-- Make the outline container flexible -->
+      <form @submit.prevent="submitAddForm()"
+        style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: start; justify-items: stretch; margin: 10px;">
         <div>
           <h3>First Name:</h3>
           <input type="text" v-model="firstName" />
@@ -108,23 +72,30 @@
           <input type="text" v-model="grade" />
           <p v-if="gradeError">{{ gradeError }}</p>
         </div>
-
-        <input
-          type="submit"
-          style="font-size: 1.5em; margin: 20px"
-          class="button-like"
-        />
+        <div style="grid-column: 1 / -1; justify-self: center;">
+          <input type="submit" style="font-size: 1.5em; margin-top: 20px; width: auto;" class="button-like" />
+        </div>
       </form>
     </div>
   </ModalComponent>
+
+  <ModalComponent header="Edit a Pathfinder!" :closed="!isEditModalOpen" @modal-closed="isEditModalOpen = false">
+    <EditPathfinderComponent :pathfinder="selectedPathfinder" @edit-success="handleEditSuccess"
+      @edit-failure="handleEditFailure" />
+  </ModalComponent>
+  <ToasterComponent v-if="showToaster" :message="toasterMessage" @hide="showToaster = false" />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, toRefs, reactive } from "vue";
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import DetailTableItemComponent from "./DetailTableItemComponent.vue";
 import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
+import EditPathfinderComponent from "./EditPathfinderComponent.vue";
+import ToasterComponent from "./ToasterComponent.vue"; // Added import for ToasterComponent
 import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";
@@ -136,6 +107,9 @@ export default defineComponent({
     PathfinderHonorComponent,
     DetailTableItemComponent,
     ModalComponent,
+    EditPathfinderComponent,
+    FontAwesomeIcon,
+    ToasterComponent, // Added ToasterComponent to components
   },
   setup() {
     const pathfinderStore = usePathfinderStore();
@@ -180,6 +154,34 @@ export default defineComponent({
     const emailError = ref("");
     const gradeError = ref("");
 
+    const selectedPathfinder = ref(null);
+    const isEditModalOpen = ref(false);
+
+    const showToaster = ref(false); // Added ref for toaster visibility
+    const toasterMessage = ref(""); // Added ref for toaster message
+
+    // Create a reactive local copy for form bindings
+    const formPathfinder = reactive({ grade: null, isActive: null });
+
+    // Function to open the edit modal and initialize the local copy
+    function openEditModal(pathfinder) {
+      selectedPathfinder.value = pathfinder;
+      // Initialize formPathfinder with selectedPathfinder's properties
+      Object.assign(formPathfinder, {
+        grade: pathfinder.grade,
+        isActive: pathfinder.isActive,
+      });
+      isEditModalOpen.value = true;
+    }
+
+    function handleEditSuccess() {
+      isEditModalOpen.value = false;
+    }
+
+    function handleEditFailure(errorMessage) {
+      toasterMessage.value = `Failed to edit: ${errorMessage}`;
+      showToaster.value = true;
+    }
     return {
       loading,
       error,
@@ -202,10 +204,19 @@ export default defineComponent({
       lastNameError,
       emailError,
       gradeError,
+      selectedPathfinder,
+      isEditModalOpen,
+      formPathfinder,
+      openEditModal,
+      faPencil,
+      handleEditSuccess,
+      handleEditFailure,
+      showToaster, // Added showToaster to the return object
+      toasterMessage, // Added toasterMessage to the return object
     };
   },
   methods: {
-    postFormData: function () {
+    submitAddForm: function () {
       const data = {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -227,8 +238,8 @@ export default defineComponent({
       } else {
         this.lastNameError = "";
       }
-      if (data.grade !== null && (data.grade < 4 || data.grade > 12)) {
-        this.gradeError = "Grade must be between 4 and 12";
+      if (data.grade !== null && (data.grade < 5 || data.grade > 12)) {
+        this.gradeError = "Grade must be between 5 and 12";
         isValid = false;
       } else {
         this.gradeError = "";

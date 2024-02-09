@@ -41,6 +41,7 @@ export type PathfinderStoreType = {
   selectAll: () => void;
   toggleSelection: (pathfinderID: string) => void;
   clearSelection: () => void;
+  updatePathfinder: (pathfinderID: string, data: { grade: number | null; isActive: boolean | null }) => Promise<void>;
 };
 
 export const usePathfinderStore = defineStore("pathfinder", {
@@ -163,7 +164,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       } catch (err) {
         this.error = true;
         console.error(`Could not update honor, because: ${err}`);
-        throw err; // You can handle or rethrow the error as per your needs
+        throw err;
       } finally {
         this.loading = false;
       }
@@ -226,6 +227,32 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
+    async updatePathfinder(pathfinderID: string, data: { grade: number | null; isActive: boolean | null }) {
+      this.loading = true;
+      this.error = false;
+      try {
+        const response = await api.putPathfinder(pathfinderID, data);
+        // Find the index of the pathfinder to update
+        const index = this.pathfinders.findIndex(p => p.pathfinderID === pathfinderID);
+        if (index !== -1) {
+          // Update the pathfinder in the local store
+          this.pathfinders[index] = { ...this.pathfinders[index], ...data };
+        }
+        // Refresh the pathfinders list from the API after successful update
+        await this.getPathfinders();
+      } catch (err) {
+        this.error = true;
+        if (err instanceof Error) {
+          console.error(`${err.message}`);
+          throw new Error(`${err.message}`);
+        } else {
+          console.error(`Could not update pathfinder due to an unexpected error`);
+          throw new Error(`Could not update pathfinder due to an unexpected error`);
+        }
+      } finally {
+        this.loading = false;
+      }
+    },
     selectPathfinder(pathfinderID: string) {
       if (this.selected.includes(pathfinderID)) {
         throw Errors.selectHonor.alreadySelected;
@@ -251,3 +278,4 @@ export const usePathfinderStore = defineStore("pathfinder", {
     },
   },
 });
+

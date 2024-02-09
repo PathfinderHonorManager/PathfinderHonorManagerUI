@@ -7,17 +7,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, PropType, emits } from "vue";
 
 export default defineComponent({
-  setup() {
-    return;
-  },
+  emits: ['hide'],
   props: {
     message: {
       type: String,
       required: true,
     },
+  },
+  setup(props, { emit }) {
+    onMounted(() => {
+      setTimeout(() => {
+        emit('hide');
+      }, 10000);
+    });
   },
 });
 </script>

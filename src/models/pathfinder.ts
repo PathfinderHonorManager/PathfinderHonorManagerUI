@@ -24,9 +24,7 @@ export interface Pathfinder {
 }
 
 export interface PutPathfinder {
-  firstName: string;
-  lastName: string;
-  email: string;
+  isActive?: boolean;
   grade?: number;
 }
 
