@@ -152,12 +152,9 @@ export default defineComponent({
 
 <style scoped>
 #grid-item-parent {
-  width: 100%;
-  height: 100%;
-
   display: grid;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: 100%;
+  grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: 1fr;
 }
 
 #honor-info {
@@ -206,8 +203,8 @@ select:focus > option {
   margin: 0;
 
   display: grid;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 100%;
+  grid-template-rows: 0.5fr 1fr;
+  grid-template-columns: 1fr;
   align-self: flex-end;
 }
 
@@ -216,6 +213,6 @@ select:focus > option {
 }
 
 .selectcontainer > button {
-  width: 100%;
+  width: 1fr;
 }
 </style>
