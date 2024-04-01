@@ -13,54 +13,17 @@
   <span class="loader" v-if="loading">Loading Honors</span>
   <div v-if="honorSearchResult.length > 0">
     <h3>Search Results</h3>
-    <div class="honortable">
-      <div
-        v-for="(honor, i) in honorSearchResult"
-        :key="i"
-        id="honortableitem"
-        class="outline"
-        @click="toggleSelection(honor.honorID)"
-        :style="{
-          borderColor: isSelected(honor.honorID)
-            ? 'var(--actionColor)'
-            : 'var(--lightGrey)',
-        }"
-      >
-        <button v-if="isSelected(honor.honorID)" class="deselect-button">
-          <img src="@/assets/close-icon.svg" />
-        </button>
-        <img
-          :src="
-            'https://pathfinderhonor.azureedge.net/assets/small/' +
-            honor.patchFilename
-          "
-          class="patchimage"
-        />
-        <h3>{{ honor.name }}</h3>
-      </div>
-    </div>
-  </div>
-  <div v-if="selected.length > 0" style="margin-bottom: var(--spaceHBelow)">
+    <HonorsDisplay
+      :honorSearchResult="honorSearchResult"
+      :isSelected="isSelected"
+      @toggle-selection="toggleSelection"
+    />
+ 
     <h3>Selected Honors</h3>
-    <div class="outline" style="display: flex; flex-wrap: wrap">
-      <button
-        v-for="(honor, i) in selectedHonors"
-        :key="i"
-        class="secondary button"
-        @click="toggleSelection(honor.honorID)"
-        style="
-          display: flex;
-          flex-grow: 1;
-          justify-content: space-between;
-          align-items: center;
-          --iconSize: 16px;
-        "
-      >
-        <span>{{ honor.name }}</span>
-        <span class="logobutton"><img src="@/assets/close-icon.svg" /></span>
-      </button>
-    </div>
-
+    <SelectedHonorsDisplay
+      :selectedHonors="selectedHonors"
+      @toggle-selection="toggleSelection"
+    />
     <h3>Recipients</h3>
     <div class="outline" style="display: flex">
       <button
@@ -117,10 +80,15 @@ import ToasterComponent from "./ToasterComponent.vue";
 
 import { defineComponent, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
+import HonorsDisplay from './HonorsDisplay.vue';
+import SelectedHonorsDisplay from './SelectedHonorsDisplay.vue';
+
 
 export default defineComponent({
   components: {
     ToasterComponent,
+    HonorsDisplay,
+    SelectedHonorsDisplay,
   },
   setup() {
     //use injected stores
@@ -212,31 +180,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-#honortableitem {
-  width: 100%;
-  border-color: var(--lightBorder);
-  margin: 0;
-  height: auto;
-  overflow: hidden;
-  text-align: center;
-  transition: 0.2s;
-}
-
-#honortableitem:hover {
-  background-color: var(--grey);
-}
-
-.selected {
-  border-color: var(--actionColor);
-}
-
-.deselect-button {
-  display: flex;
-  justify-self: start;
-  align-self: left;
-  font-size: 0.45em;
-  background-color: var(--actionColor);
-}
-</style>
