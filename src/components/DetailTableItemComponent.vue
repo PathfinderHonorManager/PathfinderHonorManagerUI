@@ -30,7 +30,7 @@ export default defineComponent({
 <style scoped>
 #item-template {
   display: grid;
-  grid-template-columns: 25vw auto;
+  grid-template-columns: 0.5fr 1.5fr;
   overflow: hidden;
   word-wrap: break-word;
   padding: 0;
