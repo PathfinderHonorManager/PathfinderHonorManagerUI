@@ -1,14 +1,10 @@
 <template>
   <div class="outline" style="text-align: center">
-    <h3>Find and Add Honors To Your Club</h3>
-
-    <HonorSearchComponent @search-result="updateHonorSearchResult" />
-
     <span class="loader" v-if="loading">Loading Honors</span>
-    <div v-if="honorSearchResult.length > 0">
-      <h3>Search Results</h3>
+    <div v-if="plannedHonors.length > 0">
+      <h3>Planned Honors</h3>
       <HonorsDisplayComponent
-        :honorSearchResult="honorSearchResult"
+        :honorSearchResult="plannedHonors"
         :isSelected="isSelected"
         @toggle-selection="toggleSelection"
       />
@@ -24,12 +20,13 @@
         :recipients="recipients"
         :pathfinderStore="pathfinderStore"
         :selectedHonors="selectedHonors"
+        :eligibilityCriteria="'earn'"
         @selectionChanged="handleSelectionChanged"
       />
     </div>
 
     <div class="content-box center-align">
-      <button @click="addSelectedToClub()" class="primary button">
+      <button @click="addOrUpdateSelectedToClub()" class="primary button">
         Plan Selected ({{ selected.length }})
       </button>
       <p class="note">
@@ -40,19 +37,20 @@
 
     <ToasterComponent
       v-if="bulkAdd"
-      message="Your honors have been added to your club"
+      message="Your honors have been updated in your club"
     />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ToasterComponent from "./ToasterComponent.vue";
 import HonorSearchComponent from "./HonorSearchComponent.vue";
 import HonorsDisplayComponent from "./HonorsDisplayComponent.vue";
 import SelectedHonorsDisplayComponent from "./SelectedHonorsDisplayComponent.vue";
 import RecipientsDisplayComponent from "./RecipientsDisplayComponent.vue";
+import status from "@/models/pathfinder";
 
-import { defineComponent, ref, inject } from "vue";
+import { defineComponent, ref, inject, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { addOrUpdateSelectedToClub } from "@/utils/manageHonors";
 
@@ -79,22 +77,24 @@ export default defineComponent({
     let { honors, selected, loading, error } = storeToRefs(honorStore);
     const { pathfinders } = storeToRefs(pathfinderStore);
 
-    let honorSearchResult = ref([]);
+    let plannedHonors = computed(() => {
+      const plannedHonorIDs = pathfinderStore.pathfinders.flatMap(
+        (pathfinder) =>
+          pathfinder.pathfinderHonors
+            .filter((honor) => honor.status === "Planned")
+            .map((honor) => honor.honorID),
+      );
+
+      const uniquePlannedHonorIDs = [...new Set(plannedHonorIDs)];
+
+      return honorStore.honors.filter((honor) =>
+        uniquePlannedHonorIDs.includes(honor.honorID),
+      );
+    });
     let selectedHonors = ref(honorStore.getHonorsBySelection());
 
     let recipients = ref(pathfinderStore.getPathfindersBySelection());
     let bulkAdd = ref(false);
-
-    async function addSelectedToClub() {
-      await addOrUpdateSelectedToClub(
-        pathfinderStore,
-        honorStore,
-        recipients,
-        selectedHonors,
-        "plan",
-        bulkAdd,
-      );
-    }
 
     function toggleSelection(honorID) {
       honorStore.toggleSelection(honorID);
@@ -107,7 +107,7 @@ export default defineComponent({
     }
 
     function updateHonorSearchResult(result) {
-      honorSearchResult.value = result;
+      plannedHonors.value = result;
     }
 
     return {
@@ -121,8 +121,16 @@ export default defineComponent({
       getHonors: honorStore.getHonors,
       getHonorsByQuery: honorStore.getHonorsByQuery,
       getHonorsBySelection: honorStore.getHonorsBySelection,
-      addSelectedToClub: addSelectedToClub,
-      honorSearchResult,
+      addOrUpdateSelectedToClub: () =>
+        addOrUpdateSelectedToClub(
+          pathfinderStore,
+          honorStore,
+          recipients,
+          selectedHonors,
+          "earn",
+          bulkAdd,
+        ),
+      plannedHonors,
       updateHonorSearchResult: updateHonorSearchResult,
       loading,
       error,

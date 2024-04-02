@@ -25,7 +25,7 @@
   </div>
   <p>{{ recipients.length }} recipients selected</p>
   <p v-if="recipients.length == 1" class="note">
-    When planning honors for individuals, we recommend doing it in the My Club
+    When managing honors for individuals, we recommend doing it in the My Club
     page.
   </p>
 </template>
@@ -39,24 +39,43 @@ export default defineComponent({
     recipients: Array as PropType<Recipient[]>,
     selectedHonors: Array as PropType<SelectedHonor[]>,
     pathfinderStore: Object as PropType<PathfinderStoreType>,
+    eligibilityCriteria: String,
   },
   emits: ["selectionChanged"],
   setup(props, { emit }) {
-    const { pathfinders, recipients, selectedHonors, pathfinderStore } =
-      toRefs(props);
+    const {
+      pathfinders,
+      recipients,
+      selectedHonors,
+      pathfinderStore,
+      eligibilityCriteria,
+    } = toRefs(props);
 
     const pathfinderHasSelectedHonor = (pathfinderID) => {
       const pathfinder = pathfinders.value.find(
         (p) => p.pathfinderID === pathfinderID,
       );
-      return (
-        pathfinder &&
-        pathfinder.pathfinderHonors.some((honor) =>
-          selectedHonors.value.some(
-            (selectedHonor) => selectedHonor.honorID === honor.honorID,
-          ),
-        )
-      );
+      if (eligibilityCriteria.value === "earn") {
+        return !(
+          pathfinder &&
+          pathfinder.pathfinderHonors.some((honor) =>
+            selectedHonors.value.some(
+              (selectedHonor) =>
+                selectedHonor.honorID === honor.honorID &&
+                honor.status === "Planned",
+            ),
+          )
+        );
+      } else {
+        return (
+          pathfinder &&
+          pathfinder.pathfinderHonors.some((honor) =>
+            selectedHonors.value.some(
+              (selectedHonor) => selectedHonor.honorID === honor.honorID,
+            ),
+          )
+        );
+      }
     };
 
     const toggleRecipientSelection = (pathfinderID) => {

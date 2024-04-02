@@ -35,6 +35,7 @@ watchEffect(async () => {
       <UserProfileComponent />
       <RouterLink to="/">My Club</RouterLink>
       <RouterLink to="/plan">Plan Honors</RouterLink>
+      <RouterLink to="/earn">Record Earned Honors</RouterLink>
     </div>
 
     <div id="content">

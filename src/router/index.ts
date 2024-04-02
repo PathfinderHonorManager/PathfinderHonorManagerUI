@@ -13,7 +13,12 @@ const router = createRouter({
       path: "/plan",
       name: "plan",
       component: () => import("../views/PlanHonorView.vue"),
-    }
+    },
+    {
+      path: "/earn",
+      name: "earn",
+      component: () => import("../views/EarnHonorView.vue"),
+    },
   ],
 });
 

@@ -33,9 +33,10 @@ export type PathfinderStoreType = {
     honorID: string,
     status: status,
   ) => Promise<void>;
-  bulkAddPathfinderHonors: (
+  bulkManagePathfinderHonors: (
     pathfinderIDs: string[],
     honorIDs: string[],
+    action: "plan" | "earn",
   ) => Promise<{ successful: any[]; failed: any[] }>;
   selectPathfinder: (pathfinderID: string) => void;
   selectAll: () => void;
@@ -172,52 +173,89 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.loading = false;
       }
     },
-    async bulkAddPathfinderHonors(pathfinderIDs: string[], honorIDs: string[]) {
+    async bulkManagePathfinderHonors(
+      pathfinderIDs: string[],
+      honorIDs: string[],
+      action: "plan" | "earn",
+    ) {
       this.loading = true;
       this.error = false;
 
       try {
+        const actionStatus = action === "plan" ? status.Planned : status.Earned;
+
         const postData: BulkAdd[] = pathfinderIDs.map((pathfinderID) => ({
           pathfinderID,
           honors: honorIDs.map((honorID) => ({
             honorID,
-            status: status.Planned,
+            status: actionStatus,
           })),
         }));
 
-        const response = await api.bulkAddPathfinderHonors(postData);
-
+        const response = await api.bulkManagePathfinderHonors(postData, action);
         if (response && response.data) {
           const tempPathfinderHonors = {};
           const successful = [];
           const failed = [];
 
           response.data.forEach((result: BulkAddResponse) => {
-            if (result.status === 201 && result.pathfinderHonor) {
+            if (
+              result.status === 201 ||
+              (result.status === 200 && result.pathfinderHonor)
+            ) {
               const pathfinderID = result.pathfinderHonor.pathfinderID;
               if (!tempPathfinderHonors[pathfinderID]) {
                 tempPathfinderHonors[pathfinderID] = [];
               }
-              tempPathfinderHonors[pathfinderID].push(result.pathfinderHonor);
+              // Check if the honor already exists in tempPathfinderHonors for the pathfinderID
+              const existingIndex = tempPathfinderHonors[
+                pathfinderID
+              ].findIndex(
+                (honor) => honor.honorID === result.pathfinderHonor.honorID,
+              );
+              if (existingIndex > -1) {
+                // Replace existing honor
+                tempPathfinderHonors[pathfinderID].splice(
+                  existingIndex,
+                  1,
+                  result.pathfinderHonor,
+                );
+              } else {
+                // Append new honor if it doesn't exist
+                // Using splice to append: specify the start index as the array's length, remove 0 items, and add the new item
+                tempPathfinderHonors[pathfinderID].splice(
+                  tempPathfinderHonors[pathfinderID].length,
+                  0,
+                  result.pathfinderHonor,
+                );
+              }
               successful.push(result.pathfinderHonor);
             } else if (result.error) {
-              console.error(`Could not add honors, because: ${result.error}`);
+              console.error(
+                `Could not ${action} pathfinder honors, because: ${result.error}`,
+              );
               failed.push(result.error);
             }
           });
 
           this.pathfinders = this.pathfinders.map((pathfinder) => {
-            if (tempPathfinderHonors[pathfinder.pathfinderID]) {
-              return {
-                ...pathfinder,
-                pathfinderHonors: [
-                  ...pathfinder.pathfinderHonors,
-                  ...tempPathfinderHonors[pathfinder.pathfinderID],
-                ],
-              };
-            } else {
-              return pathfinder;
+            const honorsToUpdate =
+              tempPathfinderHonors[pathfinder.pathfinderID];
+            if (honorsToUpdate && pathfinder.pathfinderHonors) {
+              // Remove all existing honors that match the IDs of the honorsToUpdate
+              pathfinder.pathfinderHonors = pathfinder.pathfinderHonors.filter(
+                (honor) =>
+                  !honorsToUpdate.some(
+                    (updateHonor) => updateHonor.honorID === honor.honorID,
+                  ),
+              );
+              // Now append the updated honors
+              pathfinder.pathfinderHonors.push(...honorsToUpdate);
+            } else if (honorsToUpdate) {
+              // If there were no existing honors, just set it to the updates
+              pathfinder.pathfinderHonors = honorsToUpdate;
             }
+            return pathfinder;
           });
 
           // Return the successful and failed operations
@@ -225,7 +263,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         }
       } catch (err) {
         this.error = true;
-        console.error(`Could not add pathfinder honors, because: ${err}`);
+        console.error(`Could not ${action} pathfinder honors, because: ${err}`);
       } finally {
         this.loading = false;
       }
