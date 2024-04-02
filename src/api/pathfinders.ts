@@ -58,15 +58,18 @@ export default {
   ) => {
     return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
   },
-  bulkAddPathfinderHonors: (data: BulkAdd[]) => {
-    const response = axios
-      .post(BASE_URL + "/PathfinderHonors", data)
-      .then((res: AxiosResponse) => {
+  bulkManagePathfinderHonors: (data: BulkAdd[], action: "plan" | "earn") => {
+    const method = action === "plan" ? axios.post : axios.put;
+    return method(BASE_URL + "/PathfinderHonors", data).then(
+      (res: AxiosResponse) => {
         return res;
-      });
-    return response;
+      },
+    );
   },
-  putPathfinder: async (pathfinderID: string, data: { grade: number | null; isActive: boolean | null }) => {
+  putPathfinder: async (
+    pathfinderID: string,
+    data: { grade: number | null; isActive: boolean | null },
+  ) => {
     try {
       const response = await axios.put(`${BASE_URL}/${pathfinderID}`, data);
       if (response.status !== 200) {
@@ -76,7 +79,9 @@ export default {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
         const errors = error.response.data.errors;
-        const errorMessages = Object.keys(errors).map(key => `${key}: ${errors[key].join(", ")}`).join("\n");
+        const errorMessages = Object.keys(errors)
+          .map((key) => `${key}: ${errors[key].join(", ")}`)
+          .join("\n");
         throw new Error(`Validation error: ${errorMessages}`);
       }
       throw error; // Pass the error response up the stack
