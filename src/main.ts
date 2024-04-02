@@ -39,4 +39,3 @@ app.provide("useUserStore", useUserStore);
 console.log(app);
 
 app.mount("#app");
-
