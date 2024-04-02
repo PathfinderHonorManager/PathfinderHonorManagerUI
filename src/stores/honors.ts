@@ -3,7 +3,6 @@ import api from "@/api/honors";
 import type { Url } from "url";
 import { Errors } from "../errors/errors";
 
-// Define the data shape of a pathfinder
 interface IHonor {
   honorID: string;
   name: string;
@@ -14,20 +13,23 @@ interface IHonor {
 }
 
 export type HonorStoreType = {
-  // State
   honors: IHonor[];
   loading: boolean;
   error: boolean;
   selected: string[];
+  selectedForEarn: string[];
 
-  // Getters
   getHonorsByLevel: (level: number) => IHonor[];
   getHonorsByQuery: (query: string) => IHonor[];
   getHonorsBySelection: () => IHonor[];
   getSelected: () => string[];
   isSelected: (honorID: string) => boolean;
 
-  // Actions
+  selectHonorForEarn: (honorID: string) => void;
+  toggleSelectionForEarn: (honorID: string) => void;
+  clearSelectionForEarn: () => void;
+  isSelectedForEarn: (honorID: string) => boolean;
+
   getHonors: () => Promise<void>;
   selectHonor: (honorID: string) => void;
   toggleSelection: (honorID: string) => void;
@@ -40,6 +42,7 @@ export const useHonorStore = defineStore("honorStore", {
     loading: false,
     error: false,
     selected: [] as string[],
+    selectedForEarn: [] as string[],
   }),
   getters: {
     getHonorsByLevel: (state) => (level: number) => {
@@ -57,12 +60,24 @@ export const useHonorStore = defineStore("honorStore", {
     getHonorsBySelection: (state) => () => {
       return state.honors.filter((h) => state.selected.indexOf(h.honorID) > -1);
     },
+    getHonorsBySelectionForEarn: (state) => () => {
+      return state.honors.filter(
+        (h) => state.selectedForEarn.indexOf(h.honorID) > -1,
+      );
+    },
     getSelected: (state) => () => {
       console.log(state.selected);
       return state.selected;
     },
+    getSelectedForEarn: (state) => () => {
+      console.log(state.selectedForEarn);
+      return state.selectedForEarn;
+    },
     isSelected: (state) => (honorID: string) => {
       return state.selected.indexOf(honorID) > -1;
+    },
+    isSelectedForEarn: (state) => (honorID: string) => {
+      return state.selectedForEarn.indexOf(honorID) > -1;
     },
   },
   actions: {
@@ -99,8 +114,23 @@ export const useHonorStore = defineStore("honorStore", {
     clearSelection() {
       this.selected = [] as string[];
     },
-  },
-  persist: {
-    enabled: true,
+    selectHonorForEarn(honorID: string) {
+      if (this.selectedForEarn.includes(honorID)) {
+        throw Errors.selectHonor.alreadySelected;
+      }
+      this.selectedForEarn = [...this.selectedForEarn, honorID];
+    },
+    toggleSelectionForEarn(honorID: string) {
+      if (this.isSelectedForEarn(honorID)) {
+        this.selectedForEarn = this.selectedForEarn.filter(
+          (id) => id !== honorID,
+        );
+      } else {
+        this.selectHonorForEarn(honorID);
+      }
+    },
+    clearSelectionForEarn() {
+      this.selectedForEarn = [];
+    },
   },
 });

@@ -9,21 +9,19 @@ import {
   BulkAddResponse,
   status,
 } from "@/models/pathfinder";
-// Define the type
 export type PathfinderStoreType = {
-  // State
   pathfinders: Pathfinder[];
   loading: boolean;
   error: boolean;
   selected: string[];
+  selectedForEarn: string[];
 
-  // Getters
   getPathfindersByGrade: (grade: number) => Pathfinder[];
   getPathfindersBySelection: () => Pathfinder[];
   getSelected: () => string[];
   isSelected: (pathfinderID: string) => boolean;
+  isSelectedForEarn: (pathfinderID: string) => boolean;
 
-  // Actions
   getPathfinders: () => Promise<void>;
   getPathfinderById: (pathfinderID: string) => Promise<void>;
   postPathfinder: (data: PathfinderPost) => Promise<void>;
@@ -46,20 +44,19 @@ export type PathfinderStoreType = {
     pathfinderID: string,
     data: { grade: number | null; isActive: boolean | null },
   ) => Promise<void>;
+  selectPathfinderForEarn: (pathfinderID: string) => void;
+  clearSelectionForEarn: () => void;
 };
 
 export const usePathfinderStore = defineStore("pathfinder", {
   state: () => ({
-    // define the data shape of the store using the interface above
-    // I'm assuming that the data from the api returns an array of pathfinders
     pathfinders: [] as Pathfinder[],
     loading: false,
     error: false,
     selected: [] as string[],
+    selectedForEarn: [] as string[],
   }),
   getters: {
-    // getters are functions that return values from the state
-    // they are used to calculate values from the state, like a filtered list or a sum
     getPathfindersByGrade: (state) => (grade: number) => {
       return state.pathfinders.filter((p) => p.grade === grade);
     },
@@ -68,16 +65,25 @@ export const usePathfinderStore = defineStore("pathfinder", {
         (p) => state.selected.indexOf(p.pathfinderID) > -1,
       );
     },
+    getPathfindersBySelectionForEarn: (state) => () => {
+      return state.pathfinders.filter(
+        (p) => state.selectedForEarn.indexOf(p.pathfinderID) > -1,
+      );
+    },
     getSelected: (state) => () => {
       return state.selected;
+    },
+    getSelectedForEarn: (state) => () => {
+      return state.selectedForEarn;
     },
     isSelected: (state) => (pathfinderID: string) => {
       return state.selected.indexOf(pathfinderID) > -1;
     },
+    isSelectedForEarn: (state) => (pathfinderID: string) => {
+      return state.selectedForEarn.indexOf(pathfinderID) > -1;
+    },
   },
   actions: {
-    // actions are functions that modify the state
-    // they are used to call API requests or to modify the state in some other way
     async getPathfinders() {
       this.loading = true;
       this.error = false;
@@ -207,22 +213,18 @@ export const usePathfinderStore = defineStore("pathfinder", {
               if (!tempPathfinderHonors[pathfinderID]) {
                 tempPathfinderHonors[pathfinderID] = [];
               }
-              // Check if the honor already exists in tempPathfinderHonors for the pathfinderID
               const existingIndex = tempPathfinderHonors[
                 pathfinderID
               ].findIndex(
                 (honor) => honor.honorID === result.pathfinderHonor.honorID,
               );
               if (existingIndex > -1) {
-                // Replace existing honor
                 tempPathfinderHonors[pathfinderID].splice(
                   existingIndex,
                   1,
                   result.pathfinderHonor,
                 );
               } else {
-                // Append new honor if it doesn't exist
-                // Using splice to append: specify the start index as the array's length, remove 0 items, and add the new item
                 tempPathfinderHonors[pathfinderID].splice(
                   tempPathfinderHonors[pathfinderID].length,
                   0,
@@ -242,23 +244,19 @@ export const usePathfinderStore = defineStore("pathfinder", {
             const honorsToUpdate =
               tempPathfinderHonors[pathfinder.pathfinderID];
             if (honorsToUpdate && pathfinder.pathfinderHonors) {
-              // Remove all existing honors that match the IDs of the honorsToUpdate
               pathfinder.pathfinderHonors = pathfinder.pathfinderHonors.filter(
                 (honor) =>
                   !honorsToUpdate.some(
                     (updateHonor) => updateHonor.honorID === honor.honorID,
                   ),
               );
-              // Now append the updated honors
               pathfinder.pathfinderHonors.push(...honorsToUpdate);
             } else if (honorsToUpdate) {
-              // If there were no existing honors, just set it to the updates
               pathfinder.pathfinderHonors = honorsToUpdate;
             }
             return pathfinder;
           });
 
-          // Return the successful and failed operations
           return { successful, failed };
         }
       } catch (err) {
@@ -276,15 +274,12 @@ export const usePathfinderStore = defineStore("pathfinder", {
       this.error = false;
       try {
         const response = await api.putPathfinder(pathfinderID, data);
-        // Find the index of the pathfinder to update
         const index = this.pathfinders.findIndex(
           (p) => p.pathfinderID === pathfinderID,
         );
         if (index !== -1) {
-          // Update the pathfinder in the local store
           this.pathfinders[index] = { ...this.pathfinders[index], ...data };
         }
-        // Refresh the pathfinders list from the API after successful update
         await this.getPathfinders();
       } catch (err) {
         this.error = true;
@@ -323,8 +318,26 @@ export const usePathfinderStore = defineStore("pathfinder", {
       }
       console.log(this.getSelected());
     },
+    toggleSelectionForEarn(pathfinderID: string) {
+      const s = this.getSelectedForEarn();
+      if (s.indexOf(pathfinderID) > -1) {
+        this.selected = s.filter((p) => p !== pathfinderID);
+      } else {
+        this.selectPathfinderForEarn(pathfinderID);
+      }
+      console.log(this.getSelected());
+    },
     clearSelection() {
       this.selected = [] as string[];
+    },
+    selectPathfinderForEarn(pathfinderID: string) {
+      if (this.selectedForEarn.includes(pathfinderID)) {
+        throw Errors.selectHonor.alreadySelected;
+      }
+      this.selectedForEarn = [...this.selectedForEarn, pathfinderID];
+    },
+    clearSelectionForEarn() {
+      this.selectedForEarn = [];
     },
   },
 });

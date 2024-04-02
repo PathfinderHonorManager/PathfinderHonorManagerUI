@@ -20,8 +20,13 @@ export async function addOrUpdateSelectedToClub(
   console.log(`${failed.length} honors failed to update.`, failed);
 
   if (successful.length > 0) {
-    pathfinderStore.selected = [];
-    honorStore.selected = [];
+    if (action === "earn") {
+      pathfinderStore.clearSelectionForEarn();
+      honorStore.clearSelectionForEarn();
+    } else {
+      pathfinderStore.selected = [];
+      honorStore.selected = [];
+    }
     selectedHonors.value = [];
     recipients.value = [];
     await nextTick();

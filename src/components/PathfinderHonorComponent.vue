@@ -2,7 +2,9 @@
   <div class="outline" v-if="display" id="grid-item-parent">
     <div id="honor-info">
       <img
-        :src="'https://pathfinderhonor.azureedge.net/assets/honors/small/' + image"
+        :src="
+          'https://pathfinderhonor.azureedge.net/assets/honors/small/' + image
+        "
         class="patchimage"
       />
       <h3>{{ name }}</h3>

@@ -94,7 +94,7 @@ export default defineComponent({
         "plan",
         bulkAdd,
       );
-          }
+    }
 
     function toggleSelection(honorID) {
       honorStore.toggleSelection(honorID);

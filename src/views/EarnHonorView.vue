@@ -3,6 +3,6 @@ import EarnHonorsComponent from "../components/EarnHonorsComponent.vue";
 </script>
 
 <template>
-  <h1>Plan Honors</h1>
+  <h1>Record Honors as Earned</h1>
   <EarnHonorsComponent />
 </template>

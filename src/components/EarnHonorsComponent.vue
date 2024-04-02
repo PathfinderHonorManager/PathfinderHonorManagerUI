@@ -2,7 +2,7 @@
   <div class="outline" style="text-align: center">
     <span class="loader" v-if="loading">Loading Honors</span>
     <div v-if="plannedHonors.length > 0">
-      <h3>Planned Honors</h3>
+      <h3>All Planned Honors</h3>
       <HonorsDisplayComponent
         :honorSearchResult="plannedHonors"
         :isSelected="isSelected"
@@ -27,11 +27,11 @@
 
     <div class="content-box center-align">
       <button @click="addOrUpdateSelectedToClub()" class="primary button">
-        Plan Selected ({{ selected.length }})
+        Record Selected as Earned ({{ selected.length }})
       </button>
       <p class="note">
-        This will add your selection of honors as a planned honor for every
-        selected member in your club.
+        This will update your selection of honors to earned for every selected
+        member in your club.
       </p>
     </div>
 
@@ -48,7 +48,6 @@ import HonorSearchComponent from "./HonorSearchComponent.vue";
 import HonorsDisplayComponent from "./HonorsDisplayComponent.vue";
 import SelectedHonorsDisplayComponent from "./SelectedHonorsDisplayComponent.vue";
 import RecipientsDisplayComponent from "./RecipientsDisplayComponent.vue";
-import status from "@/models/pathfinder";
 
 import { defineComponent, ref, inject, computed } from "vue";
 import { storeToRefs } from "pinia";
@@ -91,14 +90,14 @@ export default defineComponent({
         uniquePlannedHonorIDs.includes(honor.honorID),
       );
     });
-    let selectedHonors = ref(honorStore.getHonorsBySelection());
+    let selectedHonors = ref(honorStore.getHonorsBySelectionForEarn());
 
-    let recipients = ref(pathfinderStore.getPathfindersBySelection());
+    let recipients = ref(pathfinderStore.getPathfindersBySelectionForEarn());
     let bulkAdd = ref(false);
 
-    function toggleSelection(honorID) {
-      honorStore.toggleSelection(honorID);
-      selectedHonors.value = honorStore.getHonorsBySelection();
+    function toggleSelectionForEarn(honorID) {
+      honorStore.toggleSelectionForEarn(honorID);
+      selectedHonors.value = honorStore.getHonorsBySelectionForEarn();
       bulkAdd.value = false;
     }
 
@@ -137,7 +136,7 @@ export default defineComponent({
       selected,
       isSelected: honorStore.isSelected,
       selectHonor: honorStore.selectHonor,
-      toggleSelection: toggleSelection,
+      toggleSelection: toggleSelectionForEarn, // Update this reference
       handleSelectionChanged: handleSelectionChanged,
     };
   },
