@@ -1,4 +1,4 @@
-import { Ref } from "vue";
+import { Ref, nextTick } from "vue";
 import { PathfinderStoreType } from "@/stores/pathfinders";
 import { HonorStoreType } from "@/stores/honors";
 
@@ -24,8 +24,7 @@ export async function addOrUpdateSelectedToClub(
     honorStore.selected = [];
     selectedHonors.value = [];
     recipients.value = [];
+    await nextTick();
     bulkAdd.value = true;
   }
-  bulkAdd = false;
-
 }
