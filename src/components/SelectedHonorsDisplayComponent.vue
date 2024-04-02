@@ -1,6 +1,6 @@
 <template>
-  <div v-if="selectedHonors.length > 0">
-    <div class="outline selected-honors-container">
+  <div>
+    <div v-if="selectedHonors.length > 0" class="outline selected-honors-container">
       <button
         v-for="(honor, index) in selectedHonors"
         :key="index"
@@ -10,6 +10,9 @@
         <span>{{ honor.name }}</span>
         <span class="logobutton"><img src="@/assets/close-icon.svg" /></span>
       </button>
+    </div>
+    <div v-else class="outline note">
+      No honors selected
     </div>
   </div>
 </template>
@@ -26,15 +29,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.selected-honors-container {
-  display: flex;
-  align-items: center;
-  justify-content: stretch;
-  flex-wrap: wrap;
-  flex-grow: 1;
-  --iconSize: 16px;
-}
-
 .button {
   display: flex;
   align-items: center;
@@ -44,5 +38,10 @@ export default defineComponent({
   width: var(--iconSize);
   height: var(--iconSize);
   margin-left: 15px;
+}
+
+.no-honors-message {
+  text-align: center;
+  width: 100%;
 }
 </style>
