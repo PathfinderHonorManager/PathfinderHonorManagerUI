@@ -2,7 +2,7 @@
   <div class="outline" style="text-align: center">
     <h3>Find and Add Honors To Your Club</h3>
 
-    <HonorSearchComponent @search-query="doHonorSearch" />
+    <HonorSearchComponent @search-result="updateHonorSearchResult" />
 
     <span class="loader" v-if="loading">Loading Honors</span>
     <div v-if="honorSearchResult.length > 0">
@@ -87,7 +87,6 @@ export default defineComponent({
     SelectedHonorsDisplayComponent,
   },
   setup() {
-    //use injected stores
     const usePathfinderStore = inject("usePathfinderStore");
     const useHonorStore = inject("useHonorStore");
 
@@ -117,8 +116,15 @@ export default defineComponent({
         );
       console.log(`${successful.length} honors were successfully added.`);
       console.log(`${failed.length} honors failed to add.`, failed);
-      pathfinderStore.selected = [];
-      honorStore.selected = [];
+
+      if (successful.length > 0) {
+        pathfinderStore.selected = [];
+        honorStore.selected = [];
+        selectedHonors.value = []; 
+        recipients.value = []; 
+      }
+
+      bulkAdd.value = false; 
     }
 
     function toggleSelection(honorID) {
@@ -142,10 +148,8 @@ export default defineComponent({
       );
     }
 
-    function doHonorSearch(searchQuery) {
-      honorSearchResult.value = searchQuery !== ""
-        ? honorStore.getHonorsByQuery(searchQuery)
-        : [];
+    function updateHonorSearchResult(result) {
+      honorSearchResult.value = result;
     }
 
     return {
@@ -161,7 +165,7 @@ export default defineComponent({
       getHonorsBySelection: honorStore.getHonorsBySelection,
       addSelectedToClub: addSelectedToClub,
       honorSearchResult,
-      doHonorSearch: doHonorSearch,
+      updateHonorSearchResult: updateHonorSearchResult,
       loading,
       error,
       selected,
