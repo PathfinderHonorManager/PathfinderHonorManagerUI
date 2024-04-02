@@ -10,7 +10,6 @@ export async function addOrUpdateSelectedToClub(
   action: "plan" | "earn",
   bulkAdd: Ref<boolean>,
 ) {
-  bulkAdd.value = true;
   const { successful, failed } =
     await pathfinderStore.bulkManagePathfinderHonors(
       recipients.value.map((p) => p.pathfinderID),
@@ -25,7 +24,8 @@ export async function addOrUpdateSelectedToClub(
     honorStore.selected = [];
     selectedHonors.value = [];
     recipients.value = [];
+    bulkAdd.value = true;
   }
+  bulkAdd = false;
 
-  bulkAdd.value = false;
 }
