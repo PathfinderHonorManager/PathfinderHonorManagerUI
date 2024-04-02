@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useHonorStore } from "@/stores/honors"; // Adjust the path as necessary
 

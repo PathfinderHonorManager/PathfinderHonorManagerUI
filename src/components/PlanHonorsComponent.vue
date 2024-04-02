@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ToasterComponent from "./ToasterComponent.vue";
 import HonorSearchComponent from "./HonorSearchComponent.vue";
 import HonorsDisplayComponent from "./HonorsDisplayComponent.vue";
@@ -94,7 +94,7 @@ export default defineComponent({
         "plan",
         bulkAdd,
       );
-    }
+          }
 
     function toggleSelection(honorID) {
       honorStore.toggleSelection(honorID);
