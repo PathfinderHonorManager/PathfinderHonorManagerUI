@@ -26,6 +26,6 @@ export async function addOrUpdateSelectedToClub(
     recipients.value = [];
     bulkAdd.value = true;
   }
-  bulkAdd = false;
+  bulkAdd.value = false;
 
 }
