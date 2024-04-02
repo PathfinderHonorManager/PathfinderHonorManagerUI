@@ -12,45 +12,20 @@
         :isSelected="isSelected"
         @toggle-selection="toggleSelection"
       />
- 
+
       <h3>Selected Honors</h3>
       <SelectedHonorsDisplayComponent
         :selectedHonors="selectedHonors"
         @toggle-selection="toggleSelection"
       />
       <h3>Recipients</h3>
-      <div class="outline" style="display: flex">
-        <button
-          v-for="(recipient, i) in pathfinders"
-          :key="i"
-          class="button"
-          :style="{
-            backgroundColor: pathfinderHasSelectedHonor(recipient.pathfinderID)
-              ? 'var(--red)'
-              : pathfinderStore.isSelected(recipient.pathfinderID)
-                ? 'var(--actionColor)'
-                : 'var(--lightGrey)',
-            flexGrow: 1,
-          }"
-          @click="
-            pathfinderHasSelectedHonor(recipient.pathfinderID)
-              ? null
-              : toggleRecipientSelection(recipient.pathfinderID)
-          "
-          :title="
-            pathfinderHasSelectedHonor(recipient.pathfinderID)
-              ? 'This pathfinder already has the selected honor'
-              : ''
-          "
-        >
-          {{ recipient.firstName }} {{ recipient.lastName }}
-        </button>
-      </div>
-      <p>{{ recipients.length }} recipients selected</p>
-      <p v-if="recipients.length == 1" class="note">
-        When planning honors for individuals, we recommend doing it in the My Club
-        page.
-      </p>
+      <RecipientsDisplayComponent
+        :pathfinders="pathfinders"
+        :recipients="recipients"
+        :pathfinderStore="pathfinderStore"
+        :selectedHonors="selectedHonors"
+        @selectionChanged="handleSelectionChanged"
+      />
     </div>
 
     <div class="content-box center-align">
@@ -72,9 +47,10 @@
 
 <script>
 import ToasterComponent from "./ToasterComponent.vue";
-import HonorSearchComponent from './HonorSearchComponent.vue';
-import HonorsDisplayComponent from './HonorsDisplayComponent.vue';
-import SelectedHonorsDisplayComponent from './SelectedHonorsDisplayComponent.vue';
+import HonorSearchComponent from "./HonorSearchComponent.vue";
+import HonorsDisplayComponent from "./HonorsDisplayComponent.vue";
+import SelectedHonorsDisplayComponent from "./SelectedHonorsDisplayComponent.vue";
+import RecipientsDisplayComponent from "./RecipientsDisplayComponent.vue";
 
 import { defineComponent, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
@@ -85,6 +61,7 @@ export default defineComponent({
     HonorSearchComponent,
     HonorsDisplayComponent,
     SelectedHonorsDisplayComponent,
+    RecipientsDisplayComponent,
   },
   setup() {
     const usePathfinderStore = inject("usePathfinderStore");
@@ -120,11 +97,11 @@ export default defineComponent({
       if (successful.length > 0) {
         pathfinderStore.selected = [];
         honorStore.selected = [];
-        selectedHonors.value = []; 
-        recipients.value = []; 
+        selectedHonors.value = [];
+        recipients.value = [];
       }
 
-      bulkAdd.value = false; 
+      bulkAdd.value = false;
     }
 
     function toggleSelection(honorID) {
@@ -133,19 +110,8 @@ export default defineComponent({
       bulkAdd.value = false;
     }
 
-    function toggleRecipientSelection(pathfinderID) {
-      pathfinderStore.toggleSelection(pathfinderID);
+    function handleSelectionChanged() {
       recipients.value = pathfinderStore.getPathfindersBySelection();
-      bulkAdd.value = false;
-    }
-
-    function pathfinderHasSelectedHonor(pathfinderID) {
-      const pathfinder = pathfinders.value.find(
-        (p) => p.pathfinderID === pathfinderID,
-      );
-      return pathfinder.pathfinderHonors.some((h) =>
-        selected.value.includes(h.honorID),
-      );
     }
 
     function updateHonorSearchResult(result) {
@@ -172,8 +138,7 @@ export default defineComponent({
       isSelected: honorStore.isSelected,
       selectHonor: honorStore.selectHonor,
       toggleSelection: toggleSelection,
-      toggleRecipientSelection: toggleRecipientSelection,
-      pathfinderHasSelectedHonor: pathfinderHasSelectedHonor,
+      handleSelectionChanged: handleSelectionChanged,
     };
   },
 });
