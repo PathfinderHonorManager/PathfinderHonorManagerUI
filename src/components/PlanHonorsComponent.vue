@@ -13,14 +13,14 @@
   <span class="loader" v-if="loading">Loading Honors</span>
   <div v-if="honorSearchResult.length > 0">
     <h3>Search Results</h3>
-    <HonorsDisplay
+    <HonorsDisplayComponent
       :honorSearchResult="honorSearchResult"
       :isSelected="isSelected"
       @toggle-selection="toggleSelection"
     />
  
     <h3>Selected Honors</h3>
-    <SelectedHonorsDisplay
+    <SelectedHonorsDisplayComponent
       :selectedHonors="selectedHonors"
       @toggle-selection="toggleSelection"
     />
@@ -80,15 +80,15 @@ import ToasterComponent from "./ToasterComponent.vue";
 
 import { defineComponent, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
-import HonorsDisplay from './HonorsDisplay.vue';
-import SelectedHonorsDisplay from './SelectedHonorsDisplay.vue';
+import HonorsDisplayComponent from './HonorsDisplayComponent.vue';
+import SelectedHonorsDisplayComponent from './SelectedHonorsDisplayComponent.vue';
 
 
 export default defineComponent({
   components: {
     ToasterComponent,
-    HonorsDisplay,
-    SelectedHonorsDisplay,
+    HonorsDisplayComponent,
+    SelectedHonorsDisplayComponent,
   },
   setup() {
     //use injected stores
