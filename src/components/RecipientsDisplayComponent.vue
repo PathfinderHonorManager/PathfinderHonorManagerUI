@@ -6,11 +6,9 @@
       class="button"
       :class="{
         'is-ineligible': pathfinderHasSelectedHonor(recipient.pathfinderID),
-        'is-selected':
-          pathfinderStore.isSelected(recipient.pathfinderID) &&
-          !pathfinderHasSelectedHonor(recipient.pathfinderID),
+        'is-selected': isSelected(recipient.pathfinderID),
         'is-light-grey':
-          !pathfinderStore.isSelected(recipient.pathfinderID) &&
+          !isSelected(recipient.pathfinderID) &&
           !pathfinderHasSelectedHonor(recipient.pathfinderID),
       }"
       @click="toggleRecipientSelection(recipient.pathfinderID)"
@@ -31,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from "vue";
+import { defineComponent, toRefs, computed } from "vue";
 
 export default defineComponent({
   props: {
@@ -79,13 +77,26 @@ export default defineComponent({
     };
 
     const toggleRecipientSelection = (pathfinderID) => {
-      pathfinderStore.value.toggleSelection(pathfinderID);
+      if (eligibilityCriteria.value === "earn") {
+        pathfinderStore.value.toggleSelectionForEarn(pathfinderID);
+      } else {
+        pathfinderStore.value.toggleSelection(pathfinderID);
+      }
       emit("selectionChanged");
+    };
+
+    const isSelected = (pathfinderID) => {
+      if (eligibilityCriteria.value === "earn") {
+        return pathfinderStore.value.isSelectedForEarn(pathfinderID);
+      } else {
+        return pathfinderStore.value.isSelected(pathfinderID);
+      }
     };
 
     return {
       pathfinderHasSelectedHonor,
       toggleRecipientSelection,
+      isSelected,
     };
   },
 });
