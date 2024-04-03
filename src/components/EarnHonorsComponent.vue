@@ -27,7 +27,7 @@
 
     <div class="content-box center-align">
       <button @click="addOrUpdateSelectedToClub()" class="primary button">
-        Record Selected as Earned ({{ selected.length }})
+        Record Selected as Earned ({{ selectedForEarn.length }})
       </button>
       <p class="note">
         This will update your selection of honors to earned for every selected
@@ -73,7 +73,7 @@ export default defineComponent({
       ? pathfinderStore.getPathfinders()
       : undefined;
 
-    let { honors, selected, loading, error } = storeToRefs(honorStore);
+    let { honors, selectedForEarn, loading, error } = storeToRefs(honorStore);
     const { pathfinders } = storeToRefs(pathfinderStore);
 
     let plannedHonors = computed(() => {
@@ -102,7 +102,7 @@ export default defineComponent({
     }
 
     function handleSelectionChanged() {
-      recipients.value = pathfinderStore.getPathfindersBySelection();
+      recipients.value = pathfinderStore.getPathfindersBySelectionForEarn();
     }
 
     function updateHonorSearchResult(result) {
@@ -133,10 +133,10 @@ export default defineComponent({
       updateHonorSearchResult: updateHonorSearchResult,
       loading,
       error,
-      selected,
-      isSelected: honorStore.isSelected,
+      selectedForEarn,
+      isSelected: honorStore.isSelectedForEarn,
       selectHonor: honorStore.selectHonor,
-      toggleSelection: toggleSelectionForEarn, // Update this reference
+      toggleSelection: toggleSelectionForEarn,
       handleSelectionChanged: handleSelectionChanged,
     };
   },
