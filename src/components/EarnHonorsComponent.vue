@@ -5,29 +5,23 @@
       <h3>All Planned Honors</h3>
       <HonorsDisplayComponent
         :honorSearchResult="plannedHonors"
-        :isSelected="isSelected"
         @toggle-selection="toggleSelection"
       />
 
       <h3>Selected Honors</h3>
       <SelectedHonorsDisplayComponent
-        :selectedHonors="selectedHonors"
+        :selectionType="'earn'"
         @toggle-selection="toggleSelection"
       />
       <h3>Recipients</h3>
       <RecipientsDisplayComponent
-        :pathfinders="pathfinders"
-        :recipients="recipients"
-        :pathfinderStore="pathfinderStore"
-        :selectedHonors="selectedHonors"
-        :eligibilityCriteria="'earn'"
-        @selectionChanged="handleSelectionChanged"
+        :selectionType="'earn'"
       />
     </div>
 
     <div class="content-box center-align">
       <button @click="addOrUpdateSelectedToClub()" class="primary button">
-        Record Selected as Earned ({{ selectedForEarn.length }})
+        Record Selected as Earned ({{ selectedHonors.length }})
       </button>
       <p class="note">
         This will update your selection of honors to earned for every selected
@@ -49,9 +43,10 @@ import HonorsDisplayComponent from "./HonorsDisplayComponent.vue";
 import SelectedHonorsDisplayComponent from "./SelectedHonorsDisplayComponent.vue";
 import RecipientsDisplayComponent from "./RecipientsDisplayComponent.vue";
 
-import { defineComponent, ref, inject, computed } from "vue";
+import { defineComponent, ref, inject, computed, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 import { addOrUpdateSelectedToClub } from "@/utils/manageHonors";
+import { useSelectionStore } from "@/stores/selectionStore";
 
 export default defineComponent({
   components: {
@@ -64,6 +59,7 @@ export default defineComponent({
   setup() {
     const usePathfinderStore = inject("usePathfinderStore");
     const useHonorStore = inject("useHonorStore");
+    const selectionStore = useSelectionStore();
 
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
@@ -73,7 +69,7 @@ export default defineComponent({
       ? pathfinderStore.getPathfinders()
       : undefined;
 
-    let { honors, selectedForEarn, loading, error } = storeToRefs(honorStore);
+    let { honors, loading, error } = storeToRefs(honorStore);
     const { pathfinders } = storeToRefs(pathfinderStore);
 
     let plannedHonors = computed(() => {
@@ -90,23 +86,19 @@ export default defineComponent({
         uniquePlannedHonorIDs.includes(honor.honorID),
       );
     });
-    let selectedHonors = ref(honorStore.getHonorsBySelectionForEarn());
+    const selectedHonors = computed(() => honorStore.getHonorsBySelection("earn"));
 
-    let recipients = ref(pathfinderStore.getPathfindersBySelectionForEarn());
+    const recipients = computed(() => pathfinderStore.getPathfindersBySelection("earn"));
+
     let bulkAdd = ref(false);
 
     function toggleSelectionForEarn(honorID) {
-      honorStore.toggleSelectionForEarn(honorID);
-      selectedHonors.value = honorStore.getHonorsBySelectionForEarn();
+      selectionStore.toggleSelection("earn", honorID, "honors");
       bulkAdd.value = false;
     }
 
-    function handleSelectionChanged() {
-      recipients.value = pathfinderStore.getPathfindersBySelectionForEarn();
-    }
-
-    function updateHonorSearchResult(result) {
-      plannedHonors.value = result;
+    function isSelectedHonor(honorID: string) {
+      return selectionStore.selections.earn.honors.includes(honorID);
     }
 
     return {
@@ -124,20 +116,17 @@ export default defineComponent({
         addOrUpdateSelectedToClub(
           pathfinderStore,
           honorStore,
+          selectionStore,
           recipients,
           selectedHonors,
           "earn",
           bulkAdd,
         ),
       plannedHonors,
-      updateHonorSearchResult: updateHonorSearchResult,
       loading,
       error,
-      selectedForEarn,
-      isSelected: honorStore.isSelectedForEarn,
-      selectHonor: honorStore.selectHonor,
+      isSelectedHonor,
       toggleSelection: toggleSelectionForEarn,
-      handleSelectionChanged: handleSelectionChanged,
     };
   },
 });

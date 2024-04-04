@@ -5,10 +5,10 @@
         v-for="(honor, index) in honorSearchResult"
         :key="index"
         class="outline honor-item"
-        :class="{ selected: isSelected(honor.honorID) }"
+        :class="{ selected: isSelectedHonor(honor.honorID) }"
         @click="$emit('toggle-selection', honor.honorID)"
       >
-        <button v-if="isSelected(honor.honorID)" class="deselect-button">
+        <button v-if="isSelectedHonor(honor.honorID)" class="deselect-button">
           <img src="@/assets/close-icon.svg" />
         </button>
         <img
@@ -26,13 +26,23 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import { useSelectionStore } from "@/stores/selectionStore";
 
 export default defineComponent({
   props: {
+    selectionType: String as PropType<string>,
     honorSearchResult: Array as PropType<Array<any>>,
-    isSelected: Function as PropType<(honorID: number) => boolean>,
   },
   emits: ["toggle-selection"],
+  setup(props, {emits}) {
+    const selectionStore = useSelectionStore();
+    function isSelectedHonor(honorID: string) {
+      return selectionStore.selections[props.selectionType].honors.includes(honorID);
+    };
+    return {
+      isSelectedHonor,
+    };
+  },
 });
 </script>
 

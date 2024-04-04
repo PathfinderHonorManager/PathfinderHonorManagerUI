@@ -9,28 +9,23 @@
       <h3>Search Results</h3>
       <HonorsDisplayComponent
         :honorSearchResult="honorSearchResult"
-        :isSelected="isSelected"
         @toggle-selection="toggleSelection"
       />
 
       <h3>Selected Honors</h3>
       <SelectedHonorsDisplayComponent
-        :selectedHonors="selectedHonors"
         @toggle-selection="toggleSelection"
+        :selectionType="'plan'"
       />
       <h3>Recipients</h3>
       <RecipientsDisplayComponent
-        :pathfinders="pathfinders"
-        :recipients="recipients"
-        :pathfinderStore="pathfinderStore"
-        :selectedHonors="selectedHonors"
-        @selectionChanged="handleSelectionChanged"
+        :selectionType="'plan'"
       />
     </div>
 
     <div class="content-box center-align">
-      <button @click="addSelectedToClub()" class="primary button">
-        Plan Selected ({{ selected.length }})
+      <button @click="addOrUpdateSelectedToClub()" class="primary button">
+        Plan Selected ({{ selectedHonors.length }})
       </button>
       <p class="note">
         This will add your selection of honors as a planned honor for every
@@ -52,9 +47,10 @@ import HonorsDisplayComponent from "./HonorsDisplayComponent.vue";
 import SelectedHonorsDisplayComponent from "./SelectedHonorsDisplayComponent.vue";
 import RecipientsDisplayComponent from "./RecipientsDisplayComponent.vue";
 
-import { defineComponent, ref, inject } from "vue";
+import { defineComponent, ref, inject, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { addOrUpdateSelectedToClub } from "@/utils/manageHonors";
+import { useSelectionStore } from "@/stores/selectionStore"; // Added import for selectionStore
 
 export default defineComponent({
   components: {
@@ -67,6 +63,7 @@ export default defineComponent({
   setup() {
     const usePathfinderStore = inject("usePathfinderStore");
     const useHonorStore = inject("useHonorStore");
+    const selectionStore = useSelectionStore();
 
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
@@ -80,34 +77,26 @@ export default defineComponent({
     const { pathfinders } = storeToRefs(pathfinderStore);
 
     let honorSearchResult = ref([]);
-    let selectedHonors = ref(honorStore.getHonorsBySelection());
+    const selectedHonors = computed(() => honorStore.getHonorsBySelection("plan"));
 
-    let recipients = ref(pathfinderStore.getPathfindersBySelection());
+    const recipients = computed(() => pathfinderStore.getPathfindersBySelection("plan"));
     let bulkAdd = ref(false);
 
-    async function addSelectedToClub() {
-      await addOrUpdateSelectedToClub(
-        pathfinderStore,
-        honorStore,
-        recipients,
-        selectedHonors,
-        "plan",
-        bulkAdd,
-      );
-    }
-
     function toggleSelection(honorID) {
-      honorStore.toggleSelection(honorID);
-      selectedHonors.value = honorStore.getHonorsBySelection();
+      selectionStore.toggleSelection('plan', honorID, 'honors'); 
       bulkAdd.value = false;
     }
 
     function handleSelectionChanged() {
-      recipients.value = pathfinderStore.getPathfindersBySelection();
+      recipients.value = pathfinderStore.getPathfindersBySelection('plan')
     }
 
     function updateHonorSearchResult(result) {
       honorSearchResult.value = result;
+    }
+
+    function isSelectedHonor(honorID: string) {
+      return selectionStore.selections[props.selectionType.value].honors.includes(honorID);
     }
 
     return {
@@ -121,13 +110,22 @@ export default defineComponent({
       getHonors: honorStore.getHonors,
       getHonorsByQuery: honorStore.getHonorsByQuery,
       getHonorsBySelection: honorStore.getHonorsBySelection,
-      addSelectedToClub: addSelectedToClub,
+      addOrUpdateSelectedToClub: () =>
+        addOrUpdateSelectedToClub(
+          pathfinderStore,
+          honorStore,
+          selectionStore,
+          recipients,
+          selectedHonors,
+          "plan",
+          bulkAdd,
+        ),
       honorSearchResult,
       updateHonorSearchResult: updateHonorSearchResult,
       loading,
       error,
       selected,
-      isSelected: honorStore.isSelected,
+      isSelectedHonor,
       selectHonor: honorStore.selectHonor,
       toggleSelection: toggleSelection,
       handleSelectionChanged: handleSelectionChanged,

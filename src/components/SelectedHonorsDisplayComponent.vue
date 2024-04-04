@@ -2,13 +2,13 @@
   <div>
     <div
       v-if="selectedHonors.length > 0"
-      class="outline selected-honors-container"
+      class="outline selection-container"
     >
       <button
         v-for="(honor, index) in selectedHonors"
         :key="index"
         class="secondary button"
-        @click="$emit('toggle-selection', honor.honorID)"
+        @click="toggleHonorSelection(honor.honorID)"
       >
         <span>{{ honor.name }}</span>
         <span class="logobutton"><img src="@/assets/close-icon.svg" /></span>
@@ -19,26 +19,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, computed } from "vue";
+import { useSelectionStore } from "@/stores/selectionStore"; // Import the selectionStore
+import { useHonorStore } from "@/stores/honors"; // Assuming you still need to access honor details
 
 export default defineComponent({
   props: {
-    selectedHonors: Array as PropType<Array<any>>,
+    selectionType: {
+      type: String,
+      required: true,
+      validator: (value) => ['plan', 'earn'].includes(value),
+    },
   },
-  emits: ["toggle-selection"],
+  setup(props) {
+    const selectionStore = useSelectionStore();
+    const honorStore = useHonorStore();
+
+    // Computed property to get selected honors based on the selection store
+    const selectedHonors = computed(() => {
+      const selectedHonorIDs = selectionStore.selections[props.selectionType].honors;
+      return honorStore.honors.filter(honor => selectedHonorIDs.includes(honor.honorID));
+    });
+
+    // Method to toggle honor selection
+    const toggleHonorSelection = (honorID: string) => {
+      selectionStore.toggleSelection(props.selectionType, honorID, 'honors');
+    };
+
+    return {
+      selectedHonors,
+      toggleHonorSelection,
+    };
+  },
 });
 </script>
 
 <style scoped>
-.selected-honors-container {
-  display: flex;
-  align-items: center;
-  justify-content: stretch;
-  flex-wrap: wrap;
-  flex-grow: 1;
-  --iconSize: 16px;
-}
-
 .button {
   display: flex;
   align-items: center;

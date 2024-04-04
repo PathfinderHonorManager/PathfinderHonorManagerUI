@@ -224,6 +224,14 @@ body {
     border-radius: 10px;
     padding: var(--content-padding);
 }
+.selection-container {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    --iconSize: 16px;
+}
 
 .power-outline {
     box-sizing: border-box;

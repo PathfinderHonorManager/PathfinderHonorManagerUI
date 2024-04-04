@@ -1,108 +1,107 @@
 <template>
-  <div class="outline" style="display: flex">
+  <div class="outline selection-container">
     <button
-      v-for="(recipient, i) in pathfinders"
+      v-for="(pathfinder, i) in pathfinders"
       :key="i"
       class="button"
       :class="{
-        'is-ineligible': pathfinderHasSelectedHonor(recipient.pathfinderID),
-        'is-selected': isSelected(recipient.pathfinderID),
-        'is-light-grey':
-          !isSelected(recipient.pathfinderID) &&
-          !pathfinderHasSelectedHonor(recipient.pathfinderID),
+        'is-ineligible': !isEligible(pathfinder.pathfinderID),
+        'is-selected': isSelected(pathfinder.pathfinderID),
+        'is-light-grey': !isSelected(pathfinder.pathfinderID) && isEligible(pathfinder.pathfinderID),
       }"
-      @click="toggleRecipientSelection(recipient.pathfinderID)"
-      :title="
-        pathfinderHasSelectedHonor(recipient.pathfinderID)
-          ? 'This pathfinder already has the selected honor'
-          : ''
-      "
+      @click="toggleRecipientSelection(pathfinder.pathfinderID)"
+      :title="isEligible(pathfinder.pathfinderID) ? '' : 'This pathfinder is not eligible for selection'"
     >
-      {{ recipient.firstName }} {{ recipient.lastName }}
+      {{ pathfinder.firstName }} {{ pathfinder.lastName }}
     </button>
   </div>
   <p>{{ recipients.length }} recipients selected</p>
   <p v-if="recipients.length == 1" class="note">
-    When managing honors for individuals, we recommend doing it in the My Club
-    page.
+    When managing honors for individuals, we recommend doing it in the My Club page.
   </p>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed } from "vue";
+import { defineComponent, computed, ref, watch } from "vue";
+import { useSelectionStore } from "@/stores/selectionStore";
+import { usePathfinderStore } from "@/stores/pathfinders";
+import { useHonorStore } from "@/stores/honors";
 
 export default defineComponent({
   props: {
-    pathfinders: Array as PropType<Pathfinder[]>,
-    recipients: Array as PropType<Recipient[]>,
-    selectedHonors: Array as PropType<SelectedHonor[]>,
-    pathfinderStore: Object as PropType<PathfinderStoreType>,
-    eligibilityCriteria: String,
+    selectionType: {
+      type: String,
+      required: true,
+      validator: (value) => ['plan', 'earn'].includes(value),
+    },
   },
-  emits: ["selectionChanged"],
-  setup(props, { emit }) {
-    const {
-      pathfinders,
-      recipients,
-      selectedHonors,
-      pathfinderStore,
-      eligibilityCriteria,
-    } = toRefs(props);
+  setup(props) {
+    const selectionStore = useSelectionStore();
+    const pathfinderStore = usePathfinderStore();
+    const honorStore = useHonorStore();
+    const pathfinders = ref(pathfinderStore.pathfinders);
 
-    const pathfinderHasSelectedHonor = (pathfinderID) => {
-      const pathfinder = pathfinders.value.find(
-        (p) => p.pathfinderID === pathfinderID,
-      );
-      if (eligibilityCriteria.value === "earn") {
-        return !(
-          pathfinder &&
-          pathfinder.pathfinderHonors.some((honor) =>
-            selectedHonors.value.some(
-              (selectedHonor) =>
-                selectedHonor.honorID === honor.honorID &&
-                honor.status === "Planned",
-            ),
-          )
-        );
-      } else {
-        return (
-          pathfinder &&
-          pathfinder.pathfinderHonors.some((honor) =>
-            selectedHonors.value.some(
-              (selectedHonor) => selectedHonor.honorID === honor.honorID,
-            ),
-          )
-        );
+    const selectedHonors = computed(() => {
+      return honorStore.getHonorsBySelection(props.selectionType);
+    });
+
+    const recipients = computed(() => {
+      return pathfinderStore.getPathfindersBySelection(props.selectionType);
+    });
+    
+    const selectedHonorIDs = computed(() => new Set(selectedHonors.value.map(honor => honor.honorID)));
+
+    const toggleRecipientSelection = (pathfinderID: string) => {
+      if (isEligible(pathfinderID)) {
+      selectionStore.toggleSelection(props.selectionType, pathfinderID, "pathfinders");
       }
     };
 
-    const toggleRecipientSelection = (pathfinderID) => {
-      if (eligibilityCriteria.value === "earn") {
-        pathfinderStore.value.toggleSelectionForEarn(pathfinderID);
-      } else {
-        pathfinderStore.value.toggleSelection(pathfinderID);
+    watch([selectedHonors, pathfinders], () => {
+    const ineligiblePathfinders = pathfinders.value.filter(p => !isEligible(p.pathfinderID));
+    ineligiblePathfinders.forEach(p => {
+      if (isSelected(p.pathfinderID)) {
+        selectionStore.toggleSelection(props.selectionType, p.pathfinderID, "pathfinders");
       }
-      emit("selectionChanged");
+    });
+    }, { deep: true });
+
+    const isSelected = (pathfinderID: string) => {
+      return selectionStore.selections[props.selectionType].pathfinders.includes(pathfinderID);
     };
 
-    const isSelected = (pathfinderID) => {
-      if (eligibilityCriteria.value === "earn") {
-        return pathfinderStore.value.isSelectedForEarn(pathfinderID);
+    const isEligible = (pathfinderID: string): boolean => {
+      const pathfinder = pathfinderStore.pathfinders.find(p => p.pathfinderID === pathfinderID);
+      if (!pathfinder || !pathfinder.pathfinderHonors) {
+        return false;
+      }
+      
+      if (props.selectionType === "earn") {
+        return pathfinder.pathfinderHonors.some((honor) =>
+          selectedHonorIDs.value.has(honor.honorID) && honor.status === "Planned",
+        );
+      } else if (props.selectionType == "plan") {
+        return pathfinder.pathfinderHonors.every((honor) =>
+          !selectedHonorIDs.value.has(honor.honorID),
+        );
       } else {
-        return pathfinderStore.value.isSelected(pathfinderID);
+        return false;
       }
     };
 
     return {
-      pathfinderHasSelectedHonor,
+      pathfinders,
+      recipients,
       toggleRecipientSelection,
       isSelected,
+      isEligible,
     };
   },
 });
 </script>
 
 <style>
+
 .is-ineligible {
   background-color: var(--red);
 }
@@ -115,3 +114,4 @@ export default defineComponent({
   background-color: var(--lightGrey);
 }
 </style>
+
