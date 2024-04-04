@@ -34,11 +34,13 @@ export default defineComponent({
     honorSearchResult: Array as PropType<Array<any>>,
   },
   emits: ["toggle-selection"],
-  setup(props, {emits}) {
+  setup(props, { emits }) {
     const selectionStore = useSelectionStore();
     function isSelectedHonor(honorID: string) {
-      return selectionStore.selections[props.selectionType].honors.includes(honorID);
-    };
+      return selectionStore.selections[props.selectionType].honors.includes(
+        honorID,
+      );
+    }
     return {
       isSelectedHonor,
     };

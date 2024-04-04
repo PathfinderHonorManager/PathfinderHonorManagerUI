@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-export type SelectionType = 'plan' | 'earn';
-export type CategoryType = 'pathfinders' | 'honors';
+export type SelectionType = "plan" | "earn";
+export type CategoryType = "pathfinders" | "honors";
 
 export interface Selections {
   plan: {
@@ -15,10 +15,18 @@ export interface Selections {
 
 export type SelectionStoreType = {
   selections: Selections;
-  
-  toggleSelection: (type: SelectionType, id: string, category: CategoryType) => void;
+
+  toggleSelection: (
+    type: SelectionType,
+    id: string,
+    category: CategoryType,
+  ) => void;
   clearSelection: (type: SelectionType) => void;
-  isSelected: (type: SelectionType, id: string, category: CategoryType) => boolean;
+  isSelected: (
+    type: SelectionType,
+    id: string,
+    category: CategoryType,
+  ) => boolean;
 };
 
 export const useSelectionStore = defineStore("selectionStore", {
@@ -35,7 +43,11 @@ export const useSelectionStore = defineStore("selectionStore", {
     },
   }),
   actions: {
-    toggleSelection(type: "plan" | "earn", id: string, category: "pathfinders" | "honors") {
+    toggleSelection(
+      type: "plan" | "earn",
+      id: string,
+      category: "pathfinders" | "honors",
+    ) {
       const index = this.selections[type][category].indexOf(id);
       if (index > -1) {
         this.selections[type][category].splice(index, 1);
@@ -47,7 +59,11 @@ export const useSelectionStore = defineStore("selectionStore", {
       this.selections[type].pathfinders = [];
       this.selections[type].honors = [];
     },
-    isSelected(type: "plan" | "earn", id: string, category: "pathfinders" | "honors") {
+    isSelected(
+      type: "plan" | "earn",
+      id: string,
+      category: "pathfinders" | "honors",
+    ) {
       return this.selections[type][category].includes(id);
     },
   },

@@ -17,12 +17,12 @@ export type HonorStoreType = {
   honors: IHonor[];
   loading: boolean;
   error: boolean;
-  
+
   getHonorsByLevel: (level: number) => IHonor[];
   getHonorsByQuery: (query: string) => IHonor[];
   getHonorsBySelection: (selectionType: "plan" | "earn") => IHonor[];
   getHonors: () => Promise<void>;
-}
+};
 
 export const useHonorStore = defineStore("honorStore", {
   state: () => ({
@@ -48,7 +48,11 @@ export const useHonorStore = defineStore("honorStore", {
         console.error(`Selection type ${selectionType} is not valid.`);
         return [];
       }
-      return state.honors.filter((h) => selectionStore.selections[selectionType].honors.includes(h.honorID)) || [];
+      return (
+        state.honors.filter((h) =>
+          selectionStore.selections[selectionType].honors.includes(h.honorID),
+        ) || []
+      );
     },
   },
   actions: {

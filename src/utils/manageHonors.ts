@@ -9,7 +9,7 @@ export async function addOrUpdateSelectedToClub(
   selectionStore: SelectionStoreType,
   recipients: Ref<Array<{ pathfinderID: string }>>,
   selectedHonors: Ref<Array<{ honorID: string }>>,
-  action:SelectionType,
+  action: SelectionType,
   bulkAdd: Ref<boolean>,
 ) {
   const { successful, failed } =

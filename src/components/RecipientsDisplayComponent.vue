@@ -7,17 +7,24 @@
       :class="{
         'is-ineligible': !isEligible(pathfinder.pathfinderID),
         'is-selected': isSelected(pathfinder.pathfinderID),
-        'is-light-grey': !isSelected(pathfinder.pathfinderID) && isEligible(pathfinder.pathfinderID),
+        'is-light-grey':
+          !isSelected(pathfinder.pathfinderID) &&
+          isEligible(pathfinder.pathfinderID),
       }"
       @click="toggleRecipientSelection(pathfinder.pathfinderID)"
-      :title="isEligible(pathfinder.pathfinderID) ? '' : 'This pathfinder is not eligible for selection'"
+      :title="
+        isEligible(pathfinder.pathfinderID)
+          ? ''
+          : 'This pathfinder is not eligible for selection'
+      "
     >
       {{ pathfinder.firstName }} {{ pathfinder.lastName }}
     </button>
   </div>
   <p>{{ recipients.length }} recipients selected</p>
   <p v-if="recipients.length == 1" class="note">
-    When managing honors for individuals, we recommend doing it in the My Club page.
+    When managing honors for individuals, we recommend doing it in the My Club
+    page.
   </p>
 </template>
 
@@ -32,7 +39,7 @@ export default defineComponent({
     selectionType: {
       type: String,
       required: true,
-      validator: (value) => ['plan', 'earn'].includes(value),
+      validator: (value) => ["plan", "earn"].includes(value),
     },
   },
   setup(props) {
@@ -48,41 +55,63 @@ export default defineComponent({
     const recipients = computed(() => {
       return pathfinderStore.getPathfindersBySelection(props.selectionType);
     });
-    
-    const selectedHonorIDs = computed(() => new Set(selectedHonors.value.map(honor => honor.honorID)));
+
+    const selectedHonorIDs = computed(
+      () => new Set(selectedHonors.value.map((honor) => honor.honorID)),
+    );
 
     const toggleRecipientSelection = (pathfinderID: string) => {
       if (isEligible(pathfinderID)) {
-      selectionStore.toggleSelection(props.selectionType, pathfinderID, "pathfinders");
+        selectionStore.toggleSelection(
+          props.selectionType,
+          pathfinderID,
+          "pathfinders",
+        );
       }
     };
 
-    watch([selectedHonors, pathfinders], () => {
-    const ineligiblePathfinders = pathfinders.value.filter(p => !isEligible(p.pathfinderID));
-    ineligiblePathfinders.forEach(p => {
-      if (isSelected(p.pathfinderID)) {
-        selectionStore.toggleSelection(props.selectionType, p.pathfinderID, "pathfinders");
-      }
-    });
-    }, { deep: true });
+    watch(
+      [selectedHonors, pathfinders],
+      () => {
+        const ineligiblePathfinders = pathfinders.value.filter(
+          (p) => !isEligible(p.pathfinderID),
+        );
+        ineligiblePathfinders.forEach((p) => {
+          if (isSelected(p.pathfinderID)) {
+            selectionStore.toggleSelection(
+              props.selectionType,
+              p.pathfinderID,
+              "pathfinders",
+            );
+          }
+        });
+      },
+      { deep: true },
+    );
 
     const isSelected = (pathfinderID: string) => {
-      return selectionStore.selections[props.selectionType].pathfinders.includes(pathfinderID);
+      return selectionStore.selections[
+        props.selectionType
+      ].pathfinders.includes(pathfinderID);
     };
 
     const isEligible = (pathfinderID: string): boolean => {
-      const pathfinder = pathfinderStore.pathfinders.find(p => p.pathfinderID === pathfinderID);
+      const pathfinder = pathfinderStore.pathfinders.find(
+        (p) => p.pathfinderID === pathfinderID,
+      );
       if (!pathfinder || !pathfinder.pathfinderHonors) {
         return false;
       }
-      
+
       if (props.selectionType === "earn") {
-        return pathfinder.pathfinderHonors.some((honor) =>
-          selectedHonorIDs.value.has(honor.honorID) && honor.status === "Planned",
+        return pathfinder.pathfinderHonors.some(
+          (honor) =>
+            selectedHonorIDs.value.has(honor.honorID) &&
+            honor.status === "Planned",
         );
       } else if (props.selectionType == "plan") {
-        return pathfinder.pathfinderHonors.every((honor) =>
-          !selectedHonorIDs.value.has(honor.honorID),
+        return pathfinder.pathfinderHonors.every(
+          (honor) => !selectedHonorIDs.value.has(honor.honorID),
         );
       } else {
         return false;
@@ -101,7 +130,6 @@ export default defineComponent({
 </script>
 
 <style>
-
 .is-ineligible {
   background-color: var(--red);
 }
@@ -114,4 +142,3 @@ export default defineComponent({
   background-color: var(--lightGrey);
 }
 </style>
-

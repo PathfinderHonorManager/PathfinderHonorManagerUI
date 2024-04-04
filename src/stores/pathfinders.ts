@@ -49,7 +49,11 @@ export const usePathfinderStore = defineStore("pathfinder", {
     // Adjusted to take a parameter specifying which selection to use
     getPathfindersBySelection: (state) => (selectionType: SelectionType) => {
       const selectionStore = useSelectionStore();
-      return state.pathfinders.filter((p) => selectionStore.selections[selectionType].pathfinders.includes(p.pathfinderID));
+      return state.pathfinders.filter((p) =>
+        selectionStore.selections[selectionType].pathfinders.includes(
+          p.pathfinderID,
+        ),
+      );
     },
   },
   actions: {
