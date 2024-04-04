@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import api from "@/api/pathfinders";
 import { Errors } from "../errors/errors";
+import { useSelectionStore, SelectionType } from "./selectionStore";
 import {
   Pathfinder,
   PathfinderPost,
@@ -13,16 +14,9 @@ export type PathfinderStoreType = {
   pathfinders: Pathfinder[];
   loading: boolean;
   error: boolean;
-  selected: string[];
-  selectedForEarn: string[];
 
   getPathfindersByGrade: (grade: number) => Pathfinder[];
-  getPathfindersBySelection: () => Pathfinder[];
-  getSelected: () => string[];
-  isSelected: (pathfinderID: string) => boolean;
-  isSelectedForEarn: (pathfinderID: string) => boolean;
-
-  getPathfinders: () => Promise<void>;
+  getPathfindersBySelection: (selectionType: "plan" | "earn") => Pathfinder[];
   getPathfinderById: (pathfinderID: string) => Promise<void>;
   postPathfinder: (data: PathfinderPost) => Promise<void>;
   postPathfinderHonor: (pathfinderID: string, honorId: string) => Promise<void>;
@@ -36,16 +30,10 @@ export type PathfinderStoreType = {
     honorIDs: string[],
     action: "plan" | "earn",
   ) => Promise<{ successful: any[]; failed: any[] }>;
-  selectPathfinder: (pathfinderID: string) => void;
-  selectAll: () => void;
-  toggleSelection: (pathfinderID: string) => void;
-  clearSelection: () => void;
   updatePathfinder: (
     pathfinderID: string,
     data: { grade: number | null; isActive: boolean | null },
   ) => Promise<void>;
-  selectPathfinderForEarn: (pathfinderID: string) => void;
-  clearSelectionForEarn: () => void;
 };
 
 export const usePathfinderStore = defineStore("pathfinder", {
@@ -53,34 +41,19 @@ export const usePathfinderStore = defineStore("pathfinder", {
     pathfinders: [] as Pathfinder[],
     loading: false,
     error: false,
-    selected: [] as string[],
-    selectedForEarn: [] as string[],
   }),
   getters: {
     getPathfindersByGrade: (state) => (grade: number) => {
       return state.pathfinders.filter((p) => p.grade === grade);
     },
-    getPathfindersBySelection: (state) => () => {
-      return state.pathfinders.filter(
-        (p) => state.selected.indexOf(p.pathfinderID) > -1,
+    // Adjusted to take a parameter specifying which selection to use
+    getPathfindersBySelection: (state) => (selectionType: SelectionType) => {
+      const selectionStore = useSelectionStore();
+      return state.pathfinders.filter((p) =>
+        selectionStore.selections[selectionType].pathfinders.includes(
+          p.pathfinderID,
+        ),
       );
-    },
-    getPathfindersBySelectionForEarn: (state) => () => {
-      return state.pathfinders.filter(
-        (p) => state.selectedForEarn.indexOf(p.pathfinderID) > -1,
-      );
-    },
-    getSelected: (state) => () => {
-      return state.selected;
-    },
-    getSelectedForEarn: (state) => () => {
-      return state.selectedForEarn;
-    },
-    isSelected: (state) => (pathfinderID: string) => {
-      return state.selected.indexOf(pathfinderID) > -1;
-    },
-    isSelectedForEarn: (state) => (pathfinderID: string) => {
-      return state.selectedForEarn.indexOf(pathfinderID) > -1;
     },
   },
   actions: {
@@ -92,21 +65,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.pathfinders = response.data;
       } catch (err) {
         this.error = true;
-        if (
-          typeof err === "object" &&
-          err !== null &&
-          "response" in err &&
-          "status" in err.response
-        ) {
-          if (err.response.status === 404) {
-            throw Errors.apiResponse.status(err.response.status);
-          }
-        } else {
-          console.error(`Could not get pathfinders, because: ${err}`);
-          throw Errors.apiResponse.body(
-            `Could not get pathfinders, because: ${err}`,
-          );
-        }
+        console.error(`Could not get pathfinders, because: ${err}`);
       } finally {
         this.loading = false;
       }
@@ -182,7 +141,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
     async bulkManagePathfinderHonors(
       pathfinderIDs: string[],
       honorIDs: string[],
-      action: "plan" | "earn",
+      action: SelectionType,
     ) {
       this.loading = true;
       this.error = false;
@@ -297,47 +256,6 @@ export const usePathfinderStore = defineStore("pathfinder", {
       } finally {
         this.loading = false;
       }
-    },
-    selectPathfinder(pathfinderID: string) {
-      if (this.selected.includes(pathfinderID)) {
-        throw Errors.selectHonor.alreadySelected;
-      }
-      this.selected = [...this.selected, pathfinderID];
-      return;
-    },
-    selectAll() {
-      this.selected = this.pathfinders.map((p) => p.pathfinderID);
-      console.log(this.selected);
-    },
-    toggleSelection(pathfinderID: string) {
-      const s = this.getSelected();
-      if (s.indexOf(pathfinderID) > -1) {
-        this.selected = s.filter((p) => p !== pathfinderID);
-      } else {
-        this.selectPathfinder(pathfinderID);
-      }
-      console.log(this.getSelected());
-    },
-    toggleSelectionForEarn(pathfinderID: string) {
-      const s = this.getSelectedForEarn();
-      if (s.indexOf(pathfinderID) > -1) {
-        this.selected = s.filter((p) => p !== pathfinderID);
-      } else {
-        this.selectPathfinderForEarn(pathfinderID);
-      }
-      console.log(this.getSelected());
-    },
-    clearSelection() {
-      this.selected = [] as string[];
-    },
-    selectPathfinderForEarn(pathfinderID: string) {
-      if (this.selectedForEarn.includes(pathfinderID)) {
-        throw Errors.selectHonor.alreadySelected;
-      }
-      this.selectedForEarn = [...this.selectedForEarn, pathfinderID];
-    },
-    clearSelectionForEarn() {
-      this.selectedForEarn = [];
     },
   },
 });
