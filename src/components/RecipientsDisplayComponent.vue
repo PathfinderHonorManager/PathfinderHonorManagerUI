@@ -99,7 +99,7 @@ export default defineComponent({
       const pathfinder = pathfinderStore.pathfinders.find(
         (p) => p.pathfinderID === pathfinderID,
       );
-      if (!pathfinder || !pathfinder.pathfinderHonors) {
+      if (!pathfinder || !pathfinder.pathfinderHonors || selectedHonorIDs.value.size === 0) {
         return false;
       }
 
