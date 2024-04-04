@@ -46,7 +46,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
     getPathfindersByGrade: (state) => (grade: number) => {
       return state.pathfinders.filter((p) => p.grade === grade);
     },
-    // Adjusted to take a parameter specifying which selection to use
+
     getPathfindersBySelection: (state) => (selectionType: SelectionType) => {
       const selectionStore = useSelectionStore();
       return state.pathfinders.filter((p) =>
@@ -57,12 +57,26 @@ export const usePathfinderStore = defineStore("pathfinder", {
     },
   },
   actions: {
+    sortPathfinderHonors() {
+      this.pathfinders.forEach((pathfinder) => {
+        if (
+          pathfinder.pathfinderHonors &&
+          pathfinder.pathfinderHonors.length > 0
+        ) {
+          pathfinder.pathfinderHonors.sort((a, b) =>
+            a.name.localeCompare(b.name),
+          );
+        }
+      });
+    },
+
     async getPathfinders() {
       this.loading = true;
       this.error = false;
       try {
         const response = await api.getAll();
         this.pathfinders = response.data;
+        this.sortPathfinderHonors();
       } catch (err) {
         this.error = true;
         console.error(`Could not get pathfinders, because: ${err}`);
@@ -79,7 +93,10 @@ export const usePathfinderStore = defineStore("pathfinder", {
         const pathfinderIndex = this.pathfinders.findIndex(
           (p) => p.pathfinderID === pathfinderID,
         );
-        this.pathfinders[pathfinderIndex] = response.data;
+        if (pathfinderIndex !== -1) {
+          this.pathfinders[pathfinderIndex] = response.data;
+          this.sortPathfinderHonors();
+        }
       } catch (err) {
         this.error = true;
         throw Errors.apiResponse.status(err);
@@ -91,10 +108,11 @@ export const usePathfinderStore = defineStore("pathfinder", {
       try {
         const response = await api.post(data);
         this.pathfinders.push(response.data);
+        this.sortPathfinderHonors();
       } catch (err) {
         console.error(`Can't post this pathfinder because: ${err}`);
       } finally {
-        await api.getAll();
+        await this.getPathfinders();
         this.loading = false;
       }
     },
@@ -216,6 +234,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
             return pathfinder;
           });
 
+          this.sortPathfinderHonors();
           return { successful, failed };
         }
       } catch (err) {
