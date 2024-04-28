@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import clubApi from "@/api/clubs";
 
 export type UserStoreType = {
@@ -16,6 +16,11 @@ export type UserStoreType = {
   getClubName: (clubCode: string) => Promise<void>;
 };
 
+interface CustomJwtPayload extends JwtPayload {
+  permissions: any[];
+  clubCode: string;
+}
+
 export const useUserStore = defineStore({
   id: "clubUser",
   state: () => ({
@@ -31,12 +36,11 @@ export const useUserStore = defineStore({
       this.clubCode = clubCode;
     },
     setClubName(clubName) {
-      // New setter for the club name
       this.clubName = clubName;
     },
     async decodeToken(getAccessTokenSilently) {
       const token = await getAccessTokenSilently();
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<CustomJwtPayload>(token);
       this.setPermissions(decodedToken.permissions);
       this.setClubCode(decodedToken.clubCode);
 
