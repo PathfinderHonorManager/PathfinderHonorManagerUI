@@ -5,28 +5,35 @@
         id="typeahead_id"
         placeholder="Search Honors"
         :items="honors"
-        :minInputLength="1"
-        @selectItem="selectItem"
-        :itemProjection="
+        :min-input-length="1"
+        :item-projection="
           (item) => {
             return item.name;
           }
         "
-      >
-      </vue3-simple-typeahead>
-      <br />
-      <button class="primary button">Add Honor to Pathfinder</button>
+        @select-item="selectItem"
+      />
+      <br>
+      <button class="primary button">
+        Add Honor to Pathfinder
+      </button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";
 
 export default defineComponent({
+  props: {
+    pathfinderID: {
+      type: String,
+      required: true,
+    },
+  },
   setup() {
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
@@ -48,12 +55,6 @@ export default defineComponent({
   methods: {
     selectItem(item) {
       this.postHonorID = item.honorID;
-    },
-  },
-  props: {
-    pathfinderID: {
-      type: String,
-      required: true,
     },
   },
 });

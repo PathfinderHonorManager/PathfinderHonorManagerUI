@@ -33,15 +33,19 @@ watchEffect(async () => {
   <div id="grid">
     <div id="sidebar">
       <UserProfileComponent />
-      <RouterLink to="/">My Club</RouterLink>
+      <RouterLink to="/">
+        My Club
+      </RouterLink>
       <router-link
         :to="{ name: 'ManageHonors', params: { selectionType: 'plan' } }"
-        >Plan Honors</router-link
       >
+        Plan Honors
+      </router-link>
       <router-link
         :to="{ name: 'ManageHonors', params: { selectionType: 'earn' } }"
-        >Record Earned Honors</router-link
       >
+        Record Earned Honors
+      </router-link>
     </div>
 
     <div id="content">

@@ -2,10 +2,10 @@
   <div>
     <input
       v-model="searchQuery"
-      @input="doHonorSearch"
       type="text"
       placeholder="Search..."
-    />
+      @input="doHonorSearch"
+    >
   </div>
 </template>
 
