@@ -17,15 +17,15 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useSelectionStore } from "@/stores/selectionStore"; // Import the selectionStore
-import { useHonorStore } from "@/stores/honors"; // Assuming you still need to access honor details
+import { useSelectionStore } from "@/stores/selectionStore"; 
+import { useHonorStore } from "@/stores/honors"; 
 
 export default defineComponent({
   props: {
     selectionType: {
       type: String,
       required: true,
-      validator: (value) => ["plan", "earn"].includes(value),
+      validator: (value) => ["plan", "earn", "award"].includes(value),
     },
   },
   setup(props) {
@@ -41,7 +41,6 @@ export default defineComponent({
       );
     });
 
-    // Method to toggle honor selection
     const toggleHonorSelection = (honorID: string) => {
       selectionStore.toggleSelection(props.selectionType, honorID, "honors");
     };

@@ -58,7 +58,7 @@ export default {
   ) => {
     return axios.put(BASE_URL + `/${id}/PathfinderHonors/${honorid}`, data);
   },
-  bulkManagePathfinderHonors: (data: BulkAdd[], action: "plan" | "earn") => {
+  bulkManagePathfinderHonors: (data: BulkAdd[], action: "plan" | "earn" | "award") => {
     const method = action === "plan" ? axios.post : axios.put;
     return method(BASE_URL + "/PathfinderHonors", data).then(
       (res: AxiosResponse) => {
@@ -84,7 +84,7 @@ export default {
           .join("\n");
         throw new Error(`Validation error: ${errorMessages}`);
       }
-      throw error; // Pass the error response up the stack
+      throw error;
     }
   },
 };

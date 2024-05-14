@@ -105,6 +105,21 @@ export default defineComponent({
       );
     });
 
+    let earnedHonors = computed(() => {
+      const earnedHonorIDs = pathfinderStore.pathfinders.flatMap(
+        (pathfinder) =>
+          pathfinder.pathfinderHonors
+            .filter((honor) => honor.status === "Earned")
+            .map((honor) => honor.honorID),
+      );
+
+      const uniqueEarnedHonorIDs = [...new Set(earnedHonorIDs)];
+
+      return honorStore.honors.filter((honor) =>
+        uniqueEarnedHonorIDs.includes(honor.honorID),
+      );
+    });
+
     const selectedHonors = computed(() =>
       honorStore.getHonorsBySelection(selectionType.value),
     );
@@ -135,12 +150,15 @@ export default defineComponent({
     const displayedHonors = computed(() => {
       if (selectionType.value === "plan") {
         return honorSearchResult.value;
-      } else {
+      } else if (selectionType.value === "earn") {
         return plannedHonors.value;
-      }
+      } else if (selectionType.value === "award") {
+      return earnedHonors.value;
+    } else {
+      return null;
+    }
     });
 
-    // Watch for changes in route params and update selectionType accordingly
     watch(
       () => route.params.selectionType,
       (newSelectionType) => {
@@ -149,21 +167,40 @@ export default defineComponent({
     );
 
     const pageHeader = computed(() => {
-      return selectionType.value === "plan"
-        ? "Plan Honors"
-        : "Record Earned Honors";
+      switch (selectionType.value) {
+        case "plan":
+          return "Plan Honors";
+        case "earn":
+          return "Record Earned Honors";
+        case "award":
+          return "Award Honors";
+        default:
+          return "Manage Honors";
+      }
     });
 
     const honorsHeader = computed(() => {
-      return selectionType.value === "plan"
-        ? "Search for Honors"
-        : "All Planned Honors";
+      switch (selectionType.value) {
+        case "plan":
+          return "Search for Honors";
+        case "earn":
+          return "Record Earned Honors";
+        case "award":
+          return "Award Honors";
+        default:
+          return `Error ${selectionType.value}`;
+      }
     });
 
-    const buttonLabel = computed(() => {
-      return selectionType.value === "plan"
-        ? "Plan Honors"
-        : "Record Selected as Earned";
+    const buttonLabel = computed(() => {  
+      switch(selectionType.value) {
+        case "plan":
+          return "Plan Honors";
+        case "earn":
+          return "Record Selected as Earned";
+        case "award":
+          return "Record Selected as Awarded";
+      } 
     });
 
     return {

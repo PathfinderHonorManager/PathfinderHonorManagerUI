@@ -1,6 +1,12 @@
 <template>
-  <div id="item-template" class="outline">
-    <div class="power" id="item-sidebar">
+  <div
+    id="item-template"
+    class="outline"
+  >
+    <div
+      id="item-sidebar"
+      class="power"
+    >
       <h2>
         {{ header }}
       </h2>
@@ -15,14 +21,14 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  setup() {
-    return;
-  },
   props: {
     header: {
       type: String,
       required: true,
     },
+  },
+  setup() {
+    return;
   },
 });
 </script>

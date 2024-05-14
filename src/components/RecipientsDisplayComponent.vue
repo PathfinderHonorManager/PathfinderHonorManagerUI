@@ -39,7 +39,7 @@ export default defineComponent({
     selectionType: {
       type: String,
       required: true,
-      validator: (value) => ["plan", "earn"].includes(value),
+      validator: (value) => ["plan", "earn", "award"].includes(value),
     },
   },
   setup(props) {
@@ -107,16 +107,23 @@ export default defineComponent({
         return false;
       }
 
-      if (props.selectionType === "earn") {
+      if (props.selectionType === "plan") {
+        return pathfinder.pathfinderHonors.every(
+          (honor) => !selectedHonorIDs.value.has(honor.honorID),
+        );
+      } else if (props.selectionType === "earn") {
         return pathfinder.pathfinderHonors.some(
           (honor) =>
             selectedHonorIDs.value.has(honor.honorID) &&
             honor.status === "Planned",
         );
-      } else if (props.selectionType == "plan") {
-        return pathfinder.pathfinderHonors.every(
-          (honor) => !selectedHonorIDs.value.has(honor.honorID),
+      } else if (props.selectionType === "award") {
+        return pathfinder.pathfinderHonors.some(
+          (honor) =>
+            selectedHonorIDs.value.has(honor.honorID) &&
+            honor.status === "Earned",
         );
+
       } else {
         return false;
       }

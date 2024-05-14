@@ -165,9 +165,8 @@ export const usePathfinderStore = defineStore("pathfinder", {
       this.error = false;
 
       try {
-        const actionStatus = action === "plan" ? status.Planned : status.Earned;
-
-        const postData: BulkAdd[] = pathfinderIDs.map((pathfinderID) => ({
+        const actionStatus = action === "plan" ? status.Planned : (action === "earn" ? status.Earned : (action === "award" ? status.Awarded : null));
+                const postData: BulkAdd[] = pathfinderIDs.map((pathfinderID) => ({
           pathfinderID,
           honors: honorIDs.map((honorID) => ({
             honorID,

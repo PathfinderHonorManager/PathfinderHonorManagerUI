@@ -25,11 +25,18 @@
         z-index: 4;
       "
     >
-      <p class="light" style="font-size: 1.2em">Log In</p>
-      <h1 style="margin: 0.5em">View club members, and add or edit honors!</h1>
+      <p
+        class="light"
+        style="font-size: 1.2em"
+      >
+        Log In
+      </p>
+      <h1 style="margin: 0.5em">
+        View club members, and add or edit honors!
+      </h1>
       <button
-        @click="login"
         style="margin: 1em; font-size: 1.2em; padding: 1em"
+        @click="login"
       >
         Log In.
       </button>
@@ -37,7 +44,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 
 export default defineComponent({
