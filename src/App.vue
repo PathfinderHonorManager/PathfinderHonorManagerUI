@@ -40,20 +40,20 @@ const canUpdatePathfinder = computed(() =>
         My Club
       </RouterLink>
       <router-link
-        :to="{ name: 'ManageHonors', params: { selectionType: 'plan' } }"
         v-if="canUpdatePathfinder"
+        :to="{ name: 'ManageHonors', params: { selectionType: 'plan' } }"
       >
         Plan Honors
       </router-link>
       <router-link
-        :to="{ name: 'ManageHonors', params: { selectionType: 'earn' } }"
         v-if="canUpdatePathfinder"
+        :to="{ name: 'ManageHonors', params: { selectionType: 'earn' } }"
       >
         Record Earned Honors
       </router-link>
       <router-link
-        :to="{ name: 'ManageHonors', params: { selectionType: 'award' } }"
         v-if="canUpdatePathfinder"
+        :to="{ name: 'ManageHonors', params: { selectionType: 'award' } }"
       >
         Award Honors
       </router-link>

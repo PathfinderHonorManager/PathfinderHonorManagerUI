@@ -41,7 +41,6 @@ export default defineComponent({
       );
     });
 
-    // Method to toggle honor selection
     const toggleHonorSelection = (honorID: string) => {
       selectionStore.toggleSelection(props.selectionType, honorID, "honors");
     };
