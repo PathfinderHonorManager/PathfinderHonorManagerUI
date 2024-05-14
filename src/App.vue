@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watchEffect } from "vue";
+import { computed, watchEffect } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import Authentication from "@/components/AuthenticationComponent.vue";
 import RequestLoginModal from "./components/RequestLoginModal.vue";
@@ -25,6 +25,9 @@ watchEffect(async () => {
     console.error(error);
   }
 });
+const canUpdatePathfinder = computed(() =>
+  isAuthenticated.value && userStore.permissions.includes("update:pathfinders")
+    );
 </script>
 
 <template>
@@ -38,13 +41,21 @@ watchEffect(async () => {
       </RouterLink>
       <router-link
         :to="{ name: 'ManageHonors', params: { selectionType: 'plan' } }"
+        v-if="canUpdatePathfinder"
       >
         Plan Honors
       </router-link>
       <router-link
         :to="{ name: 'ManageHonors', params: { selectionType: 'earn' } }"
+        v-if="canUpdatePathfinder"
       >
         Record Earned Honors
+      </router-link>
+      <router-link
+        :to="{ name: 'ManageHonors', params: { selectionType: 'award' } }"
+        v-if="canUpdatePathfinder"
+      >
+        Award Honors
       </router-link>
     </div>
 

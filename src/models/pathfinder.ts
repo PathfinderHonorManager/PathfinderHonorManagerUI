@@ -38,7 +38,6 @@ export interface BulkAdd {
   honors: PathfinderHonorPostPut[];
 }
 
-// Response interfaces
 export interface BulkAddResponse {
   status: number;
   error?: string;
