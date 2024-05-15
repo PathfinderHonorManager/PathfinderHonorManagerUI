@@ -24,18 +24,25 @@
     <DetailTableItemComponent
       v-for="(pathfinder, i) in pathfinders"
       :key="i"
-      :header="pathfinder.firstName + ' ' + pathfinder.lastName"
     >
-      <h3 v-if="pathfinder.className">
-        {{ pathfinder.className }} (Grade {{ pathfinder.grade }})
-        <FontAwesomeIcon
-          v-if="canUpdatePathfinder"
-          :icon="faPencil"
-          @click="openEditModal(pathfinder)"
-          size="xs"
-        />
-      </h3>
-      <h3 v-else>Staff</h3>
+      <div class="pathfinder-header">
+        <h2 class="pathfinder-name h2-with-bar">
+          {{ pathfinder.firstName }} {{ pathfinder.lastName }}
+        </h2>
+        <div class="pathfinder-details-container">
+          <h2 v-if="pathfinder.className" class="pathfinder-details">
+            {{ pathfinder.className }} (Grade {{ pathfinder.grade }})
+          </h2>
+          <h2 v-else>Staff</h2>
+          <FontAwesomeIcon
+            v-if="canUpdatePathfinder"
+            :icon="faPencil"
+            @click="openEditModal(pathfinder)"
+            size="s"
+            class="fontawesome-icon"
+          />
+        </div>
+      </div>
 
       <button
         v-if="!showing[pathfinder.pathfinderID]"
@@ -59,8 +66,8 @@
         :pathfinderID="pathfinder.pathfinderID"
       />
 
-      <div class="content-box">
-        <div v-if="showing[pathfinder.pathfinderID]" class="honortable">
+      <div v-if="showing[pathfinder.pathfinderID]" class="content-box">
+        <div class="honortable">
           <PathfinderHonorComponent
             v-for="pathfinderHonor in pathfinder.pathfinderHonors"
             :key="pathfinderHonor.pathfinderHonorID"
@@ -85,7 +92,6 @@
     @modal-closed="creatingPathfinder = false"
   >
     <div class="outline">
-      <!-- Make the outline container flexible -->
       <form
         @submit.prevent="submitAddForm()"
         style="
@@ -169,7 +175,7 @@ export default defineComponent({
     ModalComponent,
     EditPathfinderComponent,
     FontAwesomeIcon,
-    ToasterComponent, // Added ToasterComponent to components
+    ToasterComponent,
   },
   setup() {
     const pathfinderStore = usePathfinderStore();
@@ -217,16 +223,13 @@ export default defineComponent({
     const selectedPathfinder = ref(null);
     const isEditModalOpen = ref(false);
 
-    const showToaster = ref(false); // Added ref for toaster visibility
-    const toasterMessage = ref(""); // Added ref for toaster message
+    const showToaster = ref(false);
+    const toasterMessage = ref("");
 
-    // Create a reactive local copy for form bindings
     const formPathfinder = reactive({ grade: null, isActive: null });
 
-    // Function to open the edit modal and initialize the local copy
     function openEditModal(pathfinder) {
       selectedPathfinder.value = pathfinder;
-      // Initialize formPathfinder with selectedPathfinder's properties
       Object.assign(formPathfinder, {
         grade: pathfinder.grade,
         isActive: pathfinder.isActive,
@@ -271,8 +274,8 @@ export default defineComponent({
       faPencil,
       handleEditSuccess,
       handleEditFailure,
-      showToaster, // Added showToaster to the return object
-      toasterMessage, // Added toasterMessage to the return object
+      showToaster,
+      toasterMessage,
     };
   },
   methods: {
@@ -284,7 +287,6 @@ export default defineComponent({
         grade: this.grade === "" ? null : Number(this.grade),
       };
 
-      // Validate the form data
       let isValid = true;
       if (data.firstName === "") {
         this.firstNameError = "First name is required";
@@ -311,7 +313,6 @@ export default defineComponent({
         this.emailError = "";
       }
 
-      // Only submit the form if it is valid
       if (isValid) {
         this.postPathfinder(data);
         this.creatingPathfinder = false;
