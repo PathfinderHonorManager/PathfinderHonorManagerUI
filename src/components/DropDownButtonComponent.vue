@@ -6,13 +6,13 @@ const props = defineProps({
     type: Array<string>,
     required: true,
   },
-  selectedOption: {
+  defaultText: {
     type: String,
     required: false,
   },
 });
 
-let selection = ref(props.selectedOption);
+let selection = ref(props.defaultText);
 
 let expanded = ref(false);
 </script>
