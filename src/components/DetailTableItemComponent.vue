@@ -1,9 +1,12 @@
 <template>
-  <div id="item-template" class="outline">
-    <div class="power" id="item-sidebar">
-      <h2>
-        {{ header }}
-      </h2>
+  <div
+    id="item-template"
+    class="outline"
+  >
+    <div
+      id="item-sidebar"
+      class="power"
+    >
     </div>
     <div id="item-content">
       <slot>. . .</slot>
@@ -15,14 +18,10 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: {
+  },
   setup() {
     return;
-  },
-  props: {
-    header: {
-      type: String,
-      required: true,
-    },
   },
 });
 </script>
@@ -30,7 +29,7 @@ export default defineComponent({
 <style scoped>
 #item-template {
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr;
+  grid-template-columns: 0.1fr 1.9fr;
   overflow: hidden;
   word-wrap: break-word;
   padding: 0;
@@ -41,17 +40,6 @@ export default defineComponent({
   border-right: var(--lightBorder);
   border-radius: 0;
   padding: var(--content-padding);
-}
-
-@media screen and (max-width: 1080px) {
-  #item-template {
-    grid-template-rows: 150px auto;
-    grid-template-columns: auto;
-  }
-  #item-sidebar {
-    border-right: none;
-    border-bottom: var(--lightBorder);
-  }
 }
 
 #item-content {

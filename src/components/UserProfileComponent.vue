@@ -1,12 +1,17 @@
 <template>
   <div id="profile-hunk">
     <div v-if="isAuthenticated">
-      <img v-bind:src="user.picture" />
+      <img :src="user.picture">
       <h1>{{ user.name }}</h1>
-      <button @click="logout">Log out</button>
+      <button @click="logout">
+        Log out
+      </button>
     </div>
     <div v-else>
-      <button @click="login" style="background-color: var(--actionColor)">
+      <button
+        style="background-color: var(--actionColor)"
+        @click="login"
+      >
         Log in
       </button>
     </div>

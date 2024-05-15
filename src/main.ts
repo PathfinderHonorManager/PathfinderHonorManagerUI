@@ -16,7 +16,7 @@ const app = createApp(App);
 const auth0Config = {
   domain: "pathfinderhonormanager.us.auth0.com",
   clientId: "mfTYOD64ySERkhLAatJBxWIULeq892fK",
-  cacheLocation: "localstorage" as const,
+  cacheLocation: "memory" as const,
   authorizationParams: {
     redirect_uri: window.location.origin,
     audience: "https://pathfinderhonormanager.azurewebsites.net/api/",

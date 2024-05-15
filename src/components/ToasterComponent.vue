@@ -10,13 +10,13 @@
 import { defineComponent, onMounted, PropType, emits } from "vue";
 
 export default defineComponent({
-  emits: ["hide"],
   props: {
     message: {
       type: String,
       required: true,
     },
   },
+  emits: ["hide"],
   setup(props, { emit }) {
     onMounted(() => {
       setTimeout(() => {

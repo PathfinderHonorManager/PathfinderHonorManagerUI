@@ -1,14 +1,17 @@
 <template>
-  <div class="modal" v-if="!closed">
+  <div
+    v-if="!closed"
+    class="modal"
+  >
     <div class="modal-content">
       <img
         src="~@/assets/close-icon.svg"
         class="close-button"
         @click="$emit('modal-closed')"
-      />
+      >
 
       <h1>{{ header }}</h1>
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -16,10 +19,6 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  emits: ["modal-closed"],
-  setup() {
-    return;
-  },
   props: {
     header: {
       type: String,
@@ -29,6 +28,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
     },
+  },
+  emits: ["modal-closed"],
+  setup() {
+    return;
   },
 });
 </script>

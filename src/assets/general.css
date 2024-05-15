@@ -205,6 +205,14 @@ body {
     padding: var(--content-padding);
 }
 
+.content-box:first-child {
+    padding-bottom: 0;
+}
+
+.content-box:last-child {
+    padding-top: 0;
+}
+
 .power {
     box-sizing: border-box;
     margin-top: 10px;
@@ -264,7 +272,6 @@ body {
     font-size: 0.9em;
     font-weight: lighter;
     font-style: italic;
-    /* transform: skewX(-3deg); */
 }
 
 .honortable {
@@ -277,13 +284,12 @@ body {
 .honortable .outline {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centers all child elements */
-    /* Other styles... */
+    align-items: center;
 }
 
 .honortable .outline .deselect-button {
-    align-self: flex-start; /* Overrides the center alignment for this button */
-    margin-left: 0; /* Ensures the button is aligned to the left edge */
+    align-self: flex-start;
+    margin-left: 0;
 }
 
 .patchimage {
@@ -380,14 +386,13 @@ h2 {
     color: var(--color);
 }
 
-h2::before {
+.h2-with-bar::before {
     content: '';
     display: block;
     width: 3em;
     height: 0;
     border-bottom: 6px solid var(--yellow);
     border-radius: 2px 6px 0 0;
-
 }
 
 h3 {
@@ -521,4 +526,55 @@ input[type=checkbox] {
 
 .center-align {
     text-align: center;
+}
+
+.pathfinder-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 15px;
+}
+
+.pathfinder-name {
+    flex: 1 1 auto;
+    margin: 0;
+    padding-right: 10px;
+}
+
+.pathfinder-details-container {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+}
+
+.pathfinder-details {
+    margin: 0;
+}
+
+.fontawesome-icon {
+    padding: 0 var(--spaceHBelow);
+    color: var(--yellow);
+}
+
+@media (max-width: 800px) {
+    .pathfinder-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .pathfinder-name {
+        flex: 1 0 100%;
+        text-align: left;
+    }
+    .pathfinder-details-container {
+        flex-direction: row;
+        justify-content: flex-start;
+        width: 100%;
+        align-items: center;
+    }
+    .fontawesome-icon {
+        flex: 0 0 auto;
+        align-self: center;
+    }
 }
