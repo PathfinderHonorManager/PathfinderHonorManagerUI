@@ -16,6 +16,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@microsoft/applicationinsights-web": "^3.3.2",
     "@vue/tsconfig": "^0.5.1",
     "axios": "^1.6.2",
     "fontawesome": "^5.6.3",

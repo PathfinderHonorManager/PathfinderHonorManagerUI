@@ -8,6 +8,7 @@ import { usePathfinderStore } from "./stores/pathfinders";
 import { useUserStore } from "./stores/users";
 import App from "./App.vue";
 import router from "./router";
+import { appInsights } from "./appInsights";
 
 const pinia = createPinia();
 pinia.use(piniaPersist);
@@ -35,6 +36,11 @@ app.use(SimpleTypeahead);
 app.provide("usePathfinderStore", usePathfinderStore);
 app.provide("useHonorStore", useHonorStore);
 app.provide("useUserStore", useUserStore);
+
+// Initialize Application Insights
+if (import.meta.env.PROD) {
+  app.config.globalProperties.$appInsights = appInsights;
+}
 
 console.log(app);
 
