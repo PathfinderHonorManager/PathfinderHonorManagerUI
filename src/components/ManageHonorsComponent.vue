@@ -184,9 +184,9 @@ export default defineComponent({
         case "plan":
           return "Search for Honors";
         case "earn":
-          return "Record Earned Honors";
+          return "Select Honors";
         case "award":
-          return "Award Honors";
+          return "Select Honors";
         default:
           return `Error ${selectionType.value}`;
       }
