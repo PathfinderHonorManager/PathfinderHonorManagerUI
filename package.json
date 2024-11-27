@@ -43,7 +43,7 @@
     "eslint-plugin-vue": "^8.7.1",
     "jsdom": "^25.0.1",
     "typescript": "~5.7.2",
-    "vite": "^5.0.10",
+    "vite": "^6.0.0",
     "vitest": "^2.1.4",
     "vue-tsc": "^2.0.7"
   }
