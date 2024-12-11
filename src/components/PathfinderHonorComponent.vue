@@ -3,7 +3,7 @@
     <div id="honor-info">
       <img
         :src="
-          'https://pathfinderhonor.azureedge.net/assets/honors/small/' + image
+          'https://pathfinderhonorstorage.blob.core.windows.net/assets/honors/small/' + image
         "
         class="patchimage"
       />
