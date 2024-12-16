@@ -13,7 +13,7 @@
         </button>
         <img
           :src="
-            'https://pathfinderhonorstorage.blob.core.windows.net/assets/honors/small/' +
+            'https://images.pathfinderclub.tools/assets/honors/small/' +
             honor.patchFilename
           "
           class="patchimage"
