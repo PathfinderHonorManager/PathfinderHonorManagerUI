@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Allow: /landing
 
-Sitemap: https://pathfinderhonormanager.com/sitemap.xml 
+Sitemap: https://pathfinderclub.tools/sitemap.xml 
