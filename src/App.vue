@@ -55,6 +55,12 @@ const canUpdatePathfinder = computed(() =>
       >
         Award Honors
       </router-link>
+      <router-link
+        v-if="canUpdatePathfinder"
+        :to="{ name: 'Investiture' }"
+      >
+        Investiture
+      </router-link>
     </div>
 
     <div id="content" :class="{ 'landing-content': !isAuthenticated }">

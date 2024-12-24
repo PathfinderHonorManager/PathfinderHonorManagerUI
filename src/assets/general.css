@@ -609,3 +609,39 @@ input[type=checkbox] {
     text-align: center;
   }
 }
+
+/* Table Styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: var(--lightBorder);
+  vertical-align: middle;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+  margin: 0;
+  transform: none;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Center alignment */
+.center-align {
+  text-align: center;
+}
+
+/* Error messages */
+.error {
+  text-align: center;
+  padding: 20px;
+}

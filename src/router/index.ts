@@ -41,6 +41,11 @@ const router = createRouter({
       }
     },
     {
+      path: "/investiture",
+      name: "Investiture",
+      component: () => import("../views/InvestiturePage.vue")
+    },
+    {
       path: "/:pathMatch(.*)*",
       redirect: to => {
         const { isAuthenticated } = useAuth0();
