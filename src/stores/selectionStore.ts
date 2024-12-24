@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-export type SelectionType = "plan" | "earn" | "award";
+export type SelectionType = "plan" | "earn" | "award" | "investiture";
 export type CategoryType = "pathfinders" | "honors";
 
 export interface Selections {
@@ -12,6 +12,10 @@ export interface Selections {
     honors: string[];
   };
   award: {
+    pathfinders: string[];
+    honors: string[];
+  };
+  investiture: {
     pathfinders: string[];
     honors: string[];
   };
@@ -48,11 +52,15 @@ export const useSelectionStore = defineStore("selectionStore", {
         pathfinders: [] as string[],
         honors: [] as string[],
       },
+      investiture: {
+        pathfinders: [] as string[],
+        honors: [] as string[],
+      },
     },
   }),
   actions: {
     toggleSelection(
-      type: "plan" | "earn" | "award",
+      type: "plan" | "earn" | "award" | "investiture",
       id: string,
       category: "pathfinders" | "honors",
     ) {
@@ -68,7 +76,7 @@ export const useSelectionStore = defineStore("selectionStore", {
       this.selections[type].honors = [];
     },
     isSelected(
-      type: "plan" | "earn" | "award",
+      type: "plan" | "earn" | "award" | "investiture",
       id: string,
       category: "pathfinders" | "honors",
     ) {

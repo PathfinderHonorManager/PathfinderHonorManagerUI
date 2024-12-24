@@ -9,6 +9,21 @@ import {
 const BASE_URL =
   "https://pathfinderhonormanager.azurewebsites.net/api/pathfinders";
 
+interface BulkUpdatePathfinder {
+  pathfinderId: string;
+  grade: number | null;
+  isActive: boolean;
+}
+
+interface BulkUpdateRequest {
+  items: BulkUpdatePathfinder[];
+}
+
+interface BulkUpdateResponse {
+  status: number;
+  pathfinderId: string;
+}
+
 export default {
   getAll: (params = {}) => {
     return axios.get(BASE_URL, {
@@ -86,5 +101,17 @@ export default {
       }
       throw error;
     }
+  },
+  bulkUpdatePathfinders: (data: { items: any[] }) => {
+    return axios.put<BulkUpdateResponse[]>(BASE_URL, data).then((res) => {
+      if (res.status === 207) {
+        // Check if any updates failed
+        const failedUpdates = res.data.filter(update => update.status !== 200);
+        if (failedUpdates.length > 0) {
+          throw new Error(`Failed to update ${failedUpdates.length} pathfinders`);
+        }
+      }
+      return res;
+    });
   },
 };
