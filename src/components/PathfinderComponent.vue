@@ -1,6 +1,11 @@
 <template>
-  <p v-if="error">Error!</p>
-  <span class="loader" v-if="loading">Loading Pathfinders</span>
+  <div v-if="error" class="error-message">
+    <p>Unable to load pathfinders: {{ errorMessage }}</p>
+    <button @click="retryLoading" class="primary button">Retry</button>
+  </div>
+  <div v-if="loading" class="loading-container">
+    <span class="loader">Loading Pathfinders...</span>
+  </div>
   <div v-if="pathfinders[0]" class="content-box">
     <div
       style="
@@ -38,7 +43,7 @@
             v-if="canUpdatePathfinder"
             :icon="faPencil"
             @click="openEditModal(pathfinder)"
-            size="s"
+            size="sm"
             class="fontawesome-icon"
           />
         </div>
@@ -71,13 +76,12 @@
           <PathfinderHonorComponent
             v-for="pathfinderHonor in pathfinder.pathfinderHonors"
             :key="pathfinderHonor.pathfinderHonorID"
-            :item="postPathfinderHonor"
-            v-bind:pathfinderID="pathfinder.pathfinderID"
-            v-bind:honorID="pathfinderHonor.honorID"
-            v-bind:name="pathfinderHonor.name"
-            v-bind:status="pathfinderHonor.status"
-            v-bind:display="true"
-            v-bind:image="pathfinderHonor.patchFilename"
+            :pathfinderID="pathfinder.pathfinderID"
+            :honorID="pathfinderHonor.honorID"
+            :name="pathfinderHonor.name"
+            :status="pathfinderHonor.status"
+            :display="true"
+            :image="pathfinderHonor.patchPath"
             :canUpdatePathfinder="canUpdatePathfinder"
           >
           </PathfinderHonorComponent>
@@ -193,13 +197,30 @@ export default defineComponent({
       throw new Error("UserStore is not provided");
     }
 
-    honorStore.honors.length === 0 ? honorStore.getHonors() : undefined;
-    pathfinderStore.pathfinders.length === 0
-      ? pathfinderStore.getPathfinders()
-      : undefined;
+    const loadData = async () => {
+      try {
+        if (honorStore.honors.length === 0) {
+          await honorStore.getHonors();
+        }
+        
+        if (pathfinderStore.pathfinders.length === 0) {
+          await pathfinderStore.getPathfinders();
+        }
+      } catch (err) {
+        console.error("Error loading data:", err);
+      }
+    };
+
+    // Call loadData initially
+    loadData();
 
     const { pathfinders, loading, error } = storeToRefs(pathfinderStore);
     const { honors } = storeToRefs(honorStore);
+    const errorMessage = ref("An unexpected error occurred");
+
+    const retryLoading = () => {
+      loadData();
+    };
 
     const creatingPathfinder = ref(false);
 
@@ -248,6 +269,8 @@ export default defineComponent({
     return {
       loading,
       error,
+      errorMessage,
+      retryLoading,
       pathfinders,
       creatingPathfinder,
       postPathfinder: (fn: string, ln: string, em: string, gr: number) =>
@@ -321,3 +344,28 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.error-message {
+  background-color: #ffeeee;
+  border: 1px solid #ffcccc;
+  color: #cc0000;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.loader {
+  display: inline-block;
+  font-size: 1.2em;
+  color: #666;
+}
+</style>

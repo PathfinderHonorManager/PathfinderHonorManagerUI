@@ -16,14 +16,7 @@ const router = createRouter({
       path: "/landing",
       name: "landing",
       component: LandingComponent,
-      beforeEnter: (to, from, next) => {
-        const { isAuthenticated } = useAuth0();
-        if (isAuthenticated.value) {
-          next({ name: "club" });
-        } else {
-          next();
-        }
-      }
+      meta: { guestOnly: true }
     },
     {
       path: "/manage/:selectionType(plan|earn|award)",
@@ -43,14 +36,12 @@ const router = createRouter({
     {
       path: "/investiture",
       name: "Investiture",
-      component: () => import("../views/InvestiturePage.vue")
+      component: () => import("../views/InvestiturePage.vue"),
+      meta: { requiresAuth: true }
     },
     {
       path: "/:pathMatch(.*)*",
-      redirect: to => {
-        const { isAuthenticated } = useAuth0();
-        return isAuthenticated.value ? { name: 'club' } : { name: 'landing' };
-      }
+      redirect: '/landing'
     }
   ],
 });
@@ -61,13 +52,32 @@ router.beforeEach(async (to, from, next) => {
   
   // Wait for Auth0 to initialize
   if (isLoading.value) {
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if (isLoading.value) {
+      return next(); // Still loading, allow navigation to continue
+    }
   }
 
-  // Protect authenticated routes
-  if (to.meta.requiresAuth && !isAuthenticated.value) {
-    next({ name: 'landing' });
-    return;
+  // For landing page, allow access if not authenticated
+  if (to.name === 'landing') {
+    if (isAuthenticated.value) {
+      return next({ name: 'club' });
+    }
+    return next();
+  }
+  
+  // For all other routes that require auth
+  if (to.meta.requiresAuth) {
+    if (!isAuthenticated.value) {
+      return next({ name: 'landing' });
+    }
+  }
+
+  // Default redirect for root path
+  if (to.path === '/') {
+    if (!isAuthenticated.value) {
+      return next({ name: 'landing' });
+    }
   }
 
   next();
