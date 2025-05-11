@@ -1,8 +1,9 @@
 {
-  "include": ["vite.config.*"],
+  "include": ["vite.config.*", "vitest.config.*"],
   "compilerOptions": {
     "composite": true,
     "types": ["node", "vitest"],
-    "importsNotUsedAsValues": "remove"
+    "importsNotUsedAsValues": "remove",
+    "lib": ["ES2022"]
   }
 }
