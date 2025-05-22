@@ -181,9 +181,7 @@ export default defineComponent({
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 50%;
   overflow: hidden;
-  display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .patch-image {
