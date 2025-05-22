@@ -11,7 +11,7 @@ export interface PathfinderHonors {
   honorID: string;
   name: string;
   status: status;
-  patchPath: string;
+  patchFilename: string;
 }
 
 export interface Pathfinder {
