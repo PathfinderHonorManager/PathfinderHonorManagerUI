@@ -88,20 +88,27 @@ describe('ManageHonorsComponent', () => {
       ]
     })
 
+    await router.push('/manage/plan')
+    await router.isReady()
+
     wrapper = mount(ManageHonorsComponent, {
       global: {
         plugins: [router, pinia],
         stubs: {
           HonorSearchComponent: true,
           HonorsDisplayComponent: true,
-          SelectedHonorsDisplayComponent: true,
-          RecipientsDisplayComponent: true,
+          SelectedHonorsDisplayComponent: {
+            template: '<div>SelectedHonorsDisplayComponent Stub</div>',
+            props: ['selectionType']
+          },
+          RecipientsDisplayComponent: {
+            template: '<div>RecipientsDisplayComponent Stub</div>',
+            props: ['selectionType']
+          },
           ToasterComponent: true
         }
       }
     })
-
-    await router.isReady()
   })
 
   describe('Error Handling', () => {

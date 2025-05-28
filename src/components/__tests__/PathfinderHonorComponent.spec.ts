@@ -53,7 +53,7 @@ describe('PathfinderHonorComponent', () => {
 
   describe('Component Rendering', () => {
     it('renders properly with all props', () => {
-      expect(wrapper.find('#honor-info').exists()).toBe(true)
+      expect(wrapper.find('.honor-card').exists()).toBe(true)
       expect(wrapper.find('h3').text()).toBe('Test Honor')
       expect(wrapper.find('img').attributes('src'))
         .toContain('https://images.pathfinderclub.tools/assets/honors/small/test.jpg')
@@ -61,13 +61,17 @@ describe('PathfinderHonorComponent', () => {
 
     it('does not render when display is false', async () => {
       await wrapper.setProps({ display: false })
-      expect(wrapper.find('#honor-info').exists()).toBe(false)
+      expect(wrapper.find('.honor-card').exists()).toBe(false)
     })
 
-    it('renders status selector with correct options', () => {
-      const select = wrapper.find('select')
-      const options = select.findAll('option')
+    it('renders status selector with correct options', async () => {
+      const statusSelector = wrapper.find('.status-selector')
+      expect(statusSelector.exists()).toBe(true)
       
+      await statusSelector.trigger('click')
+      await wrapper.vm.$nextTick()
+      
+      const options = wrapper.findAll('.dropdown-option')
       expect(options).toHaveLength(3)
       expect(options[0].text()).toBe('Planned')
       expect(options[1].text()).toBe('Earned')
@@ -81,40 +85,62 @@ describe('PathfinderHonorComponent', () => {
     })
 
     it('updates status when selector changes', async () => {
-      const select = wrapper.find('select')
-      await select.setValue('Earned')
+      const statusSelector = wrapper.find('.status-selector')
+      await statusSelector.trigger('click')
+      await wrapper.vm.$nextTick()
+      
+      const earnedOption = wrapper.find('.dropdown-option.earned')
+      await earnedOption.trigger('click')
+      await wrapper.vm.$nextTick()
       
       expect(wrapper.vm.newStatus).toBe('Earned')
     })
 
     it('computes correct color based on status', async () => {
-      expect(wrapper.vm.selectedColor).toBe('var(--secondaryColor)') // Planned
+      const statusSelector = wrapper.find('.status-selector')
+      expect(statusSelector.classes()).toContain('planned')
       
-      await wrapper.find('select').setValue('Earned')
-      expect(wrapper.vm.selectedColor).toBe('var(--orange)')
+      await statusSelector.trigger('click')
+      await wrapper.vm.$nextTick()
       
-      await wrapper.find('select').setValue('Awarded')
-      expect(wrapper.vm.selectedColor).toBe('mediumseagreen')
+      const earnedOption = wrapper.find('.dropdown-option.earned')
+      await earnedOption.trigger('click')
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.find('.status-selector').classes()).toContain('earned')
     })
   })
 
   describe('User Interactions', () => {
     it('enables update button when status changes', async () => {
-      await wrapper.find('select').setValue('Earned')
+      const statusSelector = wrapper.find('.status-selector')
+      await statusSelector.trigger('click')
+      await wrapper.vm.$nextTick()
+      
+      const earnedOption = wrapper.find('.dropdown-option.earned')
+      await earnedOption.trigger('click')
+      await wrapper.vm.$nextTick()
+      
       const button = wrapper.find('button')
-      expect(button.classes()).toContain('primary')
-      expect(button.attributes('style')).not.toContain('pointer-events: none')
+      expect(button.attributes('disabled')).toBeUndefined()
     })
 
     it('disables update button when status is unchanged', () => {
       const button = wrapper.find('button')
-      expect(button.classes()).not.toContain('primary')
-      expect(button.attributes('style')).toContain('pointer-events: none')
+      expect(button.attributes('disabled')).toBeDefined()
     })
 
-    it('calls putPathfinderHonor when form is submitted', async () => {
-      await wrapper.find('select').setValue('Earned')
-      await wrapper.find('form').trigger('submit.prevent')
+    it('calls putPathfinderHonor when button is clicked', async () => {
+      const statusSelector = wrapper.find('.status-selector')
+      await statusSelector.trigger('click')
+      await wrapper.vm.$nextTick()
+      
+      const earnedOption = wrapper.find('.dropdown-option.earned')
+      await earnedOption.trigger('click')
+      await wrapper.vm.$nextTick()
+      
+      const button = wrapper.find('button')
+      await button.trigger('click')
       
       expect(mockStore.putPathfinderHonor).toHaveBeenCalledWith('123', '456', 'Earned')
     })
@@ -141,8 +167,8 @@ describe('PathfinderHonorComponent', () => {
 
   describe('Accessibility', () => {
     it('has accessible form controls', () => {
-      const select = wrapper.find('select')
-      expect(select.classes()).toContain('statusselector')
+      const statusSelector = wrapper.find('.status-selector')
+      expect(statusSelector.exists()).toBe(true)
       
       const button = wrapper.find('button')
       expect(button.text()).toContain('Update Status')
@@ -150,7 +176,7 @@ describe('PathfinderHonorComponent', () => {
 
     it('has accessible images', () => {
       const img = wrapper.find('img')
-      expect(img.classes()).toContain('patchimage')
+      expect(img.classes()).toContain('patch-image')
       expect(img.attributes('src')).toContain('test.jpg')
     })
   })
