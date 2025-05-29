@@ -3,10 +3,9 @@
         "rewrite": "index.html"
     },
     "mimeTypes": {
-        ".json": "text/json",
-        ".js": "text/javascript",
-        ".mjs": "text/javascript",
-        ".ts": "text/typescript",
+        ".json": "application/json",
+        ".js": "application/javascript",
+        ".mjs": "application/javascript",
         ".css": "text/css"
     }
 }
