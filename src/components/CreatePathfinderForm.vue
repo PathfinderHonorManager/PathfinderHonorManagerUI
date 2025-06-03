@@ -49,6 +49,17 @@ const lastNameError = ref('');
 const emailError = ref('');
 const gradeError = ref('');
 
+const clearForm = () => {
+  firstName.value = '';
+  lastName.value = '';
+  email.value = '';
+  grade.value = '';
+  firstNameError.value = '';
+  lastNameError.value = '';
+  emailError.value = '';
+  gradeError.value = '';
+};
+
 const validateForm = () => {
   let isValid = true;
   
@@ -93,14 +104,12 @@ const submitForm = () => {
     };
     
     emit('submit', data);
-    
-    // Reset form
-    firstName.value = '';
-    lastName.value = '';
-    email.value = '';
-    grade.value = '';
   }
 };
+
+defineExpose({
+  clearForm
+});
 </script>
 
 <style scoped>

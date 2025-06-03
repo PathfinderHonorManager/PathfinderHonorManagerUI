@@ -111,6 +111,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
         this.sortPathfinderHonors();
       } catch (err) {
         console.error(`Can't post this pathfinder because: ${err}`);
+        throw err;
       } finally {
         await this.getPathfinders();
         this.loading = false;

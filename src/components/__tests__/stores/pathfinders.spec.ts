@@ -145,6 +145,41 @@ describe("Pathfinder Store", () => {
       expect(store.pathfinders).toContainEqual(newPathfinder);
     });
 
+    it("postPathfinder should throw error when API call fails", async () => {
+      const newPathfinder = {
+        firstName: "Peter",
+        lastName: "Cottontail",
+        className: "Guide",
+        grade: 10,
+      };
+
+      const apiError = new Error("Validation error: Email: Email is required");
+      vi.spyOn(api, "post").mockRejectedValue(apiError);
+
+      await expect(store.postPathfinder(newPathfinder)).rejects.toThrow("Validation error: Email: Email is required");
+      expect(store.error).toBe(true);
+    });
+
+    it("postPathfinder should set loading state correctly on error", async () => {
+      const newPathfinder = {
+        firstName: "Peter",
+        lastName: "Cottontail",
+        className: "Guide",
+        grade: 10,
+      };
+
+      vi.spyOn(api, "post").mockRejectedValue(new Error("API Error"));
+
+      try {
+        await store.postPathfinder(newPathfinder);
+      } catch (error) {
+        // Expected to throw
+      }
+
+      expect(store.loading).toBe(false);
+      expect(store.error).toBe(true);
+    });
+
     it("putPathfinderHonor should update an honor's status for a specific pathfinder", async () => {
       const pathfinderID = mockPathfinders[0].pathfinderID;
       const honorToUpdate = mockPathfinders[0].pathfinderHonors[0];
