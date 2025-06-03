@@ -7,7 +7,8 @@
     "dev": "vite dev --port 3000",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview --port 5050",
-    "test:unit": "vitest --environment jsdom",
+    "test:unit": "vitest --environment jsdom --run",
+    "test:unit:watch": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --config eslint.config.js --format compact --fix"
   },
@@ -48,6 +49,6 @@
     "vue-tsc": "^2.1.10"
   },
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   }
 }
