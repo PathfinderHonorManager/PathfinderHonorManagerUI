@@ -16,7 +16,7 @@
     :closed="!creatingPathfinder"
     @modal-closed="creatingPathfinder = false"
   >
-    <CreatePathfinderForm @submit="submitAddForm" />
+    <CreatePathfinderForm ref="createFormRef" @submit="submitAddForm" />
   </ModalComponent>
 
   <ModalComponent
@@ -49,7 +49,7 @@ import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";
 import { useUserStore } from "@/stores/users";
-import { PathfinderPost } from "@/models/pathfinder";
+import { PathfinderPost, ValidationError } from "@/models/pathfinder";
 
 const pathfinderStore = usePathfinderStore();
 const honorStore = useHonorStore();
@@ -84,6 +84,7 @@ const selectedPathfinder = ref(null);
 const isEditModalOpen = ref(false);
 const showToaster = ref(false);
 const toasterMessage = ref("");
+const createFormRef = ref();
 
 const canCreatePathfinder = computed(() =>
   userStore.permissions.includes("create:pathfinders")
@@ -107,9 +108,22 @@ function handleEditFailure(errorMessage) {
   showToaster.value = true;
 }
 
-const submitAddForm = (data: PathfinderPost) => {
-  pathfinderStore.postPathfinder(data);
-  creatingPathfinder.value = false;
+const submitAddForm = async (data: PathfinderPost) => {
+  try {
+    await pathfinderStore.postPathfinder(data);
+    createFormRef.value?.clearForm();
+    creatingPathfinder.value = false;
+    toasterMessage.value = `Successfully created pathfinder ${data.firstName} ${data.lastName}`;
+    showToaster.value = true;
+  } catch (error) {
+    console.error("Failed to create pathfinder:", error);
+    if (error instanceof ValidationError) {
+      createFormRef.value?.setServerErrors(error.fieldErrors);
+    } else {
+      toasterMessage.value = `Failed to create pathfinder: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      showToaster.value = true;
+    }
+  }
 };
 </script>
 

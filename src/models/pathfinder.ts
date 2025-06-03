@@ -50,3 +50,19 @@ export interface PathfinderPost {
   email: string;
   grade: number;
 }
+
+export class ValidationError extends Error {
+  constructor(public fieldErrors: Record<string, string[]>) {
+    super('Validation Error');
+    this.name = 'ValidationError';
+  }
+  
+  getFieldError(fieldName: string): string | null {
+    const errors = this.fieldErrors[fieldName];
+    return errors && errors.length > 0 ? errors[0] : null;
+  }
+  
+  hasFieldError(fieldName: string): boolean {
+    return this.fieldErrors[fieldName] && this.fieldErrors[fieldName].length > 0;
+  }
+}

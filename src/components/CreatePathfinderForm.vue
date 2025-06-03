@@ -49,6 +49,24 @@ const lastNameError = ref('');
 const emailError = ref('');
 const gradeError = ref('');
 
+const clearForm = () => {
+  firstName.value = '';
+  lastName.value = '';
+  email.value = '';
+  grade.value = '';
+  firstNameError.value = '';
+  lastNameError.value = '';
+  emailError.value = '';
+  gradeError.value = '';
+};
+
+const setServerErrors = (fieldErrors: Record<string, string[]>) => {
+  firstNameError.value = fieldErrors.FirstName?.[0] || fieldErrors.firstName?.[0] || '';
+  lastNameError.value = fieldErrors.LastName?.[0] || fieldErrors.lastName?.[0] || '';
+  emailError.value = fieldErrors.Email?.[0] || fieldErrors.email?.[0] || '';
+  gradeError.value = fieldErrors.Grade?.[0] || fieldErrors.grade?.[0] || '';
+};
+
 const validateForm = () => {
   let isValid = true;
   
@@ -93,14 +111,13 @@ const submitForm = () => {
     };
     
     emit('submit', data);
-    
-    // Reset form
-    firstName.value = '';
-    lastName.value = '';
-    email.value = '';
-    grade.value = '';
   }
 };
+
+defineExpose({
+  clearForm,
+  setServerErrors
+});
 </script>
 
 <style scoped>
