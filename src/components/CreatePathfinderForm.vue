@@ -60,6 +60,13 @@ const clearForm = () => {
   gradeError.value = '';
 };
 
+const setServerErrors = (fieldErrors: Record<string, string[]>) => {
+  firstNameError.value = fieldErrors.FirstName?.[0] || fieldErrors.firstName?.[0] || '';
+  lastNameError.value = fieldErrors.LastName?.[0] || fieldErrors.lastName?.[0] || '';
+  emailError.value = fieldErrors.Email?.[0] || fieldErrors.email?.[0] || '';
+  gradeError.value = fieldErrors.Grade?.[0] || fieldErrors.grade?.[0] || '';
+};
+
 const validateForm = () => {
   let isValid = true;
   
@@ -108,7 +115,8 @@ const submitForm = () => {
 };
 
 defineExpose({
-  clearForm
+  clearForm,
+  setServerErrors
 });
 </script>
 

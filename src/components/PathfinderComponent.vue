@@ -49,7 +49,7 @@ import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";
 import { useUserStore } from "@/stores/users";
-import { PathfinderPost } from "@/models/pathfinder";
+import { PathfinderPost, ValidationError } from "@/models/pathfinder";
 
 const pathfinderStore = usePathfinderStore();
 const honorStore = useHonorStore();
@@ -117,8 +117,12 @@ const submitAddForm = async (data: PathfinderPost) => {
     showToaster.value = true;
   } catch (error) {
     console.error("Failed to create pathfinder:", error);
-    toasterMessage.value = `Failed to create pathfinder: ${error instanceof Error ? error.message : 'Unknown error'}`;
-    showToaster.value = true;
+    if (error instanceof ValidationError) {
+      createFormRef.value?.setServerErrors(error.fieldErrors);
+    } else {
+      toasterMessage.value = `Failed to create pathfinder: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      showToaster.value = true;
+    }
   }
 };
 </script>

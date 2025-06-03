@@ -4,6 +4,7 @@ import {
   PathfinderPost,
   PathfinderHonorPostPut,
   BulkAdd,
+  ValidationError,
 } from "@/models/pathfinder";
 
 const BASE_URL =
@@ -35,36 +36,31 @@ export default {
       params,
     });
   },
-  post: (data: PathfinderPost) => {
-    return axios.post(BASE_URL, data);
+  post: async (data: PathfinderPost) => {
+    try {
+      const response = await axios.post(BASE_URL, data);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        const errors = error.response.data.errors;
+        if (errors) {
+          throw new ValidationError(errors);
+        }
+      }
+      throw error;
+    }
   },
   async postPathfinder(data: PathfinderPost) {
-    try {
-      await this.post(data);
-    } catch (err) {
-      console.error(`Can't post this pathfinder because: ${err}`);
-    } finally {
-      await this.getAll();
-      this.loading = false;
-    }
+    return await this.post(data);
   },
   async postPathfinderHonor(
     pathfinderID: string,
     postData: PathfinderHonorPostPut,
   ) {
-    this.loading = true;
-    this.error = false;
-    try {
-      await axios.post(
-        BASE_URL + `/${pathfinderID}/PathfinderHonors`,
-        postData,
-      );
-    } catch (err) {
-      this.error = true;
-      console.error(`Could add honor, because: ${err}`);
-    } finally {
-      this.loading = false;
-    }
+    return await axios.post(
+      BASE_URL + `/${pathfinderID}/PathfinderHonors`,
+      postData,
+    );
   },
   putPathfinderHonor: (
     id: string,
@@ -94,10 +90,9 @@ export default {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
         const errors = error.response.data.errors;
-        const errorMessages = Object.keys(errors)
-          .map((key) => `${key}: ${errors[key].join(", ")}`)
-          .join("\n");
-        throw new Error(`Validation error: ${errorMessages}`);
+        if (errors) {
+          throw new ValidationError(errors);
+        }
       }
       throw error;
     }

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { mount, shallowMount } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import PathfinderComponent from "@/components/PathfinderComponent.vue";
+import { ValidationError } from "@/models/pathfinder";
 
 const mockPathfinderStore = {
   pathfinders: [],
@@ -76,7 +77,7 @@ describe("PathfinderComponent", () => {
     });
 
     it("should show error toast and keep modal open on failed submission", async () => {
-      const error = new Error("Validation error: Email is required");
+      const error = new Error("API Error");
       mockPathfinderStore.postPathfinder.mockRejectedValue(error);
 
       const formData = {
@@ -93,7 +94,34 @@ describe("PathfinderComponent", () => {
       expect(mockPathfinderStore.postPathfinder).toHaveBeenCalledWith(formData);
       expect(wrapper.vm.creatingPathfinder).toBe(true);
       expect(wrapper.vm.showToaster).toBe(true);
-      expect(wrapper.vm.toasterMessage).toBe("Failed to create pathfinder: Validation error: Email is required");
+      expect(wrapper.vm.toasterMessage).toBe("Failed to create pathfinder: API Error");
+    });
+
+    it("should call setServerErrors and not show toast for validation errors", async () => {
+      const validationError = new ValidationError({
+        Email: ["'Email' is not a valid email address."]
+      });
+      mockPathfinderStore.postPathfinder.mockRejectedValue(validationError);
+      const mockSetServerErrors = vi.fn();
+      wrapper.vm.createFormRef = { setServerErrors: mockSetServerErrors };
+
+      const formData = {
+        firstName: "John",
+        lastName: "Doe",
+        email: "invalid-email",
+        grade: 8
+      };
+
+      wrapper.vm.creatingPathfinder = true;
+      await wrapper.vm.submitAddForm(formData);
+      await wrapper.vm.$nextTick();
+
+      expect(mockPathfinderStore.postPathfinder).toHaveBeenCalledWith(formData);
+      expect(wrapper.vm.creatingPathfinder).toBe(true);
+      expect(mockSetServerErrors).toHaveBeenCalledWith({
+        Email: ["'Email' is not a valid email address."]
+      });
+      expect(wrapper.vm.showToaster).toBe(false);
     });
 
     it("should call clearForm on successful submission", async () => {
