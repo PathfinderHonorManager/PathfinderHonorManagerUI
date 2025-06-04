@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-vue";
 import Authentication from "@/components/AuthenticationComponent.vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import UserProfileComponent from "./components/UserProfileComponent.vue";
+import AppFooter from "./components/AppFooter.vue";
 import { useHonorStore } from "./stores/honors";
 import { usePathfinderStore } from "./stores/pathfinders";
 import { useUserStore } from "./stores/users";
@@ -82,6 +83,8 @@ const canUpdatePathfinder = computed(() =>
       <RouterView />
     </div>
   </div>
+  
+  <AppFooter />
 </template>
 
 <style>

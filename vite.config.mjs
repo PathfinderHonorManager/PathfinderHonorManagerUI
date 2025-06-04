@@ -14,4 +14,10 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '0.5.0'),
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+    __COMMIT_HASH__: JSON.stringify(process.env.VITE_COMMIT_HASH || ''),
+  },
+  envPrefix: ['VITE_', 'npm_package_']
 });
