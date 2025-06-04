@@ -129,21 +129,27 @@ jobs:
       - name: Set version info
         id: version-info
         run: |
+          # Get the latest semantic version tag, not just any tag
+          LATEST_TAG=$(git tag -l --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
+          
           if [ "${{ needs.semantic-version.outputs.new-release-published }}" == "true" ]; then
             echo "VERSION=${{ needs.semantic-version.outputs.new-release-version }}" >> $GITHUB_OUTPUT
+          elif [ -n "$LATEST_TAG" ]; then
+            echo "VERSION=$LATEST_TAG" >> $GITHUB_OUTPUT
           else
-            # Get the latest tag-based version, fallback to a default
-            VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.5.0")
-            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+            echo "VERSION=v0.5.0" >> $GITHUB_OUTPUT
           fi
-          echo "BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)" >> $GITHUB_OUTPUT
-      
+          
+          # Use consistent date format in UTC
+          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "COMMIT_HASH=${{ github.sha }}" >> $GITHUB_OUTPUT
+
       - name: Build application
         run: yarn build
         env:
           VITE_APP_VERSION: ${{ steps.version-info.outputs.VERSION }}
           VITE_BUILD_DATE: ${{ steps.version-info.outputs.BUILD_DATE }}
-          VITE_COMMIT_HASH: ${{ github.sha }}
+          VITE_COMMIT_HASH: ${{ steps.version-info.outputs.COMMIT_HASH }}
       
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -172,10 +178,14 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_GROUND_0586AB40F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "./dist"
+          skip_app_build: false
+          app_location: "/"
           api_location: ""
-          output_location: ""
-          skip_app_build: true
+          output_location: "dist"
+        env:
+          VITE_APP_VERSION: ${{ steps.version-info.outputs.VERSION }}
+          VITE_BUILD_DATE: ${{ steps.version-info.outputs.BUILD_DATE }}
+          VITE_COMMIT_HASH: ${{ steps.version-info.outputs.COMMIT_HASH }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
