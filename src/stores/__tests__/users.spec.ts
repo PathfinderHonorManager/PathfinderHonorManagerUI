@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useUserStore } from '@/stores/users'
+import { useUserStore } from '../users'
 import clubApi from '@/api/clubs'
 import { jwtDecode } from 'jwt-decode'
 import { 

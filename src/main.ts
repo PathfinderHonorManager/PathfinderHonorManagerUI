@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createAuth0 } from "@auth0/auth0-vue";
-import piniaPersist from "pinia-plugin-persist";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import SimpleTypeahead from "vue3-simple-typeahead";
 import { useHonorStore } from "./stores/honors";
 import { usePathfinderStore } from "./stores/pathfinders";
@@ -11,7 +11,7 @@ import router from "./router";
 import { appInsights } from "./appInsights";
 
 const pinia = createPinia();
-pinia.use(piniaPersist);
+pinia.use(piniaPluginPersistedstate);
 const app = createApp(App);
 
 const auth0Config = {
