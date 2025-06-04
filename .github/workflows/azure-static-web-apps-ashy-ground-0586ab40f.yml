@@ -132,8 +132,8 @@ jobs:
           if [ "${{ needs.semantic-version.outputs.new-release-published }}" == "true" ]; then
             echo "VERSION=${{ needs.semantic-version.outputs.new-release-version }}" >> $GITHUB_OUTPUT
           else
-            # Get version from package.json for PRs or when no release is made
-            VERSION=$(node -p "require('./package.json').version")
+            # Use git describe for more accurate version when no release is made
+            VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "0.5.0")
             echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           fi
           echo "BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)" >> $GITHUB_OUTPUT

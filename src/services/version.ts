@@ -15,6 +15,16 @@ export class VersionService {
   private versionInfo: VersionInfo;
 
   private constructor() {
+    // Debug logging for troubleshooting
+    console.log('Version Service Debug:', {
+      'import.meta.env.VITE_APP_VERSION': import.meta.env.VITE_APP_VERSION,
+      '__APP_VERSION__': typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : 'undefined',
+      'import.meta.env.VITE_BUILD_DATE': import.meta.env.VITE_BUILD_DATE,
+      '__BUILD_DATE__': typeof __BUILD_DATE__ !== 'undefined' ? __BUILD_DATE__ : 'undefined',
+      'import.meta.env.VITE_COMMIT_HASH': import.meta.env.VITE_COMMIT_HASH,
+      '__COMMIT_HASH__': typeof __COMMIT_HASH__ !== 'undefined' ? __COMMIT_HASH__ : 'undefined'
+    });
+
     this.versionInfo = {
       version: import.meta.env.VITE_APP_VERSION || __APP_VERSION__ || '0.5.0',
       buildDate: import.meta.env.VITE_BUILD_DATE || __BUILD_DATE__ || new Date().toISOString(),
