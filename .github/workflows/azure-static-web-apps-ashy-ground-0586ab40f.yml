@@ -126,11 +126,23 @@ jobs:
       - name: Install dependencies
         run: yarn install
       
+      - name: Set version info
+        id: version-info
+        run: |
+          if [ "${{ needs.semantic-version.outputs.new-release-published }}" == "true" ]; then
+            echo "VERSION=${{ needs.semantic-version.outputs.new-release-version }}" >> $GITHUB_OUTPUT
+          else
+            # Get version from package.json for PRs or when no release is made
+            VERSION=$(node -p "require('./package.json').version")
+            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          fi
+          echo "BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)" >> $GITHUB_OUTPUT
+      
       - name: Build application
         run: yarn build
         env:
-          VITE_APP_VERSION: ${{ needs.semantic-version.outputs.new-release-version || '0.5.0' }}
-          VITE_BUILD_DATE: ${{ github.event.head_commit.timestamp }}
+          VITE_APP_VERSION: ${{ steps.version-info.outputs.VERSION }}
+          VITE_BUILD_DATE: ${{ steps.version-info.outputs.BUILD_DATE }}
           VITE_COMMIT_HASH: ${{ github.sha }}
       
       - name: Upload build artifact
