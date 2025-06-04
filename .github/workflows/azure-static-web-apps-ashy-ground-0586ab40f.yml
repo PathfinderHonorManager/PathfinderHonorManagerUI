@@ -78,9 +78,42 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
 
-  build:
-    needs: [sonar, test]
+  semantic-version:
+    name: Semantic Versioning
+    needs: [test, sonar]
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    outputs:
+      new-release-published: ${{ steps.semantic.outputs.new-release-published }}
+      new-release-version: ${{ steps.semantic.outputs.new-release-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Semantic Release
+        id: semantic
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          semantic_version: 23
+          extra_plugins: |
+            @semantic-release/changelog@6.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    needs: [sonar, test, semantic-version]
+    runs-on: ubuntu-latest
+    if: always() && (needs.test.result == 'success') && (needs.sonar.result == 'success')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -95,6 +128,10 @@ jobs:
       
       - name: Build application
         run: yarn build
+        env:
+          VITE_APP_VERSION: ${{ needs.semantic-version.outputs.new-release-version || '0.5.0' }}
+          VITE_BUILD_DATE: ${{ github.event.head_commit.timestamp }}
+          VITE_COMMIT_HASH: ${{ github.sha }}
       
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
