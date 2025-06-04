@@ -21,24 +21,23 @@ interface CustomJwtPayload extends JwtPayload {
   clubCode: string;
 }
 
-export const useUserStore = defineStore({
-  id: "clubUser",
+export const useUserStore = defineStore("clubUser", {
   state: () => ({
-    permissions: [],
+    permissions: [] as any[],
     clubCode: "",
     clubName: "",
   }),
   actions: {
-    setPermissions(permissions) {
+    setPermissions(permissions: any[]) {
       this.permissions = permissions;
     },
-    setClubCode(clubCode) {
+    setClubCode(clubCode: string) {
       this.clubCode = clubCode;
     },
-    setClubName(clubName) {
+    setClubName(clubName: string) {
       this.clubName = clubName;
     },
-    async decodeToken(getAccessTokenSilently) {
+    async decodeToken(getAccessTokenSilently: any) {
       const token = await getAccessTokenSilently();
       const decodedToken = jwtDecode<CustomJwtPayload>(token);
       this.setPermissions(decodedToken.permissions);
@@ -46,7 +45,7 @@ export const useUserStore = defineStore({
 
       await this.getClubName(decodedToken.clubCode);
     },
-    async getClubName(clubCode) {
+    async getClubName(clubCode: string) {
       try {
         const response = await clubApi.getClub({ clubcode: clubCode });
         this.setClubName(response.data.name);
