@@ -10,6 +10,7 @@
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom --run",
     "test:unit:watch": "vitest --environment jsdom",
+    "test:stores": "vitest --environment jsdom --run src/stores/**/*.spec.ts",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --config eslint.config.js --format compact --fix"
   },
@@ -23,7 +24,7 @@
     "axios": "^1.6.2",
     "fontawesome": "^5.6.3",
     "jwt-decode": "^4.0.0",
-    "pinia": "^2.1.7",
+    "pinia": "^2.3.0",
     "pinia-plugin-persist": "^1.0.0",
     "prettier": "^3.2.5",
     "vue": "^3.3.4",
@@ -31,6 +32,7 @@
     "vue3-simple-typeahead": "^1.0.11"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.1.6",
     "@rushstack/eslint-patch": "^1.5.1",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^22.10.1",
