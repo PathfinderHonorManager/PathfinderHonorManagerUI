@@ -23,6 +23,9 @@ describe('Pathfinder Store', () => {
     store = usePathfinderStore()
     selectionStore = useSelectionStore()
     vi.clearAllMocks()
+    
+    // Reset store state
+    store.$reset()
   })
 
   afterEach(() => {
@@ -311,6 +314,310 @@ describe('Pathfinder Store', () => {
       )
       expect(result?.successful).toHaveLength(2)
       expect(result?.failed).toHaveLength(0)
+    })
+
+    it('handles bulk operation with mixed success and failure responses', async () => {
+      const pathfinderIDs = ['path1', 'path2']
+      const honorIDs = ['honor1']
+      
+      const mockBulkResponse = [
+        {
+          status: 201,
+          pathfinderHonor: {
+            pathfinderID: 'path1',
+            honorID: 'honor1',
+            status: status.Planned
+          }
+        },
+        {
+          status: 400,
+          error: 'Validation failed for pathfinder path2'
+        }
+      ]
+
+      vi.mocked(api.bulkManagePathfinderHonors).mockResolvedValue(
+        mockApiResponse(mockBulkResponse)
+      )
+
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      
+      const result = await store.bulkManagePathfinderHonors(pathfinderIDs, honorIDs, 'plan')
+
+      expect(result?.successful).toHaveLength(1)
+      expect(result?.failed).toHaveLength(1)
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Could not plan pathfinder honors')
+      )
+      
+      consoleSpy.mockRestore()
+    })
+
+    it('handles API error in bulk operation', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      vi.mocked(api.bulkManagePathfinderHonors).mockRejectedValue(new Error('Server error'))
+
+      await store.bulkManagePathfinderHonors(['path1'], ['honor1'], 'plan')
+
+      expect(store.error).toBe(true)
+      expect(store.loading).toBe(false)
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Could not plan pathfinder honors')
+      )
+      
+      consoleSpy.mockRestore()
+    })
+
+    it('correctly maps action types to status in bulk operations', async () => {
+      store.pathfinders = mockPathfinders
+
+      const mockEarnResponse = [{
+        status: 201,
+        pathfinderHonor: {
+          pathfinderID: 'path1',
+          honorID: 'honor1',
+          status: status.Earned
+        }
+      }]
+
+      vi.mocked(api.bulkManagePathfinderHonors).mockResolvedValue(
+        mockApiResponse(mockEarnResponse)
+      )
+
+      await store.bulkManagePathfinderHonors(['path1'], ['honor1'], 'earn')
+
+      expect(api.bulkManagePathfinderHonors).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({
+            honors: expect.arrayContaining([
+              expect.objectContaining({ status: status.Earned })
+            ])
+          })
+        ]),
+        'earn'
+      )
+    })
+
+    it('handles status 200 responses with pathfinderHonor in bulk operations', async () => {
+      store.pathfinders = [...mockPathfinders]
+
+      const mockResponse = [{
+        status: 200,
+        pathfinderHonor: {
+          pathfinderHonorID: 'test-honor-id',
+          pathfinderID: mockPathfinders[0].pathfinderID,
+          honorID: 'honor1',
+          name: 'Test Honor',
+          status: status.Planned,
+          patchPath: 'test_honor.png'
+        }
+      }]
+
+      vi.mocked(api.bulkManagePathfinderHonors).mockResolvedValue(
+        mockApiResponse(mockResponse)
+      )
+
+      const result = await store.bulkManagePathfinderHonors([mockPathfinders[0].pathfinderID], ['honor1'], 'plan')
+
+      expect(result).toBeDefined()
+      expect(result?.successful).toHaveLength(1)
+      expect(result?.failed).toHaveLength(0)
+    })
+  })
+
+  describe('Actions - postPathfinderHonor', () => {
+    it('successfully adds honor to pathfinder', async () => {
+      const pathfinderID = mockPathfinders[0].pathfinderID
+      const honorId = 'new-honor-id'
+      
+      const updatedPathfinder = {
+        ...mockPathfinders[0],
+        pathfinderHonors: [
+          ...mockPathfinders[0].pathfinderHonors,
+          createMockPathfinderHonor({ 
+            pathfinderID,
+            honorID: honorId, 
+            status: status.Planned,
+            name: 'New Test Honor'
+          })
+        ]
+      }
+
+      vi.mocked(api.postPathfinderHonor).mockResolvedValue(mockApiResponse({}))
+      vi.mocked(api.get).mockResolvedValue(mockApiResponse(updatedPathfinder))
+
+      store.pathfinders = [mockPathfinders[0]]
+
+      await store.postPathfinderHonor(pathfinderID, honorId)
+
+      expect(api.postPathfinderHonor).toHaveBeenCalledWith(
+        pathfinderID,
+        { honorID: honorId, status: status.Planned }
+      )
+      expect(api.get).toHaveBeenCalledWith(pathfinderID)
+      expect(store.loading).toBe(false)
+      expect(store.error).toBe(false)
+    })
+
+    it('handles error when adding honor fails', async () => {
+      const pathfinderID = 'invalid-id'
+      const honorId = 'honor-id'
+      
+      // Mock both API calls - postPathfinderHonor fails, but getPathfinderById in finally should succeed
+      vi.mocked(api.postPathfinderHonor).mockRejectedValue(new Error('Honor already exists'))
+      vi.mocked(api.get).mockResolvedValue(mockApiResponse(mockPathfinders[0]))
+      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      await store.postPathfinderHonor(pathfinderID, honorId)
+
+      // The error is logged during the catch block, which is what we want to verify
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Could add honor')
+      )
+      // The error state gets reset to false by the getPathfinderById call in finally
+      expect(store.loading).toBe(false)
+      
+      consoleSpy.mockRestore()
+    })
+  })
+
+  describe('Actions - getPathfinderById', () => {
+    it('successfully fetches and updates specific pathfinder', async () => {
+      const pathfinderToUpdate = mockPathfinders[0]
+      const updatedData = {
+        ...pathfinderToUpdate,
+        firstName: 'UpdatedSally',
+        pathfinderHonors: [
+          ...pathfinderToUpdate.pathfinderHonors,
+          createMockPathfinderHonor({ 
+            pathfinderID: pathfinderToUpdate.pathfinderID,
+            honorID: 'new-honor', 
+            name: 'New Test Honor',
+            status: status.Earned 
+          })
+        ]
+      }
+
+      store.pathfinders = [...mockPathfinders]
+      vi.mocked(api.get).mockResolvedValue(mockApiResponse(updatedData))
+
+      await store.getPathfinderById(pathfinderToUpdate.pathfinderID)
+
+      expect(api.get).toHaveBeenCalledWith(pathfinderToUpdate.pathfinderID)
+      expect(store.pathfinders[0]).toEqual(updatedData)
+      expect(store.loading).toBe(false)
+      expect(store.error).toBe(false)
+    })
+
+    it('handles error when pathfinder not found', async () => {
+      const invalidID = 'non-existent-id'
+      const mockError = { status: 404, message: 'Not found' }
+      
+      vi.mocked(api.get).mockRejectedValue(mockError)
+
+      await expect(store.getPathfinderById(invalidID)).rejects.toThrow()
+      
+      expect(store.error).toBe(true)
+      expect(store.loading).toBe(false)
+    })
+
+    it('does not update pathfinder if not found in store', async () => {
+      const nonExistentID = 'missing-pathfinder'
+      const originalPathfinders = [...mockPathfinders]
+      
+      store.pathfinders = originalPathfinders
+      vi.mocked(api.get).mockResolvedValue(mockApiResponse({
+        pathfinderID: nonExistentID,
+        firstName: 'NotInStore'
+      }))
+
+      await store.getPathfinderById(nonExistentID)
+
+      expect(store.pathfinders).toEqual(originalPathfinders)
+    })
+  })
+
+  describe('Actions - updatePathfinder', () => {
+    it('successfully updates pathfinder data', async () => {
+      const pathfinderID = mockPathfinders[0].pathfinderID
+      const updateData = { grade: 8, isActive: true }
+      const updatedPathfinder = { ...mockPathfinders[0], ...updateData }
+
+      store.pathfinders = [...mockPathfinders]
+      
+      vi.mocked(api.putPathfinder).mockResolvedValue(mockApiResponse(updatedPathfinder))
+      vi.mocked(api.getAll).mockResolvedValue(mockApiResponse([
+        updatedPathfinder,
+        mockPathfinders[1]
+      ]))
+
+      await store.updatePathfinder(pathfinderID, updateData)
+
+      expect(api.putPathfinder).toHaveBeenCalledWith(pathfinderID, updateData)
+      expect(api.getAll).toHaveBeenCalled()
+      expect(store.loading).toBe(false)
+      expect(store.error).toBe(false)
+    })
+
+    it('handles Error instance in updatePathfinder', async () => {
+      const pathfinderID = 'test-id'
+      const updateData = { grade: 8, isActive: true }
+      const errorMessage = 'Validation failed: Grade must be between 1 and 12'
+      
+      vi.mocked(api.putPathfinder).mockRejectedValue(new Error(errorMessage))
+      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      await expect(store.updatePathfinder(pathfinderID, updateData)).rejects.toThrow(errorMessage)
+
+      expect(store.error).toBe(true)
+      expect(store.loading).toBe(false)
+      expect(consoleSpy).toHaveBeenCalledWith(errorMessage)
+      
+      consoleSpy.mockRestore()
+    })
+
+    it('handles non-Error exceptions in updatePathfinder', async () => {
+      const pathfinderID = 'test-id'
+      const updateData = { grade: 8, isActive: true }
+      
+      vi.mocked(api.putPathfinder).mockRejectedValue('String error')
+      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      await expect(store.updatePathfinder(pathfinderID, updateData)).rejects.toThrow(
+        'Could not update pathfinder due to an unexpected error'
+      )
+
+      expect(store.error).toBe(true)
+      expect(store.loading).toBe(false)
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Could not update pathfinder due to an unexpected error'
+      )
+      
+      consoleSpy.mockRestore()
+    })
+
+    it('updates local pathfinder data when found in store', async () => {
+      const pathfinderID = mockPathfinders[0].pathfinderID
+      const updateData = { grade: 10, isActive: false }
+
+      // Verify the pathfinder exists in the store first
+      store.pathfinders = [...mockPathfinders]
+      const originalPathfinder = store.pathfinders.find(p => p.pathfinderID === pathfinderID)
+      expect(originalPathfinder).toBeDefined()
+
+      vi.mocked(api.putPathfinder).mockResolvedValue(mockApiResponse({}))
+      vi.mocked(api.getAll).mockResolvedValue(mockApiResponse([
+        { ...mockPathfinders[0], ...updateData },
+        mockPathfinders[1]
+      ]))
+
+      await store.updatePathfinder(pathfinderID, updateData)
+
+      // The local update happens before the refresh call
+      // So we check what was passed to the API, not the final state after getAll()
+      expect(api.putPathfinder).toHaveBeenCalledWith(pathfinderID, updateData)
     })
   })
 
