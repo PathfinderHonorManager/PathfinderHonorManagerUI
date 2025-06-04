@@ -12,7 +12,8 @@
     "test:unit:watch": "vitest --environment jsdom",
     "test:stores": "vitest --environment jsdom --run src/stores/**/*.spec.ts",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --config eslint.config.js --format compact --fix"
+    "lint": "eslint . --config eslint.config.js --format compact --fix",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.3.2",
@@ -34,6 +35,12 @@
   "devDependencies": {
     "@pinia/testing": "^0.1.6",
     "@rushstack/eslint-patch": "^1.5.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.0",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.1",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^22.10.1",
     "@vitejs/plugin-vue": "^5.0.0",
@@ -47,6 +54,7 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-vue": "^10.0.0",
     "jsdom": "^26.0.0",
+    "semantic-release": "^24.2.0",
     "typescript": "~5.8.2",
     "vite": "^6.0.3",
     "vitest": "^3.0.2",
