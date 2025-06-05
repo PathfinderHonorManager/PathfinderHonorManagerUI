@@ -178,14 +178,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_GROUND_0586AB40F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          skip_app_build: false
-          app_location: "/"
+          skip_app_build: true
+          app_location: "./dist"
           api_location: ""
-          output_location: "dist"
-        env:
-          VITE_APP_VERSION: ${{ steps.version-info.outputs.VERSION }}
-          VITE_BUILD_DATE: ${{ steps.version-info.outputs.BUILD_DATE }}
-          VITE_COMMIT_HASH: ${{ steps.version-info.outputs.COMMIT_HASH }}
+          output_location: ""
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
