@@ -135,7 +135,7 @@ body {
     border-right: var(--lightBorder);
 
     grid-area: sidebar;
-    grid-template-rows: auto repeat(2, 50px);
+    grid-template-rows: auto auto auto auto auto auto 1fr auto;
     align-content: start;
     grid-gap: 0.5em 0;
 }
@@ -172,7 +172,7 @@ body {
         border-bottom: var(--lightBorder);
 
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
+        grid-template-rows: auto 1fr auto;
         grid-gap: 0.5em 0.25em;
     }
     #sidebar > a {
@@ -180,7 +180,7 @@ body {
         width: 100%;
         border: var(--lightBorder);
     }
-  }
+}
 
 .loader {
 	display: block;
