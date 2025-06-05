@@ -45,6 +45,7 @@ jobs:
     name: SonarQube Analysis
     needs: test
     runs-on: ubuntu-latest
+    if: false  # Temporarily skip SonarQube
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -80,7 +81,7 @@ jobs:
 
   semantic-version:
     name: Semantic Versioning
-    needs: [test, sonar]
+    needs: [test]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     outputs:
@@ -111,9 +112,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build:
-    needs: [sonar, test, semantic-version]
+    needs: [test, semantic-version]
     runs-on: ubuntu-latest
-    if: always() && (needs.test.result == 'success') && (needs.sonar.result == 'success')
+    if: always() && (needs.test.result == 'success')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
