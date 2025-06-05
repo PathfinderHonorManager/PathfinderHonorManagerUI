@@ -1,8 +1,18 @@
 <template>
   <div id="profile-hunk">
     <div v-if="isAuthenticated">
-      <img :src="user.picture">
-      <h1>{{ user.name }}</h1>
+      <div class="avatar-container">
+        <img 
+          v-if="!imageError && user?.picture" 
+          :src="user.picture" 
+          @error="handleImageError"
+          :alt="`${user?.name || 'User'} avatar`"
+        >
+        <div v-else class="fallback-avatar">
+          {{ userInitials }}
+        </div>
+      </div>
+      <h1>{{ user?.name }}</h1>
       <button @click="logout">
         Log out
       </button>
@@ -19,12 +29,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue/dist/vue.esm-bundler";
+import { defineComponent, ref, computed } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 
 export default defineComponent({
   setup() {
     const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+    const imageError = ref(false);
+
+    const handleImageError = () => {
+      imageError.value = true;
+    };
+
+    const userInitials = computed(() => {
+      if (!user.value?.name) return 'U';
+      
+      const names = user.value.name.split(' ');
+      if (names.length >= 2) {
+        return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+      }
+      return names[0][0].toUpperCase();
+    });
 
     return {
       login: () => {
@@ -35,6 +60,9 @@ export default defineComponent({
       },
       user,
       isAuthenticated,
+      imageError,
+      handleImageError,
+      userInitials,
     };
   },
 });
@@ -50,11 +78,31 @@ export default defineComponent({
   text-align: center;
 }
 
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5em;
+}
+
 img {
-  width: auto;
+  width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin: 0.5em;
+  object-fit: cover;
+}
+
+.fallback-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--actionColor);
+  color: var(--color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
 h1 {

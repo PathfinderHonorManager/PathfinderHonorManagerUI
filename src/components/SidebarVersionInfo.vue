@@ -1,5 +1,5 @@
 <template>
-  <footer class="app-footer">
+  <div class="sidebar-version">
     <div class="version-info">
       <span class="version-text">{{ formattedVersion }}</span>
       <a 
@@ -13,7 +13,7 @@
         #{{ shortCommitHash }}
       </a>
     </div>
-  </footer>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -37,53 +37,65 @@ const githubCommitUrl = computed(() => {
 </script>
 
 <style scoped>
-.app-footer {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  z-index: 1000;
+.sidebar-version {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: var(--itemMargin);
-  margin: var(--itemMargin);
-  font-family: var(--mainFont);
-  font-size: var(--textSize);
+  margin-top: auto;
+  font-size: 0.75em;
   color: var(--noteColor);
+  border-top: 1px solid var(--lightGrey);
 }
 
 .version-info {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .version-text {
   font-weight: 400;
   color: var(--noteColor);
+  text-align: center;
 }
 
 .commit-link {
   color: var(--actionColor);
   text-decoration: none;
   font-family: 'Courier New', monospace;
-  font-size: 0.85em;
+  font-size: 0.9em;
   padding: 2px 6px;
   background-color: var(--lightGrey);
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1px solid var(--lightGrey);
   transition: 0.2s;
 }
 
 .commit-link:hover {
-  background-color: var(--bgColor);
-  transform: translateY(-2px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background-color: var(--grey);
+  text-decoration: none;
+  transform: translateY(-1px);
 }
 
 @media screen and (max-width: 1080px) {
-  .app-footer {
-    position: static;
-    margin: var(--itemMargin) auto;
-    width: fit-content;
-    text-align: center;
+  .sidebar-version {
+    grid-column: span 2;
+    margin-top: 0.5em;
+    padding: 0.5em;
+    font-size: 0.7em;
+    border-top: none;
+  }
+  
+  .version-info {
+    gap: 6px;
+  }
+  
+  .commit-link {
+    font-size: 0.85em;
+    padding: 1px 4px;
   }
 }
 </style> 
