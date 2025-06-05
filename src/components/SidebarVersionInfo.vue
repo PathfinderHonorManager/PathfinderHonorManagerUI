@@ -1,7 +1,15 @@
 <template>
   <div class="sidebar-version">
     <div class="version-info">
-      <span class="version-text">{{ formattedVersion }}</span>
+      <a 
+        :href="githubReleasesUrl" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="version-link"
+        :title="'View release notes and changelog'"
+      >
+        {{ formattedVersion }}
+      </a>
       <a 
         v-if="commitHash" 
         :href="githubCommitUrl" 
@@ -29,9 +37,12 @@ const shortCommitHash = computed(() =>
   commitHash.value ? commitHash.value.substring(0, 7) : ''
 );
 
+const repoUrl = 'https://github.com/PathfinderHonorManager/PathfinderHonorManagerUI';
+
+const githubReleasesUrl = computed(() => `${repoUrl}/releases`);
+
 const githubCommitUrl = computed(() => {
   if (!commitHash.value) return '';
-  const repoUrl = 'https://github.com/PathfinderHonorManager/PathfinderHonorManagerUI';
   return `${repoUrl}/commit/${commitHash.value}`;
 });
 </script>
@@ -62,22 +73,41 @@ const githubCommitUrl = computed(() => {
   text-align: center;
 }
 
+.version-link {
+  color: var(--noteColor);
+  text-decoration: none;
+  font-weight: 400;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: 0.2s;
+  border: 1px solid transparent;
+}
+
+.version-link:hover {
+  color: var(--actionColor);
+  background-color: var(--lightGrey);
+  border-color: var(--lightGrey);
+  text-decoration: none;
+}
+
 .commit-link {
   color: var(--actionColor);
   text-decoration: none;
   font-family: 'Courier New', monospace;
-  font-size: 0.9em;
+  font-size: 0.85em;
   padding: 2px 6px;
   background-color: var(--lightGrey);
   border-radius: 4px;
   border: 1px solid var(--lightGrey);
   transition: 0.2s;
+  opacity: 0.8;
 }
 
 .commit-link:hover {
   background-color: var(--grey);
   text-decoration: none;
   transform: translateY(-1px);
+  opacity: 1;
 }
 
 @media screen and (max-width: 1080px) {
