@@ -10,16 +10,6 @@
       >
         {{ formattedVersion }}
       </a>
-      <a 
-        v-if="commitHash" 
-        :href="githubCommitUrl" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="commit-link"
-        :title="`View commit ${commitHash}`"
-      >
-        #{{ shortCommitHash }}
-      </a>
     </div>
   </div>
 </template>
@@ -29,22 +19,11 @@ import { computed } from 'vue';
 import { VersionService } from '@/services/version';
 
 const versionService = VersionService.getInstance();
-const versionInfo = versionService.getVersionInfo();
 
 const formattedVersion = computed(() => versionService.getFormattedVersion());
-const commitHash = computed(() => versionInfo.commitHash);
-const shortCommitHash = computed(() => 
-  commitHash.value ? commitHash.value.substring(0, 7) : ''
-);
 
 const repoUrl = 'https://github.com/PathfinderHonorManager/PathfinderHonorManagerUI';
-
 const githubReleasesUrl = computed(() => `${repoUrl}/releases`);
-
-const githubCommitUrl = computed(() => {
-  if (!commitHash.value) return '';
-  return `${repoUrl}/commit/${commitHash.value}`;
-});
 </script>
 
 <style scoped>
@@ -90,26 +69,6 @@ const githubCommitUrl = computed(() => {
   text-decoration: none;
 }
 
-.commit-link {
-  color: var(--actionColor);
-  text-decoration: none;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85em;
-  padding: 2px 6px;
-  background-color: var(--lightGrey);
-  border-radius: 4px;
-  border: 1px solid var(--lightGrey);
-  transition: 0.2s;
-  opacity: 0.8;
-}
-
-.commit-link:hover {
-  background-color: var(--grey);
-  text-decoration: none;
-  transform: translateY(-1px);
-  opacity: 1;
-}
-
 @media screen and (max-width: 1080px) {
   .sidebar-version {
     grid-column: span 2;
@@ -121,11 +80,6 @@ const githubCommitUrl = computed(() => {
   
   .version-info {
     gap: 6px;
-  }
-  
-  .commit-link {
-    font-size: 0.85em;
-    padding: 1px 4px;
   }
 }
 </style> 
