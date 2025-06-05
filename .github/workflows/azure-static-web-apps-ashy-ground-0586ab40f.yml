@@ -132,28 +132,14 @@ jobs:
       - name: Set version info
         id: version-info
         run: |
-          # Debug: Show available tags
-          echo "All tags:"
-          git tag -l
-          echo ""
-          echo "Semantic version tags:"
-          git tag -l --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$'
-          echo ""
-          
           # Get the latest semantic version tag, not just any tag
           LATEST_TAG=$(git tag -l --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
-          echo "Latest semantic tag found: '$LATEST_TAG'"
-          echo "New release published: '${{ needs.semantic-version.outputs.new-release-published }}'"
-          echo "New release version: '${{ needs.semantic-version.outputs.new-release-version }}'"
           
           if [ "${{ needs.semantic-version.outputs.new-release-published }}" == "true" ]; then
-            echo "Using new release version"
             echo "VERSION=${{ needs.semantic-version.outputs.new-release-version }}" >> $GITHUB_OUTPUT
           elif [ -n "$LATEST_TAG" ]; then
-            echo "Using latest tag: $LATEST_TAG"
             echo "VERSION=$LATEST_TAG" >> $GITHUB_OUTPUT
           else
-            echo "No tags found, using fallback"
             echo "VERSION=v0.5.0" >> $GITHUB_OUTPUT
           fi
           
