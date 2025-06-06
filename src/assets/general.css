@@ -133,9 +133,8 @@ body {
     background-color: var(--bgColor);
     padding: 1em;
     border-right: var(--lightBorder);
-
     grid-area: sidebar;
-    grid-template-rows: auto auto auto auto auto auto 1fr auto;
+    grid-template-rows: auto repeat(5, auto) 1fr auto;
     align-content: start;
     grid-gap: 0.5em 0;
 }
@@ -160,25 +159,29 @@ body {
     #grid {
         grid-template-areas: "sidebar" "content";
         grid-template-columns: 1fr;
-        grid-template-rows: 300px 1fr;
+        grid-template-rows: auto 1fr;
     }
     #sidebar {
-        position: fixed;
+        display: grid;
+        position: relative;
         width: 100%;
+        height: auto;
         margin: 0;
-        justify-content: center;
-        align-content: start;
+        padding: 1em;
         text-align: center;
         border-bottom: var(--lightBorder);
-
+        border-right: none;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto 1fr auto;
-        grid-gap: 0.5em 0.25em;
+        grid-template-rows: auto auto auto auto auto;
+        grid-gap: 0.5em;
+        align-items: start;
     }
     #sidebar > a {
-        justify-self: center;
-        width: 100%;
+        justify-self: stretch;
+        width: auto;
         border: var(--lightBorder);
+        padding: 1em;
+        margin: 0;
     }
 }
 
