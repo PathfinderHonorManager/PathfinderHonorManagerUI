@@ -72,14 +72,21 @@ const githubReleasesUrl = computed(() => `${repoUrl}/releases`);
 @media screen and (max-width: 1080px) {
   .sidebar-version {
     grid-column: span 2;
-    margin-top: 0.5em;
-    padding: 0.5em;
-    font-size: 0.7em;
-    border-top: none;
+    margin-top: 1em;
+    padding: 1em;
+    font-size: 0.8em;
+    border-top: 1px solid var(--lightGrey);
+    text-align: center;
   }
   
   .version-info {
-    gap: 6px;
+    gap: 8px;
+    justify-content: center;
+  }
+  
+  .version-link {
+    padding: 8px 12px;
+    font-size: 1em;
   }
 }
 </style> 
