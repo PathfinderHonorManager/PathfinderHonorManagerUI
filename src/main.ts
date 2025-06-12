@@ -9,6 +9,9 @@ import { useUserStore } from "./stores/users";
 import App from "./App.vue";
 import router from "./router";
 import { appInsights } from "./appInsights";
+import { AnalyticsService } from "./services/analyticsService";
+import { useAuth0 } from "@auth0/auth0-vue";
+import { watch } from "vue";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -24,7 +27,8 @@ const auth0Config = {
   },
 };
 
-app.use(createAuth0(auth0Config));
+const auth0 = createAuth0(auth0Config);
+app.use(auth0);
 
 app.use(pinia);
 
@@ -40,6 +44,17 @@ app.provide("useUserStore", useUserStore);
 // Initialize Application Insights
 if (import.meta.env.PROD) {
   app.config.globalProperties.$appInsights = appInsights;
+  
+  // Track user authentication state
+  const { isAuthenticated, user } = useAuth0();
+  
+  watch(isAuthenticated, (authenticated) => {
+    if (authenticated && user.value?.sub) {
+      AnalyticsService.setUserContext(user.value.sub);
+    } else {
+      AnalyticsService.clearUserContext();
+    }
+  });
 }
 
 console.log(app);

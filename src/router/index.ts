@@ -2,6 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import ClubView from "../views/ClubView.vue";
 import LandingComponent from "../components/LandingComponent.vue";
 import { useAuth0 } from "@auth0/auth0-vue";
+import { AnalyticsService } from "../services/analyticsService";
+import type { RouteLocationNormalized } from 'vue-router';
+
+export function analyticsAfterEach(to: RouteLocationNormalized) {
+  AnalyticsService.trackPageView(to.name?.toString(), to.fullPath);
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +51,8 @@ const router = createRouter({
     }
   ],
 });
+
+router.afterEach(analyticsAfterEach);
 
 // Global navigation guard
 router.beforeEach(async (to, from, next) => {
