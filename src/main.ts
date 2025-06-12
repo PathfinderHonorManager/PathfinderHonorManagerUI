@@ -8,10 +8,7 @@ import { usePathfinderStore } from "./stores/pathfinders";
 import { useUserStore } from "./stores/users";
 import App from "./App.vue";
 import router from "./router";
-import { appInsights } from "./appInsights";
-import { AnalyticsService } from "./services/analyticsService";
-import { useAuth0 } from "@auth0/auth0-vue";
-import { watch } from "vue";
+import { analyticsPlugin } from "./plugins/analytics";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -35,27 +32,12 @@ app.use(pinia);
 app.use(router);
 
 app.use(SimpleTypeahead);
+app.use(analyticsPlugin);
 
 //provide honors and pathfinder to all components
 app.provide("usePathfinderStore", usePathfinderStore);
 app.provide("useHonorStore", useHonorStore);
 app.provide("useUserStore", useUserStore);
-
-// Initialize Application Insights
-if (import.meta.env.PROD) {
-  app.config.globalProperties.$appInsights = appInsights;
-  
-  // Track user authentication state
-  const { isAuthenticated, user } = useAuth0();
-  
-  watch(isAuthenticated, (authenticated) => {
-    if (authenticated && user.value?.sub) {
-      AnalyticsService.setUserContext(user.value.sub);
-    } else {
-      AnalyticsService.clearUserContext();
-    }
-  });
-}
 
 console.log(app);
 
