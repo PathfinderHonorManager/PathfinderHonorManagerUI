@@ -33,8 +33,14 @@ import { useSelectionStore } from "@/stores/selectionStore";
 
 export default defineComponent({
   props: {
-    selectionType: String as PropType<string>,
-    honorSearchResult: Array as PropType<Array<any>>,
+    selectionType: {
+      type: String,
+      default: 'plan'
+    },
+    honorSearchResult: {
+      type: Array,
+      default: () => []
+    },
   },
   emits: ["toggle-selection"],
   setup(props, { emits }) {

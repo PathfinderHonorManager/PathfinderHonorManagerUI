@@ -9,6 +9,7 @@ const props = defineProps({
   defaultText: {
     type: String,
     required: false,
+    default: 'Select an option'
   },
 });
 
