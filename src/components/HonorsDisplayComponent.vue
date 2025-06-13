@@ -8,16 +8,19 @@
         :class="{ selected: isSelectedHonor(honor.honorID) }"
         @click="$emit('toggle-selection', honor.honorID)"
       >
-        <button v-if="isSelectedHonor(honor.honorID)" class="deselect-button">
-          <img src="@/assets/close-icon.svg" />
+        <button
+          v-if="isSelectedHonor(honor.honorID)"
+          class="deselect-button"
+        >
+          <img src="@/assets/close-icon.svg">
         </button>
         <img
           :src="
             'https://images.pathfinderclub.tools/assets/honors/small/' +
-            honor.patchFilename
+              honor.patchFilename
           "
           class="patchimage"
-        />
+        >
         <h3>{{ honor.name }}</h3>
       </div>
     </div>
@@ -30,8 +33,14 @@ import { useSelectionStore } from "@/stores/selectionStore";
 
 export default defineComponent({
   props: {
-    selectionType: String as PropType<string>,
-    honorSearchResult: Array as PropType<Array<any>>,
+    selectionType: {
+      type: String,
+      default: 'plan'
+    },
+    honorSearchResult: {
+      type: Array,
+      default: () => []
+    },
   },
   emits: ["toggle-selection"],
   setup(props, { emits }) {

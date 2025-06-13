@@ -1,23 +1,35 @@
 <template>
-  <div class="honor-card" v-if="display">
+  <div
+    v-if="display"
+    class="honor-card"
+  >
     <div class="honor-content">
       <div class="honor-image">
         <img
           :src="getImageUrl"
           class="patch-image"
-          @error="handleImageError"
           alt="Honor patch"
-        />
+          @error="handleImageError"
+        >
       </div>
-      <h3 class="honor-name">{{ name }}</h3>
+      <h3 class="honor-name">
+        {{ name }}
+      </h3>
       
       <div class="status-dropdown">
-        <div class="status-selector" @click="showDropdown = !showDropdown" :class="newStatus.toLowerCase()">
+        <div
+          class="status-selector"
+          :class="newStatus.toLowerCase()"
+          @click="showDropdown = !showDropdown"
+        >
           <span>{{ newStatus }}</span>
           <span class="dropdown-arrow">▼</span>
         </div>
         
-        <div class="dropdown-options" v-if="showDropdown">
+        <div
+          v-if="showDropdown"
+          class="dropdown-options"
+        >
           <div 
             class="dropdown-option planned" 
             @click="selectStatus('Planned')"
@@ -40,10 +52,10 @@
       </div>
       
       <button 
-        class="update-button"
         v-if="canUpdatePathfinder"
-        @click.prevent="putPathfinderHonor(pathfinderID, honorID, newStatus)"
+        class="update-button"
         :disabled="!canEdit"
+        @click.prevent="putPathfinderHonor(pathfinderID, honorID, newStatus)"
       >
         Update Status
       </button>
@@ -57,6 +69,38 @@ import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 
 export default defineComponent({
+  props: {
+    pathfinderID: {
+      type: String,
+      required: true,
+    },
+    honorID: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+    },
+    display: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    image: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    canUpdatePathfinder: {
+      type: Boolean,
+      required: true,
+    },
+  },
   setup(props) {
     const pathfinderStore = usePathfinderStore();
     if (!pathfinderStore) {
@@ -86,15 +130,15 @@ export default defineComponent({
       return props.canUpdatePathfinder && newStatus.value !== props.status;
     });
 
-    const selectStatus = (status) => {
+    const selectStatus = (status: string) => {
       newStatus.value = status;
       showDropdown.value = false;
     };
 
-    const handleImageError = (e) => {
+    const handleImageError = (e: Event) => {
       console.error(`Image failed to load for honor ${props.name}:`, props.image);
       hasImageError.value = true;
-      e.target.src = 'https://via.placeholder.com/70?text=Honor';
+      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/70?text=Honor';
     };
 
     return {
@@ -112,37 +156,6 @@ export default defineComponent({
       hasImageError,
       getImageUrl
     };
-  },
-  props: {
-    pathfinderID: {
-      type: String,
-      required: true,
-    },
-    honorID: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    status: {
-      type: String,
-      required: true,
-    },
-    display: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-    image: {
-      type: String,
-      required: false,
-    },
-    canUpdatePathfinder: {
-      type: Boolean,
-      required: true,
-    },
   },
 });
 </script>

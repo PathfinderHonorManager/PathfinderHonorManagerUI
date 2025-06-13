@@ -2,7 +2,10 @@
   <div class="content-box landing-container">
     <div class="header-section">
       <h1>Pathfinder Honor Manager <span class="beta-badge">BETA</span></h1>
-      <button class="secondary button login-button" @click="login">
+      <button
+        class="secondary button login-button"
+        @click="login"
+      >
         <span class="login-text">Existing User?</span>&nbsp;<strong>Log In</strong>
       </button>
     </div>
@@ -14,23 +17,32 @@
 
     <div class="honortable">
       <div class="feature-card">
-        <h3 class="above-accent">Track Progress</h3>
+        <h3 class="above-accent">
+          Track Progress
+        </h3>
         <p>Monitor each Pathfinder's honor journey from planning to completion with our intuitive dashboard.</p>
       </div>
       
       <div class="feature-card">
-        <h3 class="above-accent">Bulk Management</h3>
+        <h3 class="above-accent">
+          Bulk Management
+        </h3>
         <p>Easily assign and update honors for multiple Pathfinders at once, perfect for group activities.</p>
       </div>
       
       <div class="feature-card">
-        <h3 class="above-accent">Digital Records</h3>
+        <h3 class="above-accent">
+          Digital Records
+        </h3>
         <p>Keep all honor records in one secure place, accessible to authorized club staff whenever needed.</p>
       </div>
     </div>
 
     <div class="center-align cta-section">
-      <button class="primary button" @click="login">
+      <button
+        class="primary button"
+        @click="login"
+      >
         Try It Free - Create Test Account
       </button>
       <p class="note">

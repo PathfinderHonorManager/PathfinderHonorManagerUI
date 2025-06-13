@@ -11,18 +11,21 @@
           !isSelected(pathfinder.pathfinderID) &&
           isEligible(pathfinder.pathfinderID),
       }"
-      @click="toggleRecipientSelection(pathfinder.pathfinderID)"
       :title="
         isEligible(pathfinder.pathfinderID)
           ? ''
           : 'This pathfinder is not eligible for selection'
       "
+      @click="toggleRecipientSelection(pathfinder.pathfinderID)"
     >
       {{ pathfinder.firstName }} {{ pathfinder.lastName }}
     </button>
   </div>
   <p>{{ recipients.length }} recipients selected</p>
-  <p v-if="recipients.length == 1" class="note">
+  <p
+    v-if="recipients.length == 1"
+    class="note"
+  >
     When managing honors for individuals, we recommend doing it in the My Club
     page.
   </p>

@@ -4,7 +4,7 @@ import type { Url } from "url";
 import { Errors } from "../errors/errors";
 import { useSelectionStore } from "./selectionStore"; // Ensure the selectionStore is imported
 
-interface IHonor {
+export interface IHonor {
   honorID: string;
   name: string;
   level: number;

@@ -15,6 +15,7 @@ import { useHonorStore } from "@/stores/honors"; // Adjust the path as necessary
 
 export default defineComponent({
   name: "HonorSearchComponent",
+  emits: ['search-result'],
   setup(_, { emit }) {
     const honorStore = useHonorStore();
     const searchQuery = ref("");

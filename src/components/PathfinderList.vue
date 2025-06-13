@@ -1,18 +1,34 @@
 <template>
-  <div v-if="error" class="error-message">
+  <div
+    v-if="error"
+    class="error-message"
+  >
     <p>Unable to load pathfinders: {{ errorMessage }}</p>
-    <button @click="retryLoading" class="primary button">Retry</button>
+    <button
+      class="primary button"
+      @click="retryLoading"
+    >
+      Retry
+    </button>
   </div>
-  <div v-if="loading" class="loading-container">
+  <div
+    v-if="loading"
+    class="loading-container"
+  >
     <span class="loader">Loading Pathfinders...</span>
   </div>
-  <div v-if="pathfinders[0]" class="content-box">
+  <div
+    v-if="pathfinders[0]"
+    class="content-box"
+  >
     <div class="header-container">
-      <h3 class="member-count">{{ pathfinders.length }} Members</h3>
+      <h3 class="member-count">
+        {{ pathfinders.length }} Members
+      </h3>
       <button
+        v-if="canCreatePathfinder"
         class="biglogobutton"
         @click="$emit('create-pathfinder')"
-        v-if="canCreatePathfinder"
       >
         +
       </button>
@@ -27,40 +43,45 @@
           {{ pathfinder.firstName }} {{ pathfinder.lastName }}
         </h2>
         <div class="pathfinder-details-container">
-          <h2 v-if="pathfinder.className" class="pathfinder-details">
+          <h2
+            v-if="pathfinder.className"
+            class="pathfinder-details"
+          >
             {{ pathfinder.className }} (Grade {{ pathfinder.grade }})
           </h2>
-          <h2 v-else>Staff</h2>
+          <h2 v-else>
+            Staff
+          </h2>
           <FontAwesomeIcon
             v-if="canUpdatePathfinder"
             :icon="faPencil"
-            @click="$emit('edit-pathfinder', pathfinder)"
             size="sm"
             class="fontawesome-icon"
+            @click="$emit('edit-pathfinder', pathfinder)"
           />
         </div>
       </div>
 
       <button
         v-if="!showing[pathfinder.pathfinderID]"
-        @click="showing[pathfinder.pathfinderID] = true"
         class="outline button"
         style="margin: 0"
+        @click="showing[pathfinder.pathfinderID] = true"
       >
         Show Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
       <button
         v-if="showing[pathfinder.pathfinderID]"
-        @click="showing[pathfinder.pathfinderID] = false"
         class="outline button"
         style="margin: 0"
+        @click="showing[pathfinder.pathfinderID] = false"
       >
         Hide Honors ({{ pathfinder.pathfinderHonors?.length }})
       </button>
 
       <PostPathfinderHonorComponent
         v-if="showing[pathfinder.pathfinderID] && canUpdatePathfinder"
-        :pathfinderID="pathfinder.pathfinderID"
+        :pathfinder-i-d="pathfinder.pathfinderID"
       />
 
       <PathfinderHonorsDisplay

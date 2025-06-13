@@ -23,10 +23,12 @@ export default defineComponent({
     header: {
       type: String,
       required: false,
+      default: '',
     },
     closed: {
       type: Boolean,
       required: false,
+      default: false,
     },
   },
   emits: ["modal-closed"],

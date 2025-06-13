@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="selectedHonors.length > 0" class="outline selection-container">
+    <div
+      v-if="selectedHonors.length > 0"
+      class="outline selection-container"
+    >
       <button
         v-for="(honor, index) in selectedHonors"
         :key="index"
@@ -8,10 +11,15 @@
         @click="toggleHonorSelection(honor.honorID)"
       >
         <span>{{ honor.name }}</span>
-        <span class="logobutton"><img src="@/assets/close-icon.svg" /></span>
+        <span class="logobutton"><img src="@/assets/close-icon.svg"></span>
       </button>
     </div>
-    <div v-else class="outline note">No honors selected</div>
+    <div
+      v-else
+      class="outline note"
+    >
+      No honors selected
+    </div>
   </div>
 </template>
 

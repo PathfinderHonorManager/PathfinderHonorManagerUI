@@ -16,7 +16,10 @@
     :closed="!creatingPathfinder"
     @modal-closed="creatingPathfinder = false"
   >
-    <CreatePathfinderForm ref="createFormRef" @submit="submitAddForm" />
+    <CreatePathfinderForm
+      ref="createFormRef"
+      @submit="submitAddForm"
+    />
   </ModalComponent>
 
   <ModalComponent
