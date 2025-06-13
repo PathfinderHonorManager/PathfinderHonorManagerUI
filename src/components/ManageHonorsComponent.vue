@@ -1,5 +1,4 @@
 <template>
-  <h1>{{ pageHeader }}</h1>
   <div
     class="outline"
     style="text-align: center"
@@ -8,14 +7,13 @@
       v-if="loading"
       class="loader"
     >Loading Honors</span>
-    <h3>{{ honorsHeader }}</h3>
     <div v-if="selectionType === 'plan'">
       <HonorSearchComponent @search-result="updateHonorSearchResult" />
     </div>
     <div v-if="plannedHonors.length > 0">
       <HonorsDisplayComponent
         :selection-type="selectionType"
-        :honor-search-result="displayedHonors"
+        :honor-search-result="honorSearchResult"
         @toggle-selection="toggleSelection"
       />
 
@@ -71,7 +69,13 @@ import {
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { addOrUpdateSelectedToClub } from "@/utils/manageHonors";
-import { useSelectionStore, selectionType } from "@/stores/selectionStore";
+import { useSelectionStore } from "@/stores/selectionStore";
+import { useHonorStore } from "@/stores/honors";
+import { usePathfinderStore } from "@/stores/pathfinders";
+import { Pathfinder, PathfinderHonors, status } from "@/models/pathfinder";
+import type { IHonor } from "@/stores/honors";
+
+type SelectionType = 'plan' | 'earn' | 'award';
 
 export default defineComponent({
   components: {
@@ -83,28 +87,34 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const selectionType = ref(route.params.selectionType);
-
-    const usePathfinderStore = inject("usePathfinderStore");
-    const useHonorStore = inject("useHonorStore");
-    const selectionStore = useSelectionStore();
+    let routeSelectionType = route.params.selectionType;
+    let initialSelectionType: SelectionType = 'plan';
+    if (typeof routeSelectionType === 'string' && ['plan', 'earn', 'award'].includes(routeSelectionType)) {
+      initialSelectionType = routeSelectionType as SelectionType;
+    } else if (Array.isArray(routeSelectionType) && routeSelectionType.length > 0 && ['plan', 'earn', 'award'].includes(routeSelectionType[0])) {
+      initialSelectionType = routeSelectionType[0] as SelectionType;
+    }
+    const selectionType = ref<SelectionType>(initialSelectionType);
 
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
+    const selectionStore = useSelectionStore();
 
-    honorStore.honors.length === 0 ? honorStore.getHonors() : undefined;
-    pathfinderStore.pathfinders.length === 0
-      ? pathfinderStore.getPathfinders()
-      : undefined;
+    if (honorStore.honors.length === 0) {
+      honorStore.getHonors();
+    }
+    if (pathfinderStore.pathfinders.length === 0) {
+      pathfinderStore.getPathfinders();
+    }
 
     const { honors, loading, error } = storeToRefs(honorStore);
 
     const plannedHonors = computed(() => {
       const plannedHonorIDs = pathfinderStore.pathfinders.flatMap(
-        (pathfinder) =>
+        (pathfinder: Pathfinder) =>
           pathfinder.pathfinderHonors
-            .filter((honor) => honor.status === "Planned")
-            .map((honor) => honor.honorID),
+            .filter((honor: PathfinderHonors) => honor.status === status.Planned)
+            .map((honor: PathfinderHonors) => honor.honorID),
       );
 
       const uniquePlannedHonorIDs = [...new Set(plannedHonorIDs)];
@@ -116,10 +126,10 @@ export default defineComponent({
 
     const earnedHonors = computed(() => {
       const earnedHonorIDs = pathfinderStore.pathfinders.flatMap(
-        (pathfinder) =>
+        (pathfinder: Pathfinder) =>
           pathfinder.pathfinderHonors
-            .filter((honor) => honor.status === "Earned")
-            .map((honor) => honor.honorID),
+            .filter((honor: PathfinderHonors) => honor.status === status.Earned)
+            .map((honor: PathfinderHonors) => honor.honorID),
       );
 
       const uniqueEarnedHonorIDs = [...new Set(earnedHonorIDs)];
@@ -129,58 +139,48 @@ export default defineComponent({
       );
     });
 
-    const selectedHonors = computed(() =>
-      honorStore.getHonorsBySelection(selectionType.value),
-    );
+    const selectedHonors = computed(() => {
+      if (selectionType.value === 'plan' || selectionType.value === 'earn') {
+        return honorStore.getHonorsBySelection(selectionType.value);
+      }
+      return [];
+    });
 
-    const recipients = computed(() =>
-      pathfinderStore.getPathfindersBySelection(selectionType.value),
-    );
+    const recipients = computed(() => {
+      if (selectionType.value === 'plan' || selectionType.value === 'earn') {
+        return pathfinderStore.getPathfindersBySelection(selectionType.value);
+      }
+      return [];
+    });
 
     const bulkAdd = ref(false);
 
-    function toggleSelection(honorID) {
-      selectionStore.toggleSelection(selectionType.value, honorID, "honors");
-      bulkAdd.value = false;
+    function toggleSelection(honorID: string) {
+      if (['plan', 'earn', 'award'].includes(selectionType.value)) {
+        selectionStore.toggleSelection(selectionType.value, honorID, "honors");
+        bulkAdd.value = false;
+      }
     }
 
     function isSelectedHonor(honorID: string) {
-      return selectionStore.selections[selectionType.value].honors.includes(
-        honorID,
-      );
+      if (['plan', 'earn', 'award'].includes(selectionType.value)) {
+        return selectionStore.selections[selectionType.value].honors.includes(honorID);
+      }
+      return false;
     }
 
-    const honorSearchResult = ref([]);
+    const honorSearchResult = ref<IHonor[]>([]);
 
-    function updateHonorSearchResult(result) {
-      honorSearchResult.value = result;
+    function updateHonorSearchResult(result: IHonor[] | null | undefined) {
+      honorSearchResult.value = Array.isArray(result) ? result : [];
     }
 
-    const displayedHonors = computed(() => {
-      if (selectionType.value === "plan") {
-        return honorSearchResult.value;
-      } else if (selectionType.value === "earn") {
-        return plannedHonors.value;
-      } else if (selectionType.value === "award") {
-      return earnedHonors.value;
-    } else {
-      return null;
-    }
-    });
-
-    watch(
-      () => route.params.selectionType,
-      (newSelectionType) => {
-        selectionType.value = newSelectionType;
-      },
-    );
-
-    const pageHeader = computed(() => {
-      switch (selectionType.value) {
+    const buttonLabel = computed(() => {
+      switch(selectionType.value) {
         case "plan":
           return "Plan Honors";
         case "earn":
-          return "Record Earned Honors";
+          return "Earn Honors";
         case "award":
           return "Award Honors";
         default:
@@ -188,60 +188,37 @@ export default defineComponent({
       }
     });
 
-    const honorsHeader = computed(() => {
-      switch (selectionType.value) {
-        case "plan":
-          return "Search for Honors";
-        case "earn":
-          return "Select Honors";
-        case "award":
-          return "Select Honors";
-        default:
-          return `Error ${selectionType.value}`;
-      }
-    });
-
-    const buttonLabel = computed(() => {  
-      switch(selectionType.value) {
-        case "plan":
-          return "Plan Honors";
-        case "earn":
-          return "Record Selected as Earned";
-        case "award":
-          return "Record Selected as Awarded";
-      } 
-    });
-
-    return {
-      honorStore,
-      pathfinderStore,
-      honors,
-      selectedHonors,
-      recipients,
-      bulkAdd,
-      getHonors: honorStore.getHonors,
-      getHonorsByQuery: honorStore.getHonorsByQuery,
-      addOrUpdateSelectedToClub: () =>
-        addOrUpdateSelectedToClub(
-          pathfinderStore,
-          honorStore,
+    async function addOrUpdateSelectedToClubWrapper() {
+      if (['plan', 'earn', 'award'].includes(selectionType.value)) {
+        await addOrUpdateSelectedToClub(
+          pathfinderStore as any,
+          honorStore as any,
           selectionStore,
           recipients,
           selectedHonors,
           selectionType.value,
-          bulkAdd,
-        ),
-      plannedHonors,
-      loading,
+          bulkAdd
+        );
+      }
+    }
+
+    return {
+      selectionType,
+      honors,
       error,
-      isSelectedHonor,
-      toggleSelection,
       honorSearchResult,
       updateHonorSearchResult,
-      displayedHonors,
-      selectionType,
-      pageHeader,
-      honorsHeader,
+      toggleSelection,
+      isSelectedHonor,
+      getHonors: honorStore.getHonors,
+      getHonorsByQuery: honorStore.getHonorsByQuery,
+      addOrUpdateSelectedToClub: addOrUpdateSelectedToClubWrapper,
+      plannedHonors,
+      loading,
+      earnedHonors,
+      selectedHonors,
+      recipients,
+      bulkAdd,
       buttonLabel,
     };
   },

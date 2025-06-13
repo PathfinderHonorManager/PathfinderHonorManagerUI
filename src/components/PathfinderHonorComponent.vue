@@ -94,6 +94,7 @@ export default defineComponent({
     image: {
       type: String,
       required: false,
+      default: '',
     },
     canUpdatePathfinder: {
       type: Boolean,
@@ -129,15 +130,15 @@ export default defineComponent({
       return props.canUpdatePathfinder && newStatus.value !== props.status;
     });
 
-    const selectStatus = (status) => {
+    const selectStatus = (status: string) => {
       newStatus.value = status;
       showDropdown.value = false;
     };
 
-    const handleImageError = (e) => {
+    const handleImageError = (e: Event) => {
       console.error(`Image failed to load for honor ${props.name}:`, props.image);
       hasImageError.value = true;
-      e.target.src = 'https://via.placeholder.com/70?text=Honor';
+      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/70?text=Honor';
     };
 
     return {

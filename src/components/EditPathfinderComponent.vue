@@ -50,6 +50,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['edit-success', 'edit-failure'],
   setup(props, { emit }) {
     const formPathfinder = reactive({
       grade: props.pathfinder.grade,
@@ -78,9 +79,10 @@ export default defineComponent({
           ...formPathfinder,
         });
         emit("edit-success");
-      } catch (err) {
+      } catch (err: unknown) {
         console.error("Failed to submit edit form:", err);
-        emit("edit-failure", err.message || "Unknown error");
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
+        emit("edit-failure", errorMessage);
       }
     };
 
