@@ -1,29 +1,38 @@
 <template>
   <h1>{{ pageHeader }}</h1>
-  <div class="outline" style="text-align: center">
-    <span class="loader" v-if="loading">Loading Honors</span>
+  <div
+    class="outline"
+    style="text-align: center"
+  >
+    <span
+      v-if="loading"
+      class="loader"
+    >Loading Honors</span>
     <h3>{{ honorsHeader }}</h3>
     <div v-if="selectionType === 'plan'">
       <HonorSearchComponent @search-result="updateHonorSearchResult" />
     </div>
     <div v-if="plannedHonors.length > 0">
       <HonorsDisplayComponent
-        :selectionType="selectionType"
-        :honorSearchResult="displayedHonors"
+        :selection-type="selectionType"
+        :honor-search-result="displayedHonors"
         @toggle-selection="toggleSelection"
       />
 
       <h3>Selected Honors</h3>
       <SelectedHonorsDisplayComponent
-        :selectionType="selectionType"
+        :selection-type="selectionType"
         @toggle-selection="toggleSelection"
       />
       <h3>Recipients</h3>
-      <RecipientsDisplayComponent :selectionType="selectionType" />
+      <RecipientsDisplayComponent :selection-type="selectionType" />
     </div>
 
     <div class="content-box center-align">
-      <button @click="addOrUpdateSelectedToClub()" class="primary button">
+      <button
+        class="primary button"
+        @click="addOrUpdateSelectedToClub()"
+      >
         {{ buttonLabel }} ({{ selectedHonors.length }})
       </button>
       <p v-if="selectionType === 'plan'">
@@ -88,9 +97,9 @@ export default defineComponent({
       ? pathfinderStore.getPathfinders()
       : undefined;
 
-    let { honors, loading, error } = storeToRefs(honorStore);
+    const { honors, loading, error } = storeToRefs(honorStore);
 
-    let plannedHonors = computed(() => {
+    const plannedHonors = computed(() => {
       const plannedHonorIDs = pathfinderStore.pathfinders.flatMap(
         (pathfinder) =>
           pathfinder.pathfinderHonors
@@ -105,7 +114,7 @@ export default defineComponent({
       );
     });
 
-    let earnedHonors = computed(() => {
+    const earnedHonors = computed(() => {
       const earnedHonorIDs = pathfinderStore.pathfinders.flatMap(
         (pathfinder) =>
           pathfinder.pathfinderHonors
@@ -128,7 +137,7 @@ export default defineComponent({
       pathfinderStore.getPathfindersBySelection(selectionType.value),
     );
 
-    let bulkAdd = ref(false);
+    const bulkAdd = ref(false);
 
     function toggleSelection(honorID) {
       selectionStore.toggleSelection(selectionType.value, honorID, "honors");

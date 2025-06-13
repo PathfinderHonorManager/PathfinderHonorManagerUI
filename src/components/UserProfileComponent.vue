@@ -5,10 +5,13 @@
         <img 
           v-if="!imageError && user?.picture" 
           :src="user.picture" 
-          @error="handleImageError"
           :alt="`${user?.name || 'User'} avatar`"
+          @error="handleImageError"
         >
-        <div v-else class="fallback-avatar">
+        <div
+          v-else
+          class="fallback-avatar"
+        >
           {{ userInitials }}
         </div>
       </div>

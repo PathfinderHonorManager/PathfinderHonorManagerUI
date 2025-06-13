@@ -47,8 +47,14 @@ const canUpdatePathfinder = computed(() =>
 
 <template>
   <Authentication />
-  <div id="grid" :class="{ 'landing-layout': !isAuthenticated }">
-    <div id="sidebar" v-if="isAuthenticated">
+  <div
+    id="grid"
+    :class="{ 'landing-layout': !isAuthenticated }"
+  >
+    <div
+      v-if="isAuthenticated"
+      id="sidebar"
+    >
       <UserProfileComponent />
       <RouterLink :to="{ name: 'club' }">
         My Club
@@ -81,7 +87,10 @@ const canUpdatePathfinder = computed(() =>
       <SidebarVersionInfo />
     </div>
 
-    <div id="content" :class="{ 'landing-content': !isAuthenticated }">
+    <div
+      id="content"
+      :class="{ 'landing-content': !isAuthenticated }"
+    >
       <RouterView />
     </div>
   </div>

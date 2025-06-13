@@ -1,35 +1,67 @@
 <template>
   <div class="outline">
     <form
-      @submit.prevent="submitForm"
       class="pathfinder-form"
+      @submit.prevent="submitForm"
     >
       <div>
         <h3>First Name:</h3>
-        <input type="text" v-model="firstName" />
-        <p v-if="firstNameError" class="error-text">{{ firstNameError }}</p>
+        <input
+          v-model="firstName"
+          type="text"
+        >
+        <p
+          v-if="firstNameError"
+          class="error-text"
+        >
+          {{ firstNameError }}
+        </p>
       </div>
       <div>
         <h3>Last Name:</h3>
-        <input type="text" v-model="lastName" />
-        <p v-if="lastNameError" class="error-text">{{ lastNameError }}</p>
+        <input
+          v-model="lastName"
+          type="text"
+        >
+        <p
+          v-if="lastNameError"
+          class="error-text"
+        >
+          {{ lastNameError }}
+        </p>
       </div>
       <div>
         <h3>Email:</h3>
-        <input type="text" v-model="email" />
-        <p v-if="emailError" class="error-text">{{ emailError }}</p>
+        <input
+          v-model="email"
+          type="text"
+        >
+        <p
+          v-if="emailError"
+          class="error-text"
+        >
+          {{ emailError }}
+        </p>
       </div>
       <div>
         <h3>Grade:</h3>
-        <input type="text" v-model="grade" />
-        <p v-if="gradeError" class="error-text">{{ gradeError }}</p>
+        <input
+          v-model="grade"
+          type="text"
+        >
+        <p
+          v-if="gradeError"
+          class="error-text"
+        >
+          {{ gradeError }}
+        </p>
       </div>
       <div class="submit-container">
         <input
           type="submit"
           class="button-like"
           value="Add Pathfinder"
-        />
+        >
       </div>
     </form>
   </div>

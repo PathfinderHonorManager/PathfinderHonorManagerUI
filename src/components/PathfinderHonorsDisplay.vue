@@ -4,15 +4,14 @@
       <PathfinderHonorComponent
         v-for="pathfinderHonor in pathfinderHonors"
         :key="pathfinderHonor.pathfinderHonorID"
-        :pathfinderID="pathfinderId"
-        :honorID="pathfinderHonor.honorID"
+        :pathfinder-i-d="pathfinderId"
+        :honor-i-d="pathfinderHonor.honorID"
         :name="pathfinderHonor.name"
         :status="pathfinderHonor.status"
         :display="true"
         :image="pathfinderHonor.patchFilename"
-        :canUpdatePathfinder="canUpdatePathfinder"
-      >
-      </PathfinderHonorComponent>
+        :can-update-pathfinder="canUpdatePathfinder"
+      />
     </div>
   </div>
 </template>

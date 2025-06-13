@@ -6,8 +6,7 @@
     <div
       id="item-sidebar"
       class="power"
-    >
-    </div>
+    />
     <div id="item-content">
       <slot>. . .</slot>
     </div>

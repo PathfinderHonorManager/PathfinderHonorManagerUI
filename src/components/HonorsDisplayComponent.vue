@@ -8,16 +8,19 @@
         :class="{ selected: isSelectedHonor(honor.honorID) }"
         @click="$emit('toggle-selection', honor.honorID)"
       >
-        <button v-if="isSelectedHonor(honor.honorID)" class="deselect-button">
-          <img src="@/assets/close-icon.svg" />
+        <button
+          v-if="isSelectedHonor(honor.honorID)"
+          class="deselect-button"
+        >
+          <img src="@/assets/close-icon.svg">
         </button>
         <img
           :src="
             'https://images.pathfinderclub.tools/assets/honors/small/' +
-            honor.patchFilename
+              honor.patchFilename
           "
           class="patchimage"
-        />
+        >
         <h3>{{ honor.name }}</h3>
       </div>
     </div>
