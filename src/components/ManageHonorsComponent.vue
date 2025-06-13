@@ -87,7 +87,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    let routeSelectionType = route.params.selectionType;
+    const routeSelectionType = route.params.selectionType;
     let initialSelectionType: SelectionType = 'plan';
     if (typeof routeSelectionType === 'string' && ['plan', 'earn', 'award'].includes(routeSelectionType)) {
       initialSelectionType = routeSelectionType as SelectionType;
