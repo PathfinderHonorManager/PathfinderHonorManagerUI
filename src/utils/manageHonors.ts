@@ -23,6 +23,8 @@ export async function addOrUpdateSelectedToClub(
 
   if (successful.length > 0) {
     selectionStore.clearSelection(action);
+    recipients.value = [];
+    selectedHonors.value = [];
     await nextTick();
     bulkAdd.value = true;
   }

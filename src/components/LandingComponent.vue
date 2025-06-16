@@ -77,23 +77,29 @@ export default defineComponent({
   padding: 0;
   max-width: 1400px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Landing page layout overrides */
 :global(#grid.landing-layout) {
   grid-template-columns: 1fr;
   grid-template-areas: "content";
+  min-height: 100vh;
 }
 
 :global(.landing-content) {
   padding: 1rem;
-  max-width: none;
+  max-width: 100%;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media screen and (max-width: 1080px) {
   :global(.landing-content) {
-    height: 100vh;
+    min-height: 100vh;
+    padding: 1rem;
   }
 }
 
@@ -101,7 +107,8 @@ export default defineComponent({
   font-size: 1.2em;
   line-height: 1.5;
   margin: 1.5rem 0 2rem;
-  max-width: none;
+  max-width: 100%;
+  padding: 0 1rem;
 }
 
 .login-button {
@@ -120,9 +127,11 @@ export default defineComponent({
 }
 
 .honortable {
-  margin: 1rem 0;
+  margin: 1rem;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  width: calc(100% - 2rem);
+  box-sizing: border-box;
 }
 
 .feature-card {
@@ -132,6 +141,8 @@ export default defineComponent({
   text-align: left;
   background-color: var(--grey);
   border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .feature-card h3 {
@@ -146,11 +157,13 @@ export default defineComponent({
 }
 
 .cta-section {
-  margin-top: 1rem;
+  margin: 1rem;
   padding: 1.5rem;
   text-align: center;
   background-color: var(--grey);
   border-radius: 8px;
+  width: calc(100% - 2rem);
+  box-sizing: border-box;
 }
 
 .cta-section button {
@@ -166,13 +179,26 @@ export default defineComponent({
 }
 
 @media (max-width: 800px) {
+  .header-section {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .header-section h1 {
+    text-align: center;
+    font-size: 1.8em;
+  }
+
   .login-button {
     width: 100%;
+    max-width: 300px;
   }
 
   .intro-text {
     font-size: 1.1em;
     margin: 1.5rem 0 2rem;
+    padding: 0 1rem;
   }
 
   .feature-card {
@@ -185,6 +211,7 @@ export default defineComponent({
 
   .cta-section button {
     width: 100%;
+    max-width: 300px;
     font-size: 1.2em;
   }
 }
