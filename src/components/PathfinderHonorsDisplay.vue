@@ -20,9 +20,17 @@
 import PathfinderHonorComponent from "./PathfinderHonorComponent.vue";
 import { onMounted } from 'vue';
 
+interface PathfinderHonor {
+  pathfinderHonorID: string;
+  honorID: string;
+  name: string;
+  status: string;
+  patchFilename?: string;
+}
+
 const props = defineProps({
   pathfinderHonors: {
-    type: Array,
+    type: Array as () => PathfinderHonor[],
     required: true
   },
   pathfinderId: {
@@ -56,18 +64,30 @@ onMounted(() => {
 .content-box {
   padding: 10px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .honors-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
-  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .honors-grid {
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .honors-grid {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    margin: 0 auto;
   }
 }
 </style> 

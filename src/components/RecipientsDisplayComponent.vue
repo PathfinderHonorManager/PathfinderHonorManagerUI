@@ -32,17 +32,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from "vue";
-import { useSelectionStore } from "@/stores/selectionStore";
+import { defineComponent, computed, ref, watch, onMounted, nextTick } from "vue";
+import { useSelectionStore, type SelectionType } from "@/stores/selectionStore";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";
 
 export default defineComponent({
   props: {
     selectionType: {
-      type: String,
+      type: String as () => SelectionType,
       required: true,
-      validator: (value) => ["plan", "earn", "award"].includes(value),
     },
   },
   setup(props) {
@@ -65,11 +64,13 @@ export default defineComponent({
 
     const toggleRecipientSelection = (pathfinderID: string) => {
       if (isEligible(pathfinderID)) {
-        selectionStore.toggleSelection(
-          props.selectionType,
-          pathfinderID,
-          "pathfinders",
-        );
+        if (["plan", "earn", "award", "investiture"].includes(props.selectionType)) {
+          selectionStore.toggleSelection(
+            props.selectionType as "plan" | "earn" | "award" | "investiture",
+            pathfinderID,
+            "pathfinders",
+          );
+        }
       }
     };
 
@@ -81,11 +82,13 @@ export default defineComponent({
         );
         ineligiblePathfinders.forEach((p) => {
           if (isSelected(p.pathfinderID)) {
-            selectionStore.toggleSelection(
-              props.selectionType,
-              p.pathfinderID,
-              "pathfinders",
-            );
+            if (["plan", "earn", "award", "investiture"].includes(props.selectionType)) {
+              selectionStore.toggleSelection(
+                props.selectionType as "plan" | "earn" | "award" | "investiture",
+                p.pathfinderID,
+                "pathfinders",
+              );
+            }
           }
         });
       },
@@ -110,25 +113,25 @@ export default defineComponent({
         return false;
       }
 
-      if (props.selectionType === "plan") {
-        return pathfinder.pathfinderHonors.every(
-          (honor) => !selectedHonorIDs.value.has(honor.honorID),
-        );
-      } else if (props.selectionType === "earn") {
-        return pathfinder.pathfinderHonors.some(
-          (honor) =>
-            selectedHonorIDs.value.has(honor.honorID) &&
-            honor.status === "Planned",
-        );
-      } else if (props.selectionType === "award") {
-        return pathfinder.pathfinderHonors.some(
-          (honor) =>
-            selectedHonorIDs.value.has(honor.honorID) &&
-            honor.status === "Earned",
-        );
-
-      } else {
-        return false;
+      switch (props.selectionType) {
+        case "plan":
+          return pathfinder.pathfinderHonors.every(
+            (honor) => !selectedHonorIDs.value.has(honor.honorID),
+          );
+        case "earn":
+          return selectedHonorIDs.value.size > 0 && Array.from(selectedHonorIDs.value).every(
+            (honorID) => pathfinder.pathfinderHonors.some(
+              (honor) => honor.honorID === honorID && honor.status === "Planned"
+            )
+          );
+        case "award":
+          return selectedHonorIDs.value.size > 0 && Array.from(selectedHonorIDs.value).every(
+            (honorID) => pathfinder.pathfinderHonors.some(
+              (honor) => honor.honorID === honorID && honor.status === "Earned"
+            )
+          );
+        default:
+          return false;
       }
     };
 

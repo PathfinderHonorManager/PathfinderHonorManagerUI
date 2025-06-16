@@ -3,6 +3,7 @@
     class="outline"
     style="text-align: center"
   >
+    <h1 class="title">{{ buttonLabel }}</h1>
     <span
       v-if="loading"
       class="loader"
@@ -10,10 +11,20 @@
     <div v-if="selectionType === 'plan'">
       <HonorSearchComponent @search-result="updateHonorSearchResult" />
     </div>
-    <div v-if="plannedHonors.length > 0">
+    <div v-else>
+      <div class="content-box">
+        <p v-if="selectionType === 'earn'">
+          Select from planned honors to mark as earned
+        </p>
+        <p v-else-if="selectionType === 'award'">
+          Select from earned honors to award
+        </p>
+      </div>
+    </div>
+    <div v-if="availableHonors.length > 0">
       <HonorsDisplayComponent
         :selection-type="selectionType"
-        :honor-search-result="honorSearchResult"
+        :honor-search-result="selectionType === 'plan' ? honorSearchResult : availableHonors"
         @toggle-selection="toggleSelection"
       />
 
@@ -24,6 +35,14 @@
       />
       <h3>Recipients</h3>
       <RecipientsDisplayComponent :selection-type="selectionType" />
+    </div>
+    <div v-else class="content-box note">
+      <p v-if="selectionType === 'earn'">
+        No planned honors available to earn
+      </p>
+      <p v-else-if="selectionType === 'award'">
+        No earned honors available to award
+      </p>
     </div>
 
     <div class="content-box center-align">
@@ -37,8 +56,12 @@
         This will add your selection of honors as a planned honor for every
         selected member in your club.
       </p>
+      <p v-else-if="selectionType === 'earn'">
+        This will mark your selection of honors as earned for every selected
+        member in your club.
+      </p>
       <p v-else>
-        This will update your selection of honors to earned for every selected
+        This will award your selection of honors to every selected
         member in your club.
       </p>
     </div>
@@ -96,6 +119,18 @@ export default defineComponent({
     }
     const selectionType = ref<SelectionType>(initialSelectionType);
 
+    // Watch for route changes to update selection type
+    watch(
+      () => route.params.selectionType,
+      (newType) => {
+        if (typeof newType === 'string' && ['plan', 'earn', 'award'].includes(newType)) {
+          selectionType.value = newType as SelectionType;
+        } else if (Array.isArray(newType) && newType.length > 0 && ['plan', 'earn', 'award'].includes(newType[0])) {
+          selectionType.value = newType[0] as SelectionType;
+        }
+      }
+    );
+
     const pathfinderStore = usePathfinderStore();
     const honorStore = useHonorStore();
     const selectionStore = useSelectionStore();
@@ -139,15 +174,28 @@ export default defineComponent({
       );
     });
 
+    const availableHonors = computed(() => {
+      switch (selectionType.value) {
+        case 'plan':
+          return honorStore.honors;
+        case 'earn':
+          return plannedHonors.value;
+        case 'award':
+          return earnedHonors.value;
+        default:
+          return [];
+      }
+    });
+
     const selectedHonors = computed(() => {
-      if (selectionType.value === 'plan' || selectionType.value === 'earn') {
+      if (['plan', 'earn', 'award'].includes(selectionType.value)) {
         return honorStore.getHonorsBySelection(selectionType.value);
       }
       return [];
     });
 
     const recipients = computed(() => {
-      if (selectionType.value === 'plan' || selectionType.value === 'earn') {
+      if (['plan', 'earn', 'award'].includes(selectionType.value)) {
         return pathfinderStore.getPathfindersBySelection(selectionType.value);
       }
       return [];
@@ -172,7 +220,10 @@ export default defineComponent({
     const honorSearchResult = ref<IHonor[]>([]);
 
     function updateHonorSearchResult(result: IHonor[] | null | undefined) {
-      honorSearchResult.value = Array.isArray(result) ? result : [];
+      const filteredResult = Array.isArray(result) ? result : [];
+      honorSearchResult.value = filteredResult.filter(honor => 
+        availableHonors.value.some(available => available.honorID === honor.honorID)
+      );
     }
 
     const buttonLabel = computed(() => {
@@ -220,7 +271,32 @@ export default defineComponent({
       recipients,
       bulkAdd,
       buttonLabel,
+      availableHonors,
     };
   },
 });
 </script>
+
+<style scoped>
+.title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.title::after {
+  content: '';
+  display: block;
+  margin: 0.5rem auto;
+  width: 3em;
+  height: 0;
+  border-bottom: 6px solid var(--yellow);
+  border-radius: 5px;
+}
+
+@media (max-width: 800px) {
+  .title {
+    font-size: 1.8em;
+    margin-bottom: 1.5rem;
+  }
+}
+</style>

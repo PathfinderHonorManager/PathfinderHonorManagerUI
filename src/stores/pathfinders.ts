@@ -16,7 +16,7 @@ export type PathfinderStoreType = {
   error: boolean;
 
   getPathfindersByGrade: (grade: number) => Pathfinder[];
-  getPathfindersBySelection: (selectionType: "plan" | "earn") => Pathfinder[];
+  getPathfindersBySelection: (selectionType: SelectionType) => Pathfinder[];
   getPathfinderById: (pathfinderID: string) => Promise<void>;
   postPathfinder: (data: PathfinderPost) => Promise<void>;
   postPathfinderHonor: (pathfinderID: string, honorId: string) => Promise<void>;
@@ -28,7 +28,7 @@ export type PathfinderStoreType = {
   bulkManagePathfinderHonors: (
     pathfinderIDs: string[],
     honorIDs: string[],
-    action: "plan" | "earn",
+    action: SelectionType,
   ) => Promise<{ successful: any[]; failed: any[] }>;
   updatePathfinder: (
     pathfinderID: string,

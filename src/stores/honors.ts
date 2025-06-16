@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import api from "@/api/honors";
 import type { Url } from "url";
 import { Errors } from "../errors/errors";
-import { useSelectionStore } from "./selectionStore"; // Ensure the selectionStore is imported
+import { useSelectionStore, type SelectionType } from "./selectionStore";
 
 export interface IHonor {
   honorID: string;
@@ -20,7 +20,7 @@ export type HonorStoreType = {
 
   getHonorsByLevel: (level: number) => IHonor[];
   getHonorsByQuery: (query: string) => IHonor[];
-  getHonorsBySelection: (selectionType: "plan" | "earn") => IHonor[];
+  getHonorsBySelection: (selectionType: SelectionType) => IHonor[];
   getHonors: () => Promise<void>;
 };
 
@@ -42,7 +42,7 @@ export const useHonorStore = defineStore("honorStore", {
           tokens.length,
       );
     },
-    getHonorsBySelection: (state) => (selectionType: "plan" | "earn") => {
+    getHonorsBySelection: (state) => (selectionType: SelectionType) => {
       const selectionStore = useSelectionStore();
       if (!selectionStore.selections[selectionType]) {
         console.error(`Selection type ${selectionType} is not valid.`);
