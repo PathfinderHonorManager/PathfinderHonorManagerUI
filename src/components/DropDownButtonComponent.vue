@@ -9,21 +9,30 @@ const props = defineProps({
   defaultText: {
     type: String,
     required: false,
+    default: 'Select an option'
   },
 });
 
-let selection = ref(props.defaultText);
+const selection = ref(props.defaultText);
 
-let expanded = ref(false);
+const expanded = ref(false);
 </script>
 
 <template>
   <div id="accordion">
-    <button class="option" id="title" @click="expanded = !expanded">
+    <button
+      id="title"
+      class="option"
+      @click="expanded = !expanded"
+    >
       {{ selection }}
     </button>
     <div v-if="expanded">
-      <div id="options" v-for="(option, index) of options" :key="option">
+      <div
+        v-for="(option, index) of options"
+        id="options"
+        :key="option"
+      >
         <button
           :value="option"
           :class="index == options.length - 1 ? 'option last' : 'option'"

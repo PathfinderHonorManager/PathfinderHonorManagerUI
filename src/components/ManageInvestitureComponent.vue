@@ -2,9 +2,22 @@
   <div class="content-box">
     <h1>Pathfinder Investiture</h1>
     
-    <div v-if="loading" class="loader">Loading...</div>
-    <div v-else-if="error" class="error note">{{ error }}</div>
-    <div v-else class="power">
+    <div
+      v-if="loading"
+      class="loader"
+    >
+      Loading...
+    </div>
+    <div
+      v-else-if="error"
+      class="error note"
+    >
+      {{ error }}
+    </div>
+    <div
+      v-else
+      class="power"
+    >
       <div class="power-outline">
         <table style="width: 100%">
           <thead>
@@ -23,7 +36,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="pathfinder in activePathfinders" :key="pathfinder.pathfinderID">
+            <tr
+              v-for="pathfinder in activePathfinders"
+              :key="pathfinder.pathfinderID"
+            >
               <td>
                 <input 
                   type="checkbox" 
@@ -43,8 +59,8 @@
       <div class="content-box center-align">
         <button 
           class="primary button"
-          @click="promoteSelected" 
-          :disabled="!hasSelectedPathfinders"
+          :disabled="!hasSelectedPathfinders" 
+          @click="promoteSelected"
         >
           Promote Selected ({{ selectionStore.selections.investiture.pathfinders.length }})
         </button>
