@@ -135,12 +135,18 @@ export default defineComponent({
     const honorStore = useHonorStore();
     const selectionStore = useSelectionStore();
 
-    if (honorStore.honors.length === 0) {
-      honorStore.getHonors();
-    }
-    if (pathfinderStore.pathfinders.length === 0) {
-      pathfinderStore.getPathfinders();
-    }
+    const loadInitialData = async () => {
+      const promises = [];
+      if (honorStore.honors.length === 0) {
+        promises.push(honorStore.getHonors());
+      }
+      if (pathfinderStore.pathfinders.length === 0) {
+        promises.push(pathfinderStore.getPathfinders());
+      }
+      await Promise.all(promises);
+    };
+
+    loadInitialData();
 
     const { honors, loading, error } = storeToRefs(honorStore);
 
