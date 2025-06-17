@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 import ManageHonorsComponent from '../ManageHonorsComponent.vue'
@@ -7,6 +7,27 @@ import { usePathfinderStore } from '@/stores/pathfinders'
 import { useHonorStore } from '@/stores/honors'
 import { useSelectionStore } from '@/stores/selectionStore'
 import { ref, computed } from 'vue'
+import type { IHonor } from '@/stores/honors'
+import flushPromises from 'flush-promises'
+
+const mockHonors: IHonor[] = [
+  {
+    honorID: '1',
+    name: 'Honor 1',
+    level: 1,
+    description: 'Test honor 1',
+    pathPath: 'https://example.com/1' as any,
+    wikiPath: 'https://wiki.example.com/1' as any
+  },
+  {
+    honorID: '2',
+    name: 'Honor 2',
+    level: 2,
+    description: 'Test honor 2',
+    pathPath: 'https://example.com/2' as any,
+    wikiPath: 'https://wiki.example.com/2' as any
+  }
+]
 
 const mockPathfinderStore = {
   pathfinders: ref([{
@@ -25,12 +46,9 @@ const mockPathfinderStore = {
 }
 
 const mockHonorStore = {
-  honors: ref([
-    { honorID: '1', name: 'Honor 1' },
-    { honorID: '2', name: 'Honor 2' }
-  ]).value,
+  honors: ref(mockHonors),
   loading: ref(false),
-  error: ref(null),
+  error: ref(false),
   getHonors: vi.fn(),
   getHonorsBySelection: vi.fn().mockReturnValue([]),
   getHonorsByQuery: vi.fn()
@@ -70,12 +88,19 @@ vi.mock('vue', async () => {
 })
 
 describe('ManageHonorsComponent', () => {
-  let wrapper
+  let wrapper: VueWrapper
   let router
+  let globalMountOptions: any
 
   beforeEach(async () => {
     const pinia = createPinia()
     setActivePinia(pinia)
+
+    mockHonorStore.getHonorsBySelection.mockReturnValue([])
+    mockHonorStore.getHonors.mockClear()
+    mockPathfinderStore.getPathfinders.mockClear()
+    mockHonorStore.getHonors.mockImplementation(() => Promise.resolve())
+    mockPathfinderStore.getPathfinders.mockImplementation(() => Promise.resolve())
 
     router = createRouter({
       history: createWebHistory(),
@@ -91,7 +116,7 @@ describe('ManageHonorsComponent', () => {
     await router.push('/manage/plan')
     await router.isReady()
 
-    wrapper = mount(ManageHonorsComponent, {
+    globalMountOptions = {
       global: {
         plugins: [router, pinia],
         stubs: {
@@ -108,7 +133,9 @@ describe('ManageHonorsComponent', () => {
           ToasterComponent: true
         }
       }
-    })
+    }
+
+    wrapper = mount(ManageHonorsComponent, globalMountOptions)
   })
 
   describe('Error Handling', () => {
@@ -117,6 +144,21 @@ describe('ManageHonorsComponent', () => {
       await wrapper.vm.$nextTick()
       
       expect(wrapper.html()).toContain('Loading Honors')
+    })
+  })
+
+  describe('Initial Data Loading', () => {
+    it('only loads empty stores', async () => {
+      mockHonorStore.honors.value = [mockHonors[0]]
+      mockPathfinderStore.pathfinders = []
+      
+      wrapper.unmount()
+      wrapper = mount(ManageHonorsComponent, globalMountOptions)
+      
+      await flushPromises()
+      
+      expect(mockHonorStore.getHonors).not.toHaveBeenCalled()
+      expect(mockPathfinderStore.getPathfinders).toHaveBeenCalled()
     })
   })
 }) 

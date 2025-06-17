@@ -188,6 +188,37 @@ describe('Honor Store', () => {
       
       expect(store.error).toBe(false)
     })
+
+    it('loads honors data when store is empty', async () => {
+      vi.mocked(api.getAll).mockResolvedValue(mockApiResponse(mockHonors))
+      
+      await store.getHonors()
+      
+      expect(api.getAll).toHaveBeenCalled()
+      expect(store.honors).toEqual(mockHonors)
+      expect(store.loading).toBe(false)
+      expect(store.error).toBe(false)
+    })
+
+    it('reloads honors data when called multiple times', async () => {
+      vi.mocked(api.getAll).mockResolvedValue(mockApiResponse(mockHonors))
+      
+      await store.getHonors()
+      await store.getHonors()
+      
+      expect(api.getAll).toHaveBeenCalledTimes(2)
+    })
+
+    it('handles API errors gracefully', async () => {
+      const error = new Error('API Error')
+      vi.mocked(api.getAll).mockRejectedValue(error)
+      
+      await store.getHonors()
+      
+      expect(store.error).toBe(true)
+      expect(store.loading).toBe(false)
+      expect(store.honors).toEqual([])
+    })
   })
 
   describe('Edge Cases', () => {
