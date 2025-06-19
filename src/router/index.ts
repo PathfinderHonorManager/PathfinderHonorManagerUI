@@ -46,6 +46,19 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: "/achievements",
+      name: "AchievementClasses",
+      component: () => import("../components/ClassSelectionComponent.vue"),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/achievements/:className",
+      name: "Achievements",
+      component: () => import("../components/ManageAchievementsComponent.vue"),
+      meta: { requiresAuth: true },
+      props: true
+    },
+    {
       path: "/:pathMatch(.*)*",
       redirect: '/landing'
     }

@@ -2,8 +2,8 @@
   <div class="content-box">
     <form @submit.prevent="handleSubmit">
       <vue3-simple-typeahead
-        ref="typeahead"
         id="typeahead_id"
+        ref="typeahead"
         placeholder="Search Honors"
         :items="honors"
         :min-input-length="1"
