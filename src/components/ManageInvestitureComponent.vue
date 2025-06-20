@@ -81,6 +81,7 @@
 import { defineComponent, ref, computed } from 'vue';
 import pathfindersApi from '@/api/pathfinders';
 import { useSelectionStore } from '@/stores/selectionStore';
+import { useAchievementsStore } from '@/stores/achievements';
 import { AxiosResponse } from 'axios';
 import ToasterComponent from '@/components/ToasterComponent.vue';
 
@@ -111,6 +112,7 @@ export default defineComponent({
     const selectAll = ref(false);
     const toasterMessage = ref('');
     const selectionStore = useSelectionStore();
+    const achievementsStore = useAchievementsStore();
 
     const activePathfinders = computed(() => 
       pathfinders.value.filter(p => 
@@ -200,6 +202,7 @@ export default defineComponent({
         const success = handleBulkUpdateResponse(response);
         await loadPathfinders();
         if (success) {
+          await achievementsStore.loadAllAchievements(true);
           selectionStore.clearSelection('investiture');
           selectAll.value = false;
         }

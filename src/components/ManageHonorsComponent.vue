@@ -3,7 +3,9 @@
     class="outline"
     style="text-align: center"
   >
-    <h1 class="title">{{ buttonLabel }}</h1>
+    <h1 class="title">
+      {{ buttonLabel }}
+    </h1>
     <span
       v-if="loading"
       class="loader"
@@ -36,7 +38,10 @@
       <h3>Recipients</h3>
       <RecipientsDisplayComponent :selection-type="selectionType" />
     </div>
-    <div v-else class="content-box note">
+    <div
+      v-else
+      class="content-box note"
+    >
       <p v-if="selectionType === 'earn'">
         No planned honors available to earn
       </p>

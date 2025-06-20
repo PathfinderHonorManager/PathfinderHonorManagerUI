@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watchEffect, ref } from "vue";
+import { ref, computed, watchEffect, onMounted } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import Authentication from "@/components/AuthenticationComponent.vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
@@ -8,6 +8,7 @@ import SidebarVersionInfo from "./components/SidebarVersionInfo.vue";
 import { useHonorStore } from "./stores/honors";
 import { usePathfinderStore } from "./stores/pathfinders";
 import { useUserStore } from "./stores/users";
+import { useAchievementsStore } from '@/stores/achievements';
 
 const router = useRouter();
 const { isAuthenticated, isLoading } = useAuth0();
@@ -16,6 +17,7 @@ const pathfinderStore = usePathfinderStore();
 const userStore = useUserStore();
 const { getAccessTokenSilently } = useAuth0();
 const authError = ref(false);
+const achievementsStore = useAchievementsStore();
 
 watchEffect(async () => {
   if (isLoading.value) return;
@@ -43,6 +45,10 @@ watchEffect(async () => {
 const canUpdatePathfinder = computed(() =>
   isAuthenticated.value && userStore.permissions.includes("update:pathfinders")
 );
+
+onMounted(async () => {
+  await achievementsStore.loadAllAchievements();
+});
 </script>
 
 <template>
@@ -82,6 +88,12 @@ const canUpdatePathfinder = computed(() =>
         :to="{ name: 'Investiture' }"
       >
         Investiture
+      </router-link>
+      <router-link
+        v-if="canUpdatePathfinder"
+        :to="{ name: 'AchievementClasses' }"
+      >
+        Achievements
       </router-link>
       
       <SidebarVersionInfo />

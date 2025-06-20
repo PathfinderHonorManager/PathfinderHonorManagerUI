@@ -31,20 +31,31 @@ describe('Selection Store', () => {
           investiture: {
             pathfinders: [],
             honors: []
+          },
+          achievements: {
+            pathfinders: [],
+            honors: [],
+            achievements: []
           }
         }
       })
     })
 
     it('initializes all selection types with empty arrays', () => {
-      const selectionTypes = ['plan', 'earn', 'award', 'investiture'] as const
-      const categories = ['pathfinders', 'honors'] as const
+      const selectionTypes = ['plan', 'earn', 'award', 'investiture', 'achievements'] as const
+      const standardCategories = ['pathfinders', 'honors'] as const
 
-      selectionTypes.forEach(type => {
-        categories.forEach(category => {
+      // Test standard selection types
+      selectionTypes.slice(0, 4).forEach(type => {
+        standardCategories.forEach(category => {
           expect(store.selections[type][category]).toEqual([])
         })
       })
+
+      // Test achievements selection type (has additional achievements category)
+      expect(store.selections.achievements.pathfinders).toEqual([])
+      expect(store.selections.achievements.honors).toEqual([])
+      expect(store.selections.achievements.achievements).toEqual([])
     })
   })
 
