@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-export type SelectionType = "plan" | "earn" | "award" | "investiture";
-export type CategoryType = "pathfinders" | "honors";
+export type SelectionType = "plan" | "earn" | "award" | "investiture" | "achievements";
+export type CategoryType = "pathfinders" | "honors" | "achievements";
 
 export interface Selections {
   plan: {
@@ -18,6 +18,11 @@ export interface Selections {
   investiture: {
     pathfinders: string[];
     honors: string[];
+  };
+  achievements: {
+    pathfinders: string[];
+    honors: string[];
+    achievements: string[];
   };
 }
 
@@ -56,31 +61,52 @@ export const useSelectionStore = defineStore("selectionStore", {
         pathfinders: [] as string[],
         honors: [] as string[],
       },
+      achievements: {
+        pathfinders: [] as string[],
+        honors: [] as string[],
+        achievements: [] as string[],
+      },
     },
   }),
   actions: {
     toggleSelection(
-      type: "plan" | "earn" | "award" | "investiture",
+      type: SelectionType,
       id: string,
-      category: "pathfinders" | "honors",
+      category: CategoryType,
     ) {
-      const index = this.selections[type][category].indexOf(id);
-      if (index > -1) {
-        this.selections[type][category].splice(index, 1);
+      if (type === "achievements" && category === "achievements") {
+        const index = this.selections.achievements.achievements.indexOf(id);
+        if (index > -1) {
+          this.selections.achievements.achievements.splice(index, 1);
+        } else {
+          this.selections.achievements.achievements.push(id);
+        }
       } else {
-        this.selections[type][category].push(id);
+        const index = this.selections[type][category as "pathfinders" | "honors"].indexOf(id);
+        if (index > -1) {
+          this.selections[type][category as "pathfinders" | "honors"].splice(index, 1);
+        } else {
+          this.selections[type][category as "pathfinders" | "honors"].push(id);
+        }
       }
     },
     clearSelection(type: SelectionType) {
       this.selections[type].pathfinders = [];
       this.selections[type].honors = [];
+      if (type === "achievements") {
+        this.selections[type].achievements = [];
+      }
     },
     isSelected(
-      type: "plan" | "earn" | "award" | "investiture",
+      type: SelectionType,
       id: string,
-      category: "pathfinders" | "honors",
+      category: CategoryType,
     ) {
-      return this.selections[type][category].includes(id);
+      if (type === "achievements" && category === "achievements") {
+        return this.selections.achievements.achievements.includes(id);
+      } else {
+        return this.selections[type][category as "pathfinders" | "honors"].includes(id);
+      }
     },
   },
 });
