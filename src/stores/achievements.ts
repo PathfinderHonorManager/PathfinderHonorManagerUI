@@ -35,8 +35,8 @@ export const useAchievementsStore = defineStore('achievements', {
   },
 
   actions: {
-    async loadAllAchievements() {
-      if (this.achievements.length > 0) return; // Already loaded
+    async loadAllAchievements(forceReload = false) {
+      if (this.achievements.length > 0 && !forceReload) return; // Only skip if not forcing reload
       
       this.loading = true;
       this.error = null;

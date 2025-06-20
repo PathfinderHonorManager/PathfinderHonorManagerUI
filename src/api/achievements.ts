@@ -48,11 +48,7 @@ export interface PostPathfinderAchievementForGradeDto {
 
 export default {
   getAllAchievements: () => {
-    return axios.get<AchievementDto[]>(`${BASE_URL}/Achievements`, {
-      params: {
-        includeCategories: true
-      }
-    });
+    return axios.get<AchievementDto[]>(`${BASE_URL}/Achievements`);
   },
 
   getAchievement: (id: string) => {

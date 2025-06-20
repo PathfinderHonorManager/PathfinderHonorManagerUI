@@ -15,10 +15,10 @@
     </div>
     <div v-else>
       <div class="achievement-grid">
-        <div class="achievement-header">
+        <div class="achievement-header" :class="{ 'force-mobile': shouldUseMobileLayout }">
           <div class="achievement-info">Achievement</div>
-          <div class="pathfinder-names desktop-only">
-            <div v-for="pathfinder in classPathfinders" 
+          <div class="pathfinder-names desktop-only" :class="{ 'force-mobile': shouldUseMobileLayout }">
+            <div v-for="pathfinder in classPathfindersWithMatchingGrade" 
                  :key="pathfinder.pathfinderID" 
                  class="pathfinder-name"
                  :title="`${pathfinder.firstName} ${pathfinder.lastName}`">
@@ -27,7 +27,7 @@
           </div>
         </div>
         
-        <div v-for="achievement in sortedAchievements" :key="achievement.achievementID" class="achievement-row">
+        <div v-for="achievement in sortedAchievements" :key="achievement.achievementID" class="achievement-row" :class="{ 'force-mobile': shouldUseMobileLayout }">
           <div class="achievement-info">
             <div class="achievement-content">
               <div class="achievement-description">
@@ -41,8 +41,8 @@
               </div>
             </div>
           </div>
-          <div class="pathfinder-checkboxes desktop-only">
-            <div v-for="pathfinder in classPathfinders" 
+          <div class="pathfinder-checkboxes desktop-only" :class="{ 'force-mobile': shouldUseMobileLayout }">
+            <div v-for="pathfinder in classPathfindersWithMatchingGrade" 
                  :key="pathfinder.pathfinderID" 
                  class="pathfinder-checkbox">
               <input type="checkbox"
@@ -51,12 +51,12 @@
             </div>
           </div>
           
-          <div class="mobile-pathfinders">
-            <div v-for="pathfinder in classPathfinders" 
+          <div class="mobile-pathfinders" :class="{ 'force-mobile': shouldUseMobileLayout }">
+            <div v-for="pathfinder in classPathfindersWithMatchingGrade" 
                  :key="pathfinder.pathfinderID" 
                  class="mobile-pathfinder-row">
               <div class="mobile-pathfinder-name">
-                {{ pathfinder.firstName }} {{ pathfinder.lastName?.charAt(0) }}.
+                {{ pathfinder.firstName }} {{ pathfinder.lastName }}
               </div>
               <div class="mobile-pathfinder-checkbox">
                 <input type="checkbox"
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
+import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePathfinderStore } from '@/stores/pathfinders';
 import { useAchievementsStore } from '@/stores/achievements';
@@ -118,6 +118,14 @@ export default defineComponent({
       pathfinderStore.pathfinders.filter(p => p.className === className.value)
     );
 
+    const classPathfindersWithMatchingGrade = computed(() =>
+      classPathfinders.value.filter(p => p.grade === classGrade.value)
+    );
+
+    const shouldUseMobileLayout = computed(() => {
+      return classPathfindersWithMatchingGrade.value.length > 5;
+    });
+
     const sortedAchievements = computed(() => {
       const uniqueAchievements = new Map();
       
@@ -141,11 +149,9 @@ export default defineComponent({
       
       return Array.from(uniqueAchievements.values())
         .sort((a, b) => {
-          // First sort by category
           if (a.categorySequenceOrder !== b.categorySequenceOrder) {
             return a.categorySequenceOrder - b.categorySequenceOrder;
           }
-          // Then by achievement sequence within category
           return a.achievementSequenceOrder - b.achievementSequenceOrder;
         });
     });
@@ -161,6 +167,7 @@ export default defineComponent({
     const onCheckboxChange = async (event: Event, pathfinderId: string, achievementId: string) => {
       const target = event.target as HTMLInputElement;
       const newStatus = target.checked;
+      const originalStatus = !newStatus; // Store the original state
 
       const existingPathfinderAchievement = achievementsStore.pathfinderAchievements.find(pa =>
         pa.pathfinderID === pathfinderId &&
@@ -169,19 +176,29 @@ export default defineComponent({
 
       try {
         if (existingPathfinderAchievement) {
-          await achievementsApi.putPathfinderAchievement(pathfinderId, achievementId, {
+          const response = await achievementsApi.putPathfinderAchievement(pathfinderId, achievementId, {
             isAchieved: newStatus
           });
+          // Update the existing record in the store
+          const index = achievementsStore.pathfinderAchievements.findIndex(pa =>
+            pa.pathfinderID === pathfinderId && pa.achievementID === achievementId
+          );
+          if (index !== -1) {
+            achievementsStore.pathfinderAchievements[index] = response.data;
+          }
         } else {
-          await achievementsApi.postPathfinderAchievement(pathfinderId, {
+          const response = await achievementsApi.postPathfinderAchievement(pathfinderId, {
             achievementID: achievementId,
             isAchieved: newStatus
           });
+          // Add the new record to the store
+          achievementsStore.pathfinderAchievements.push(response.data);
         }
-        await achievementsStore.loadAllAchievements();
       } catch (err) {
         console.error('Failed to update achievement:', err);
         toasterMessage.value = 'Failed to update achievement';
+        // Revert the checkbox to its original state
+        target.checked = originalStatus;
       }
     };
 
@@ -190,7 +207,7 @@ export default defineComponent({
     };
 
     const ensureAllPathfindersHaveAchievements = async () => {
-      if (!achievementsStore.achievements.length || !achievementsStore.pathfinderAchievements.length || !pathfinderStore.pathfinders.length) {
+      if (!achievementsStore.achievements.length || !achievementsStore.pathfinderAchievements.length || !classPathfinders.value.length) {
         return;
       }
       
@@ -218,9 +235,9 @@ export default defineComponent({
         try {
           await achievementsApi.postPathfinderAchievementsForGrade({
             pathfinderIds: Array.from(new Set(missingForPathfinder)),
-            achievementIds: [] // API will auto-create for their grade
+            achievementIds: []
           });
-          await achievementsStore.loadAllAchievements();
+          await achievementsStore.loadAllAchievements(true);
         } catch (err) {
           console.error('Failed to create missing achievements:', err);
         } finally {
@@ -229,11 +246,22 @@ export default defineComponent({
       }
     };
 
+    // Watch for both pathfinders and achievements to be loaded
+    watch([classPathfinders, () => achievementsStore.achievements.length, () => achievementsStore.pathfinderAchievements.length], 
+      async ([newPathfinders, achievementsCount, pathfinderAchievementsCount]) => {
+        if (newPathfinders.length > 0 && achievementsCount > 0 && pathfinderAchievementsCount > 0) {
+          await ensureAllPathfindersHaveAchievements();
+        }
+      }, 
+      { immediate: true }
+    );
+
     onMounted(async () => {
-      if (pathfinderStore.pathfinders.length === 0) {
-        await pathfinderStore.getPathfinders();
+      // Always refresh pathfinders to ensure we have latest data after investiture
+      await pathfinderStore.getPathfinders();
+      if (achievementsStore.achievements.length === 0) {
+        await achievementsStore.loadAllAchievements();
       }
-      await ensureAllPathfindersHaveAchievements();
     });
 
     return {
@@ -243,6 +271,8 @@ export default defineComponent({
       autoAddingAchievements,
       className,
       classPathfinders,
+      classPathfindersWithMatchingGrade,
+      shouldUseMobileLayout,
       sortedAchievements,
       isAchievementCompleted,
       onCheckboxChange
@@ -359,11 +389,19 @@ export default defineComponent({
   display: none;
 }
 
+.desktop-only.force-mobile {
+  display: none !important;
+}
+
 .mobile-pathfinders {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-top: 10px;
+}
+
+.mobile-pathfinders.force-mobile {
+  display: flex !important;
 }
 
 .mobile-pathfinder-row {
@@ -402,31 +440,31 @@ export default defineComponent({
   color: #ff4444;
 }
 
-@media (min-width: 768px) {
-  .achievement-header {
+@media (min-width: 1024px) {
+  .achievement-header:not(.force-mobile) {
     grid-template-columns: minmax(250px, 1fr) 1fr;
   }
   
-  .achievement-row {
+  .achievement-row:not(.force-mobile) {
     grid-template-columns: minmax(250px, 1fr) 1fr;
   }
   
-  .desktop-only {
+  .desktop-only:not(.force-mobile) {
     display: block;
   }
   
-  .mobile-pathfinders {
+  .mobile-pathfinders:not(.force-mobile) {
     display: none;
   }
   
-  .pathfinder-names {
+  .pathfinder-names:not(.force-mobile) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
     gap: 10px;
     text-align: center;
   }
   
-  .pathfinder-checkboxes {
+  .pathfinder-checkboxes:not(.force-mobile) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
     gap: 10px;
