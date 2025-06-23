@@ -25,7 +25,6 @@ watchEffect(async () => {
   try {
     if (isAuthenticated.value) {
       await userStore.decodeToken(getAccessTokenSilently);
-      await honorStore.getHonors();
       // If we're on the landing page, redirect to club
       if (router.currentRoute.value.name === 'landing') {
         router.push({ name: 'club' });
@@ -45,10 +44,6 @@ watchEffect(async () => {
 const canUpdatePathfinder = computed(() =>
   isAuthenticated.value && userStore.permissions.includes("update:pathfinders")
 );
-
-onMounted(async () => {
-  await achievementsStore.loadAllAchievements();
-});
 </script>
 
 <template>

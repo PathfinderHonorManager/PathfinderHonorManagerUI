@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { mount, shallowMount } from "@vue/test-utils";
+import { mount, shallowMount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import PathfinderComponent from "@/components/PathfinderComponent.vue";
 import { ValidationError } from "@/models/pathfinder";
 
 const mockPathfinderStore = {
-  pathfinders: [],
+  pathfinders: [] as any[],
   loading: false,
   error: false,
   postPathfinder: vi.fn(),
@@ -17,7 +17,7 @@ const mockUserStore = {
 };
 
 const mockHonorStore = {
-  honors: [],
+  honors: [] as any[],
   getHonors: vi.fn()
 };
 
@@ -34,7 +34,7 @@ vi.mock("@/stores/honors", () => ({
 }));
 
 describe("PathfinderComponent", () => {
-  let wrapper;
+  let wrapper: VueWrapper<any>;
 
   beforeEach(() => {
     const pinia = createPinia();
@@ -157,6 +157,168 @@ describe("PathfinderComponent", () => {
       await wrapper.vm.submitAddForm(formData);
 
       expect(mockClearForm).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Data Loading", () => {
+    it("should load pathfinders first when both stores are empty", async () => {
+      // Clear mocks and set empty data
+      vi.clearAllMocks();
+      mockPathfinderStore.pathfinders = [];
+      mockHonorStore.honors = [];
+      
+      // Create a new wrapper to trigger the loadData function
+      const newWrapper = shallowMount(PathfinderComponent, {
+        global: {
+          plugins: [createPinia()],
+          stubs: {
+            PathfinderList: true,
+            ModalComponent: true,
+            EditPathfinderComponent: true,
+            ToasterComponent: true,
+            CreatePathfinderForm: true
+          }
+        }
+      });
+
+      // Wait for the next tick to allow loadData to execute
+      await newWrapper.vm.$nextTick();
+      
+      // Pathfinders should be loaded first (synchronously)
+      expect(mockPathfinderStore.getPathfinders).toHaveBeenCalled();
+      
+      // Honors should be loaded asynchronously (we can't easily test the async nature in this test)
+      // but we can verify the function was called
+      expect(mockHonorStore.getHonors).toHaveBeenCalled();
+    });
+
+    it("should not load pathfinders if they already exist", async () => {
+      // Clear mocks and set existing pathfinder data
+      vi.clearAllMocks();
+      mockPathfinderStore.pathfinders = [{ pathfinderID: "1", firstName: "Test", lastName: "User" }];
+      mockHonorStore.honors = [];
+      
+      const newWrapper = shallowMount(PathfinderComponent, {
+        global: {
+          plugins: [createPinia()],
+          stubs: {
+            PathfinderList: true,
+            ModalComponent: true,
+            EditPathfinderComponent: true,
+            ToasterComponent: true,
+            CreatePathfinderForm: true
+          }
+        }
+      });
+
+      await newWrapper.vm.$nextTick();
+      
+      // Pathfinders should not be loaded since they already exist
+      expect(mockPathfinderStore.getPathfinders).not.toHaveBeenCalled();
+      
+      // Honors should still be loaded if they don't exist
+      expect(mockHonorStore.getHonors).toHaveBeenCalled();
+    });
+
+    it("should not load honors if they already exist", async () => {
+      // Clear mocks and set existing honor data
+      vi.clearAllMocks();
+      mockPathfinderStore.pathfinders = [];
+      mockHonorStore.honors = [{ honorID: "1", name: "Test Honor" }];
+      
+      const newWrapper = shallowMount(PathfinderComponent, {
+        global: {
+          plugins: [createPinia()],
+          stubs: {
+            PathfinderList: true,
+            ModalComponent: true,
+            EditPathfinderComponent: true,
+            ToasterComponent: true,
+            CreatePathfinderForm: true
+          }
+        }
+      });
+
+      await newWrapper.vm.$nextTick();
+      
+      // Pathfinders should be loaded since they don't exist
+      expect(mockPathfinderStore.getPathfinders).toHaveBeenCalled();
+      
+      // Honors should not be loaded since they already exist
+      expect(mockHonorStore.getHonors).not.toHaveBeenCalled();
+    });
+
+    it("should handle errors in honors loading gracefully", async () => {
+      // Clear mocks and set empty data
+      vi.clearAllMocks();
+      mockPathfinderStore.pathfinders = [];
+      mockHonorStore.honors = [];
+      mockHonorStore.getHonors.mockRejectedValue(new Error("Honors API error"));
+      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      
+      const newWrapper = shallowMount(PathfinderComponent, {
+        global: {
+          plugins: [createPinia()],
+          stubs: {
+            PathfinderList: true,
+            ModalComponent: true,
+            EditPathfinderComponent: true,
+            ToasterComponent: true,
+            CreatePathfinderForm: true
+          }
+        }
+      });
+
+      await newWrapper.vm.$nextTick();
+      
+      // Pathfinders should still load successfully
+      expect(mockPathfinderStore.getPathfinders).toHaveBeenCalled();
+      
+      // Honors should be called but error should be caught
+      expect(mockHonorStore.getHonors).toHaveBeenCalled();
+      
+      // Wait a bit for the async honors loading to complete
+      await new Promise(resolve => setTimeout(resolve, 10));
+      
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Error loading honors"),
+        expect.any(Error)
+      );
+      
+      consoleSpy.mockRestore();
+    });
+
+    it("should retry loading when retryLoading is called", async () => {
+      // Clear mocks and set empty data
+      vi.clearAllMocks();
+      mockPathfinderStore.pathfinders = [];
+      mockHonorStore.honors = [];
+      
+      const newWrapper = shallowMount(PathfinderComponent, {
+        global: {
+          plugins: [createPinia()],
+          stubs: {
+            PathfinderList: true,
+            ModalComponent: true,
+            EditPathfinderComponent: true,
+            ToasterComponent: true,
+            CreatePathfinderForm: true
+          }
+        }
+      });
+
+      await newWrapper.vm.$nextTick();
+      
+      // Clear the mocks to verify retry calls
+      vi.clearAllMocks();
+      
+      // Call retry loading - access it through the component instance
+      await (newWrapper.vm as any).retryLoading();
+      
+      // Both should be called again
+      expect(mockPathfinderStore.getPathfinders).toHaveBeenCalled();
+      expect(mockHonorStore.getHonors).toHaveBeenCalled();
     });
   });
 }); 
