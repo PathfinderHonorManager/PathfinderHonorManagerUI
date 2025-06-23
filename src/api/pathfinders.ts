@@ -6,9 +6,9 @@ import {
   BulkAdd,
   ValidationError,
 } from "@/models/pathfinder";
+import { API_CONFIG } from "../config/api";
 
-const BASE_URL =
-  "https://pathfinderhonormanager.azurewebsites.net/api/pathfinders";
+const BASE_URL = API_CONFIG.BASE_URL + "/pathfinders";
 
 interface BulkUpdatePathfinder {
   pathfinderId: string;

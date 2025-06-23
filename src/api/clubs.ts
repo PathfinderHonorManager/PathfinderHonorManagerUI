@@ -1,12 +1,11 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 import { Errors } from "../errors/errors";
-
-const BASE_URL = "https://pathfinderhonormanager.azurewebsites.net/api";
+import { API_CONFIG } from "../config/api";
 
 export default {
   getClub: (params = {}) => {
-    return axios.get(BASE_URL + `/Clubs`, {
+    return axios.get(API_CONFIG.BASE_URL + `/Clubs`, {
       params,
     });
   },
