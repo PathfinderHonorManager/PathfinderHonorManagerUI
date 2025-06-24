@@ -7,11 +7,13 @@ export type UserStoreType = {
   permissions: any[];
   clubCode: string;
   clubName: string;
+  isLoadingClub: boolean;
 
   // Actions
   setPermissions: (permissions: any[]) => void;
   setClubCode: (clubCode: string) => void;
   setClubName: (clubName: string) => void;
+  setLoadingClub: (loading: boolean) => void;
   decodeToken: (getAccessTokenSilently: any) => Promise<void>;
   getClubName: (clubCode: string) => Promise<void>;
 };
@@ -26,6 +28,7 @@ export const useUserStore = defineStore("clubUser", {
     permissions: [] as any[],
     clubCode: "",
     clubName: "",
+    isLoadingClub: true,
   }),
   actions: {
     setPermissions(permissions: any[]) {
@@ -37,6 +40,9 @@ export const useUserStore = defineStore("clubUser", {
     setClubName(clubName: string) {
       this.clubName = clubName;
     },
+    setLoadingClub(loading: boolean) {
+      this.isLoadingClub = loading;
+    },
     async decodeToken(getAccessTokenSilently: any) {
       const token = await getAccessTokenSilently();
       const decodedToken = jwtDecode<CustomJwtPayload>(token);
@@ -46,11 +52,14 @@ export const useUserStore = defineStore("clubUser", {
       await this.getClubName(decodedToken.clubCode);
     },
     async getClubName(clubCode: string) {
+      this.setLoadingClub(true);
       try {
         const response = await clubApi.getClub({ clubcode: clubCode });
         this.setClubName(response.data.name);
       } catch (err) {
         console.error(`Could not get club name, because: ${err}`);
+      } finally {
+        this.setLoadingClub(false);
       }
     },
   },

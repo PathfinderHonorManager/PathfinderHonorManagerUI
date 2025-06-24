@@ -46,7 +46,7 @@
         Try It Free - Create Test Account
       </button>
       <p class="note">
-        You need a Google account to sign up. Create a test account to explore the platform 
+        Create a test account to explore the platform 
         and see if it's right for your club.
       </p>
     </div>

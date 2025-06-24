@@ -34,7 +34,9 @@
                 {{ achievement.description }}
               </div>
               <div class="badge-container">
-                <span class="category-badge">{{ achievement.categoryName }}</span>
+                <span class="category-badge" :class="getCategoryClass(achievement.categoryName)">
+                  {{ achievement.categoryName }}
+                </span>
                 <span class="level-badge" :class="'level' + achievement.level">
                   {{ achievement.levelName }}
                 </span>
@@ -206,6 +208,32 @@ export default defineComponent({
       return achievementsStore.achievements.filter(a => a.grade === grade).map(a => a.achievementID);
     };
 
+    const getCategoryClass = (categoryName: string | null): string => {
+      if (!categoryName) return 'category-default';
+      
+      const category = categoryName.toLowerCase();
+      
+      if (category.includes('personal growth')) {
+        return 'category-personal-growth';
+      } else if (category.includes('spiritual discovery')) {
+        return 'category-spiritual-discovery';
+      } else if (category.includes('serving others')) {
+        return 'category-serving-others';
+      } else if (category.includes('making friends')) {
+        return 'category-making-friends';
+      } else if (category.includes('health and fitness')) {
+        return 'category-health-fitness';
+      } else if (category.includes('nature study')) {
+        return 'category-nature-study';
+      } else if (category.includes('outdoor living')) {
+        return 'category-outdoor-living';
+      } else if (category.includes('honor enrichment')) {
+        return 'category-honor-enrichment';
+      } else {
+        return 'category-default';
+      }
+    };
+
     const ensureAllPathfindersHaveAchievements = async () => {
       if (!achievementsStore.achievements.length || !achievementsStore.pathfinderAchievements.length || !classPathfinders.value.length) {
         return;
@@ -275,7 +303,8 @@ export default defineComponent({
       shouldUseMobileLayout,
       sortedAchievements,
       isAchievementCompleted,
-      onCheckboxChange
+      onCheckboxChange,
+      getCategoryClass
     };
   }
 });
@@ -356,33 +385,70 @@ export default defineComponent({
 
 .category-badge {
   display: inline-block;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 0.75em;
-  font-weight: 500;
-  background-color: #4a4a4a;
+  padding: 1px 4px;
+  border-radius: 5px;
+  font-size: 0.55em;
+  font-weight: 600;
   color: white;
-  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.category-personal-growth {
+  background: #8B5CF6;
+}
+
+.category-spiritual-discovery {
+  background: #3B82F6;
+}
+
+.category-serving-others {
+  background: #10B981;
+}
+
+.category-making-friends {
+  background: #F59E0B;
+}
+
+.category-health-fitness {
+  background: #EF4444;
+}
+
+.category-nature-study {
+  background: #059669;
+}
+
+.category-outdoor-living {
+  background: #7C3AED;
+}
+
+.category-honor-enrichment {
+  background: #EC4899;
+}
+
+.category-default {
+  background: var(--lightGrey);
 }
 
 .level-badge {
   display: inline-block;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 0.75em;
-  font-weight: 500;
-  opacity: 0.8;
-  width: fit-content;
+  padding: 1px 4px;
+  border-radius: 5px;
+  font-size: 0.55em;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .level1 {
-  background-color: #2196F3;
-  color: white;
+  background: #6B7280;
 }
 
 .level2 {
-  background-color: #9C27B0;
-  color: white;
+  background: #4B5563;
 }
 
 .desktop-only {
