@@ -9,18 +9,19 @@ import { useUserStore } from "./stores/users";
 import App from "./App.vue";
 import router from "./router";
 import { analyticsPlugin } from "./plugins/analytics";
+import { API_CONFIG, AUTH0_CONFIG } from "./config/api";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 const app = createApp(App);
 
 const auth0Config = {
-  domain: "pathfinderhonormanager.us.auth0.com",
-  clientId: "mfTYOD64ySERkhLAatJBxWIULeq892fK",
+  domain: AUTH0_CONFIG.DOMAIN,
+  clientId: AUTH0_CONFIG.CLIENT_ID,
   cacheLocation: "memory" as const,
   authorizationParams: {
-    redirect_uri: window.location.origin,
-    audience: "https://pathfinderhonormanager.azurewebsites.net/api/",
+    redirect_uri: AUTH0_CONFIG.REDIRECT_URI,
+    audience: API_CONFIG.AUTH_AUDIENCE,
   },
 };
 
