@@ -5,7 +5,7 @@
       @submit.prevent="submitForm"
     >
       <div>
-        <h3>First Name:</h3>
+        <h3>First Name: <span class="required">*</span></h3>
         <input
           v-model="firstName"
           type="text"
@@ -18,7 +18,7 @@
         </p>
       </div>
       <div>
-        <h3>Last Name:</h3>
+        <h3>Last Name: <span class="required">*</span></h3>
         <input
           v-model="lastName"
           type="text"
@@ -44,7 +44,7 @@
         </p>
       </div>
       <div>
-        <h3>Grade:</h3>
+        <h3>Grade: <span class="required">*</span></h3>
         <input
           v-model="grade"
           type="text"
@@ -123,7 +123,7 @@ const validateForm = () => {
     gradeError.value = '';
   }
   
-  if (email.value === '' || !email.value.includes('@')) {
+  if (email.value !== '' && !email.value.includes('@')) {
     emailError.value = 'Invalid email';
     isValid = false;
   } else {
@@ -174,8 +174,12 @@ defineExpose({
 }
 
 .error-text {
-  color: #cc0000;
+  color: var(--red);
   font-size: 0.85em;
   margin-top: 5px;
+}
+
+.required {
+  color: var(--red);
 }
 </style> 
