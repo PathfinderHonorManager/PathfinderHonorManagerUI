@@ -60,18 +60,14 @@ const userStore = useUserStore();
 
 const loadData = async () => {
   try {
-    // Load pathfinders first since they're immediately visible on the club page
+    const promises = [];
     if (pathfinderStore.pathfinders.length === 0) {
-      await pathfinderStore.getPathfinders();
+      promises.push(pathfinderStore.getPathfinders());
     }
-    
-    // Load honors last since they're not immediately visible and can be loaded in background
     if (honorStore.honors.length === 0) {
-      // Load honors asynchronously without blocking the UI
-      honorStore.getHonors().catch(err => {
-        console.error("Error loading honors:", err);
-      });
+      promises.push(honorStore.getHonors());
     }
+    await Promise.all(promises);
   } catch (err) {
     console.error("Error loading data:", err);
   }
