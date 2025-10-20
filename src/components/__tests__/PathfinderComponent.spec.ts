@@ -282,7 +282,7 @@ describe("PathfinderComponent", () => {
       await new Promise(resolve => setTimeout(resolve, 10));
       
       expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Error loading honors"),
+        expect.stringContaining("Error loading data"),
         expect.any(Error)
       );
       
