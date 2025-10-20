@@ -29,9 +29,10 @@ describe("CreatePathfinderForm", () => {
 
     it("should show error for invalid email", async () => {
       const inputs = wrapper.findAll('input[type="text"]');
-      inputs[0].element.value = 'John';
-      inputs[1].element.value = 'Doe';
-      inputs[2].element.value = 'invalid-email';
+      await inputs[0].setValue('John');
+      await inputs[1].setValue('Doe');
+      await inputs[2].setValue('invalid-email');
+      await inputs[3].setValue('8');
       await wrapper.find('form').trigger('submit.prevent');
       
       expect(wrapper.text()).toContain('Invalid email');
@@ -72,6 +73,39 @@ describe("CreatePathfinderForm", () => {
       await wrapper.find('form').trigger('submit.prevent');
       
       expect(wrapper.emitted().submit).toBeFalsy();
+    });
+
+    it("should emit submit event with null grade when grade is not provided", async () => {
+      const inputs = wrapper.findAll('input[type="text"]');
+      await inputs[0].setValue('John');
+      await inputs[1].setValue('Doe');
+      
+      await wrapper.find('form').trigger('submit.prevent');
+      
+      expect(wrapper.emitted().submit).toBeTruthy();
+      expect(wrapper.emitted().submit[0][0]).toEqual({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: '',
+        grade: null
+      });
+    });
+
+    it("should emit submit event with empty email when email is not provided", async () => {
+      const inputs = wrapper.findAll('input[type="text"]');
+      await inputs[0].setValue('John');
+      await inputs[1].setValue('Doe');
+      await inputs[3].setValue('8');
+      
+      await wrapper.find('form').trigger('submit.prevent');
+      
+      expect(wrapper.emitted().submit).toBeTruthy();
+      expect(wrapper.emitted().submit[0][0]).toEqual({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: '',
+        grade: 8
+      });
     });
   });
 

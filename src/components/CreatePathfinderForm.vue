@@ -44,7 +44,7 @@
         </p>
       </div>
       <div>
-        <h3>Grade: <span class="required">*</span></h3>
+        <h3>Grade:</h3>
         <input
           v-model="grade"
           type="text"
