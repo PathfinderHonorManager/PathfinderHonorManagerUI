@@ -1,31 +1,32 @@
 <template>
   <div class="content-box">
-    <form @submit.prevent="handleSubmit">
-      <vue3-simple-typeahead
-        id="typeahead_id"
-        ref="typeahead"
-        placeholder="Search Honors"
-        :items="honors"
-        :min-input-length="1"
-        :item-projection="
-          (item: IHonor) => {
-            return isHonorAlreadyAdded(item.honorID) ? `${item.name} (Already Added)` : item.name;
-          }
-        "
-        :item-class="
-          (item: IHonor) => {
-            return isHonorAlreadyAdded(item.honorID) ? 'disabled-option' : '';
-          }
-        "
-        :item-disabled="
-          (item: IHonor) => {
-            return isHonorAlreadyAdded(item.honorID);
-          }
-        "
-        @select-item="selectItem"
-      />
-      <br>
-      <button class="primary button">
+    <form class="honor-form" @submit.prevent="handleSubmit">
+      <div class="form-field">
+        <vue3-simple-typeahead
+          id="typeahead_id"
+          ref="typeahead"
+          placeholder="Search Honors"
+          :items="honors"
+          :min-input-length="1"
+          :item-projection="
+            (item: IHonor) => {
+              return isHonorAlreadyAdded(item.honorID) ? `${item.name} (Already Added)` : item.name;
+            }
+          "
+          :item-class="
+            (item: IHonor) => {
+              return isHonorAlreadyAdded(item.honorID) ? 'disabled-option' : '';
+            }
+          "
+          :item-disabled="
+            (item: IHonor) => {
+              return isHonorAlreadyAdded(item.honorID);
+            }
+          "
+          @select-item="selectItem"
+        />
+      </div>
+      <button class="submit-button">
         Add Honor to Pathfinder
       </button>
     </form>
@@ -139,23 +140,140 @@ export default defineComponent({
 });
 </script>
 
-<style>
-form {
-  text-align: center;
-  margin-bottom: var(--spaceHBelow);
+<style scoped>
+.honor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin: 0;
 }
 
-form > button {
-  display: inline;
+.form-field {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color);
+}
+
+.vue3-simple-typeahead {
+  width: 100%;
+}
+
+.vue3-simple-typeahead input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--lightGrey);
+  border-radius: 6px;
+  background-color: var(--grey);
+  color: var(--color);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.vue3-simple-typeahead input:focus {
+  outline: none;
+  border-color: var(--actionColor);
+}
+
+.vue3-simple-typeahead .typeahead__list {
+  background-color: var(--bgColor);
+  border: 1px solid var(--lightGrey);
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.vue3-simple-typeahead .typeahead__item {
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.vue3-simple-typeahead .typeahead__item:hover {
+  background-color: var(--grey);
+}
+
+.vue3-simple-typeahead .typeahead__item.active {
+  background-color: var(--actionColor);
+}
+
+.submit-button {
+  font-size: 1.25rem;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--actionColor);
+  color: var(--color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 200px;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  background-color: #2a4af0;
+}
+
+.submit-button:active {
+  transform: translateY(1px);
 }
 
 .disabled-option {
-  color: var(--grey);
+  color: var(--noteColor);
   cursor: not-allowed;
-  background-color: #f5f5f5;
+  background-color: var(--grey);
 }
 
 .disabled-option:hover {
-  background-color: #f5f5f5 !important;
+  background-color: var(--grey) !important;
+}
+
+@media screen and (max-width: 600px) {
+  .honor-form {
+    gap: 1.5rem;
+  }
+  
+  .form-field {
+    max-width: 100%;
+  }
+  
+  .vue3-simple-typeahead input {
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+  
+  .submit-button {
+    font-size: 1.1rem;
+    padding: 0.875rem 1.5rem;
+    min-width: 180px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .honor-form {
+    gap: 1.25rem;
+  }
+  
+  .form-field label {
+    font-size: 0.95rem;
+  }
+  
+  .vue3-simple-typeahead input {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .submit-button {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    min-width: 160px;
+  }
 }
 </style>
