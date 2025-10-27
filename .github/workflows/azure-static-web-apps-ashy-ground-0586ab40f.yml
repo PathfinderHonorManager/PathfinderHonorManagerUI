@@ -36,7 +36,7 @@ jobs:
         run: yarn test:unit --coverage
       
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-report
           path: coverage/lcov.info
@@ -154,7 +154,7 @@ jobs:
           VITE_COMMIT_HASH: ${{ steps.version-info.outputs.COMMIT_HASH }}
       
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist-files
           path: dist/
