@@ -1,5 +1,8 @@
 User-agent: *
-Allow: /
 Allow: /landing
+Disallow: /
+Disallow: /manage/
+Disallow: /investiture
+Disallow: /achievements/
 
 Sitemap: https://pathfinderclub.tools/sitemap.xml 
