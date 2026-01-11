@@ -51,7 +51,7 @@ describe('User Store', () => {
     })
 
     it('overwrites existing permissions', () => {
-      store.permissions = ['old:permission'] as any
+      store.permissions = ['old:permission']
       const newPermissions = ['new:permission1', 'new:permission2']
       
       store.setPermissions(newPermissions)
@@ -63,7 +63,7 @@ describe('User Store', () => {
       const complexPermissions = [
         { action: 'create', resource: 'pathfinders' },
         { action: 'read', resource: 'honors' }
-      ]
+      ] as unknown as string[]
       
       store.setPermissions(complexPermissions)
       
@@ -276,13 +276,13 @@ describe('User Store', () => {
 
   describe('Edge Cases', () => {
     it('handles null and undefined values gracefully', () => {
-      store.setPermissions(null as any)
+      store.setPermissions(null as unknown as string[])
       expect(store.permissions).toBeNull()
       
-      store.setClubCode(undefined as any)
+      store.setClubCode(undefined as unknown as string)
       expect(store.clubCode).toBeUndefined()
       
-      store.setClubName(null as any)
+      store.setClubName(null as unknown as string)
       expect(store.clubName).toBeNull()
     })
 

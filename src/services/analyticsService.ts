@@ -1,7 +1,7 @@
 import { appInsights } from '../appInsights';
 
 export const AnalyticsService = {
-  trackEvent(name: string, properties?: { [key: string]: any }) {
+  trackEvent(name: string, properties?: Record<string, unknown>) {
     appInsights.trackEvent({ name }, properties);
   },
 
@@ -9,15 +9,15 @@ export const AnalyticsService = {
     appInsights.trackPageView({ name, uri: url });
   },
 
-  trackException(error: Error, properties?: { [key: string]: any }) {
+  trackException(error: Error, properties?: Record<string, unknown>) {
     appInsights.trackException({ error, properties });
   },
 
-  trackMetric(name: string, average: number, properties?: { [key: string]: any }) {
+  trackMetric(name: string, average: number, properties?: Record<string, unknown>) {
     appInsights.trackMetric({ name, average }, properties);
   },
 
-  trackTrace(message: string, properties?: { [key: string]: any }) {
+  trackTrace(message: string, properties?: Record<string, unknown>) {
     appInsights.trackTrace({ message }, properties);
   },
 

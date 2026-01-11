@@ -29,7 +29,7 @@ export type PathfinderStoreType = {
     pathfinderIDs: string[],
     honorIDs: string[],
     action: SelectionType,
-  ) => Promise<{ successful: any[]; failed: any[] }>;
+  ) => Promise<{ successful: PathfinderHonors[]; failed: string[] } | undefined>;
   updatePathfinder: (
     pathfinderID: string,
     data: { grade: number | null; isActive: boolean | null },
@@ -177,9 +177,9 @@ export const usePathfinderStore = defineStore("pathfinder", {
 
         const response = await api.bulkManagePathfinderHonors(postData, action);
         if (response && response.data) {
-          const tempPathfinderHonors = {};
-          const successful = [];
-          const failed = [];
+          const tempPathfinderHonors: Record<string, PathfinderHonors[]> = {};
+          const successful: PathfinderHonors[] = [];
+          const failed: string[] = [];
 
           response.data.forEach((result: BulkAddResponse) => {
             if (
@@ -251,7 +251,7 @@ export const usePathfinderStore = defineStore("pathfinder", {
       this.loading = true;
       this.error = false;
       try {
-        const response = await api.putPathfinder(pathfinderID, data);
+        await api.putPathfinder(pathfinderID, data);
         const index = this.pathfinders.findIndex(
           (p) => p.pathfinderID === pathfinderID,
         );

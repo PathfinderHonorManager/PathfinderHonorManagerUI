@@ -13,7 +13,8 @@ vi.mock('@/appInsights', () => ({
   appInsights: {
     trackEvent: vi.fn(),
     trackException: vi.fn(),
-    trackTrace: vi.fn()
+    trackTrace: vi.fn(),
+    trackPageView: vi.fn()
   }
 }))
 

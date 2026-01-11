@@ -2,8 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import PostPathfinderHonorComponent from '../PostPathfinderHonorComponent.vue'
-import { usePathfinderStore } from '@/stores/pathfinders'
-import { useHonorStore } from '@/stores/honors'
 import { ref } from 'vue'
 import api from '@/api/pathfinders'
 

@@ -52,7 +52,7 @@ import { storeToRefs } from "pinia";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";
 import { useUserStore } from "@/stores/users";
-import { PathfinderPost, ValidationError } from "@/models/pathfinder";
+import { Pathfinder, PathfinderPost, ValidationError } from "@/models/pathfinder";
 
 const pathfinderStore = usePathfinderStore();
 const honorStore = useHonorStore();
@@ -84,11 +84,14 @@ const retryLoading = () => {
 };
 
 const creatingPathfinder = ref(false);
-const selectedPathfinder = ref(null);
+const selectedPathfinder = ref<Pathfinder | null>(null);
 const isEditModalOpen = ref(false);
 const showToaster = ref(false);
 const toasterMessage = ref("");
-const createFormRef = ref();
+const createFormRef = ref<{
+  clearForm?: () => void;
+  setServerErrors?: (errors: Record<string, string[]>) => void;
+} | null>(null);
 
 const canCreatePathfinder = computed(() =>
   userStore.permissions.includes("create:pathfinders")
@@ -98,7 +101,7 @@ const canUpdatePathfinder = computed(() =>
   userStore.permissions.includes("update:pathfinders")
 );
 
-function openEditModal(pathfinder: any) {
+function openEditModal(pathfinder: Pathfinder) {
   selectedPathfinder.value = pathfinder;
   isEditModalOpen.value = true;
 }

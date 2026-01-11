@@ -1,5 +1,6 @@
-import { vi, expect } from 'vitest'
-import type { AxiosResponse } from 'axios'
+import { expect } from 'vitest'
+import type { AxiosResponse, AxiosRequestConfig } from 'axios'
+import type { Url } from 'url'
 
 export function mockApiResponse<T>(data: T, status = 200): AxiosResponse<T> {
   return {
@@ -7,13 +8,14 @@ export function mockApiResponse<T>(data: T, status = 200): AxiosResponse<T> {
     status,
     statusText: 'OK',
     headers: {},
-    config: { headers: {} } as any,
+    config: { headers: {} } as AxiosRequestConfig,
     request: {}
   }
 }
 
 export function mockApiError(message: string, status = 500) {
   const error = new Error(message)
+  ;(error as Error & { status?: number }).status = status
   return Promise.reject(error)
 }
 
@@ -33,8 +35,8 @@ export const createMockHonor = (overrides = {}) => ({
   name: 'Test Honor',
   level: 1,
   description: 'Test honor description',
-  pathPath: 'https://example.com/test-honor' as any,
-  wikiPath: 'https://wiki.example.com/test-honor' as any,
+  pathPath: new URL('https://example.com/test-honor') as unknown as Url,
+  wikiPath: new URL('https://wiki.example.com/test-honor') as unknown as Url,
   ...overrides
 })
 
@@ -50,7 +52,7 @@ export const createMockPathfinderHonor = (overrides = {}) => ({
 
 export const waitForStoreUpdate = () => new Promise(resolve => setTimeout(resolve, 0))
 
-export function expectStoreState<T extends Record<string, any>>(store: T, expectedState: Partial<T>) {
+export function expectStoreState<T extends Record<string, unknown>>(store: T, expectedState: Partial<T>) {
   Object.keys(expectedState).forEach(key => {
     const expectedValue = expectedState[key as keyof T]
     if (expectedValue !== undefined) {
@@ -59,7 +61,7 @@ export function expectStoreState<T extends Record<string, any>>(store: T, expect
   })
 }
 
-export function createMockStore<T extends Record<string, any>>(initialState: T) {
+export function createMockStore<T extends Record<string, unknown>>(initialState: T) {
   const state = { ...initialState }
   
   return {

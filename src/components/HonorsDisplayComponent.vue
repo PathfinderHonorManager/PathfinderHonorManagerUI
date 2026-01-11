@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 import { useSelectionStore } from "@/stores/selectionStore";
 
 export default defineComponent({
@@ -43,7 +43,7 @@ export default defineComponent({
     },
   },
   emits: ["toggle-selection"],
-  setup(props, { emits }) {
+  setup(props) {
     const selectionStore = useSelectionStore();
     function isSelectedHonor(honorID: string) {
       return selectionStore.selections[props.selectionType].honors.includes(

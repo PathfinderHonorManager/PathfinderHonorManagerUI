@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import api from "@/api/honors";
 import type { Url } from "url";
-import { Errors } from "../errors/errors";
 import { useSelectionStore, type SelectionType } from "./selectionStore";
 
 export interface IHonor {

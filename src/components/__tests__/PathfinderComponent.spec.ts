@@ -1,11 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { mount, shallowMount, type VueWrapper } from "@vue/test-utils";
+import { shallowMount, type VueWrapper } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import PathfinderComponent from "@/components/PathfinderComponent.vue";
-import { ValidationError } from "@/models/pathfinder";
+import { ValidationError, type Pathfinder } from "@/models/pathfinder";
+import type { IHonor } from "@/stores/honors";
 
 const mockPathfinderStore = {
-  pathfinders: [] as any[],
+  pathfinders: [] as Pathfinder[],
   loading: false,
   error: false,
   postPathfinder: vi.fn(),
@@ -17,7 +18,7 @@ const mockUserStore = {
 };
 
 const mockHonorStore = {
-  honors: [] as any[],
+  honors: [] as IHonor[],
   getHonors: vi.fn()
 };
 
@@ -34,7 +35,7 @@ vi.mock("@/stores/honors", () => ({
 }));
 
 describe("PathfinderComponent", () => {
-  let wrapper: VueWrapper<any>;
+  let wrapper: VueWrapper<InstanceType<typeof PathfinderComponent>>;
 
   beforeEach(() => {
     const pinia = createPinia();
@@ -314,7 +315,7 @@ describe("PathfinderComponent", () => {
       vi.clearAllMocks();
       
       // Call retry loading - access it through the component instance
-      await (newWrapper.vm as any).retryLoading();
+      await newWrapper.vm.retryLoading();
       
       // Both should be called again
       expect(mockPathfinderStore.getPathfinders).toHaveBeenCalled();

@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { usePathfinderStore } from "@/stores/pathfinders";
 
 export default defineComponent({

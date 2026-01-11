@@ -1,6 +1,9 @@
 <template>
   <div class="content-box">
-    <form class="honor-form" @submit.prevent="handleSubmit">
+    <form
+      class="honor-form"
+      @submit.prevent="handleSubmit"
+    >
       <div class="form-field">
         <vue3-simple-typeahead
           id="typeahead_id"

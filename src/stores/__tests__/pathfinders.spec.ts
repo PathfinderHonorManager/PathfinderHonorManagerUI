@@ -213,7 +213,7 @@ describe('Pathfinder Store', () => {
 
       try {
         await store.postPathfinder(newPathfinderData)
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
 
@@ -637,7 +637,7 @@ describe('Pathfinder Store', () => {
 
     it('handles missing honors array gracefully', () => {
       const pathfinderWithoutHonors = { ...mockPathfinders[0], pathfinderHonors: [] }
-      store.pathfinders = [pathfinderWithoutHonors as any]
+      store.pathfinders = [pathfinderWithoutHonors]
       
       expect(() => store.sortPathfinderHonors()).not.toThrow()
     })

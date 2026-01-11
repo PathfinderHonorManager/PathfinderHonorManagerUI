@@ -88,10 +88,7 @@ import RecipientsDisplayComponent from "./RecipientsDisplayComponent.vue";
 import {
   defineComponent,
   ref,
-  inject,
   computed,
-  watchEffect,
-  onMounted,
   watch,
 } from "vue";
 import { useRoute } from "vue-router";
@@ -253,8 +250,8 @@ export default defineComponent({
     async function addOrUpdateSelectedToClubWrapper() {
       if (['plan', 'earn', 'award'].includes(selectionType.value)) {
         await addOrUpdateSelectedToClub(
-          pathfinderStore as any,
-          honorStore as any,
+          pathfinderStore,
+          honorStore,
           selectionStore,
           recipients,
           selectedHonors,

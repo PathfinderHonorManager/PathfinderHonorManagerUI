@@ -20,7 +20,9 @@ const PATHFINDER_CLASSES = [
         class="class-card"
       >
         <h3>{{ pfClass.name }}</h3>
-        <p class="grade">Grade {{ pfClass.grade }}</p>
+        <p class="grade">
+          Grade {{ pfClass.grade }}
+        </p>
       </router-link>
     </div>
   </div>
