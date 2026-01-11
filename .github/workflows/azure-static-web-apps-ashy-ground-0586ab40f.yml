@@ -33,7 +33,7 @@ jobs:
         continue-on-error: true
       
       - name: Run tests with coverage
-        run: yarn test:unit --coverage
+        run: yarn test --coverage
       
       - name: Upload coverage report
         uses: actions/upload-artifact@v6

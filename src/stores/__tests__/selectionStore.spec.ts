@@ -121,6 +121,14 @@ describe('Selection Store', () => {
       
       expect(store.selections.plan.honors).toEqual([])
     })
+
+    it('toggles achievements selection in achievements category', () => {
+      store.toggleSelection('achievements', 'achievement-1', 'achievements')
+      expect(store.selections.achievements.achievements).toEqual(['achievement-1'])
+
+      store.toggleSelection('achievements', 'achievement-1', 'achievements')
+      expect(store.selections.achievements.achievements).toEqual([])
+    })
   })
 
   describe('Actions - clearSelection', () => {
@@ -165,6 +173,18 @@ describe('Selection Store', () => {
       expect(store.selections.award.pathfinders).toEqual([])
       expect(store.selections.award.honors).toEqual([])
     })
+
+    it('clears achievements selection when type is achievements', () => {
+      store.selections.achievements.pathfinders = ['pf-1']
+      store.selections.achievements.honors = ['honor-1']
+      store.selections.achievements.achievements = ['achievement-1']
+
+      store.clearSelection('achievements')
+
+      expect(store.selections.achievements.pathfinders).toEqual([])
+      expect(store.selections.achievements.honors).toEqual([])
+      expect(store.selections.achievements.achievements).toEqual([])
+    })
   })
 
   describe('Actions - isSelected', () => {
@@ -200,6 +220,13 @@ describe('Selection Store', () => {
     it('handles empty selections', () => {
       expect(store.isSelected('award', 'any-id', 'pathfinders')).toBe(false)
       expect(store.isSelected('investiture', 'any-id', 'honors')).toBe(false)
+    })
+
+    it('returns selection status for achievements category', () => {
+      store.selections.achievements.achievements = ['achievement-1']
+
+      expect(store.isSelected('achievements', 'achievement-1', 'achievements')).toBe(true)
+      expect(store.isSelected('achievements', 'achievement-2', 'achievements')).toBe(false)
     })
   })
 
