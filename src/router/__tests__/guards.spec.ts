@@ -39,6 +39,15 @@ describe('Router guards', () => {
     expect(next).toHaveBeenCalledWith({ name: 'club' })
   })
 
+  it('allows unauthenticated users to access landing', async () => {
+    const next = vi.fn() as NavigationGuardNext
+    const to = makeRoute({ name: 'landing', path: '/landing' })
+
+    await handleAuthNavigation(to, makeAuthState(false), next)
+
+    expect(next).toHaveBeenCalledWith()
+  })
+
   it('allows authenticated users to access protected routes', async () => {
     const next = vi.fn() as NavigationGuardNext
     const to = makeRoute({ name: 'ManageHonors', meta: { requiresAuth: true } })
@@ -46,6 +55,15 @@ describe('Router guards', () => {
     await handleAuthNavigation(to, makeAuthState(true), next)
 
     expect(next).toHaveBeenCalledWith()
+  })
+
+  it('redirects unauthenticated users from root path', async () => {
+    const next = vi.fn() as NavigationGuardNext
+    const to = makeRoute({ path: '/', name: undefined })
+
+    await handleAuthNavigation(to, makeAuthState(false), next)
+
+    expect(next).toHaveBeenCalledWith({ name: 'landing' })
   })
 
   it('allows navigation when auth is still loading after delay', async () => {
