@@ -22,7 +22,7 @@ jobs:
           node-version: '22.x'
       
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
       
       - name: Run linting
         run: yarn lint
@@ -57,7 +57,7 @@ jobs:
           node-version: '22.x'
       
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
       
       - name: Download coverage report
         uses: actions/download-artifact@v7
@@ -98,7 +98,7 @@ jobs:
           node-version: '22.x'
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Semantic Release
         id: semantic
@@ -126,7 +126,7 @@ jobs:
           node-version: '22.x'
       
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
       
       - name: Set version info
         id: version-info
