@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, emits } from "vue";
+import { defineComponent, onMounted } from "vue";
 
 export default defineComponent({
   props: {
@@ -17,7 +17,7 @@ export default defineComponent({
     },
   },
   emits: ["hide"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     onMounted(() => {
       setTimeout(() => {
         emit("hide");

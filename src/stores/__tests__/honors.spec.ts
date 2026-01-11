@@ -8,6 +8,9 @@ import {
   createMockHonor,
   expectStoreState
 } from '@/utils/test-helpers'
+import type { IHonor } from '@/stores/honors'
+import type { SelectionType } from '@/stores/selectionStore'
+import type { Url } from 'url'
 
 vi.mock('@/api/honors')
 
@@ -27,30 +30,30 @@ describe('Honor Store', () => {
     vi.resetAllMocks()
   })
 
-  const mockHonors = [
+  const mockHonors: IHonor[] = [
     {
       honorID: "1c82e3ae-1968-11ec-ae66-d7248c0cf660",
       name: "Animal Tracking",
       level: 1,
       description: "Learn to identify and track various animals",
-      pathPath: "https://example.com/animal-tracking" as any,
-      wikiPath: "https://wiki.example.com/animal-tracking" as any,
+      pathPath: new URL("https://example.com/animal-tracking") as unknown as Url,
+      wikiPath: new URL("https://wiki.example.com/animal-tracking") as unknown as Url,
     },
     {
       honorID: "1c82e688-1968-11ec-ae66-8f33c066236e", 
       name: "Barbering and Hairstyling",
       level: 2,
       description: "Learn basic barbering and hairstyling techniques",
-      pathPath: "https://example.com/barbering" as any,
-      wikiPath: "https://wiki.example.com/barbering" as any,
+      pathPath: new URL("https://example.com/barbering") as unknown as Url,
+      wikiPath: new URL("https://wiki.example.com/barbering") as unknown as Url,
     },
     {
       honorID: "1c82e4e4-1968-11ec-ae66-376e19f0534f",
       name: "Archery",
       level: 1,
       description: "Master the art of archery",
-      pathPath: "https://example.com/archery" as any,
-      wikiPath: "https://wiki.example.com/archery" as any,
+      pathPath: new URL("https://example.com/archery") as unknown as Url,
+      wikiPath: new URL("https://wiki.example.com/archery") as unknown as Url,
     },
   ]
 
@@ -127,7 +130,7 @@ describe('Honor Store', () => {
     it('getHonorsBySelection handles invalid selection type gracefully', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       
-      const selectedHonors = store.getHonorsBySelection('invalid' as any)
+      const selectedHonors = store.getHonorsBySelection('invalid' as unknown as SelectionType)
       expect(selectedHonors).toEqual([])
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining('Selection type invalid is not valid')

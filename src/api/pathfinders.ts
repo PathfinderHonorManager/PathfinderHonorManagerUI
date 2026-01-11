@@ -1,5 +1,4 @@
 import axios from "axios";
-import type { AxiosResponse } from "axios";
 import {
   PathfinderPost,
   PathfinderHonorPostPut,
@@ -71,11 +70,7 @@ export default {
   },
   bulkManagePathfinderHonors: (data: BulkAdd[], action: "plan" | "earn" | "award") => {
     const method = action === "plan" ? axios.post : axios.put;
-    return method(BASE_URL + "/PathfinderHonors", data).then(
-      (res: AxiosResponse) => {
-        return res;
-      },
-    );
+    return method(BASE_URL + "/PathfinderHonors", data);
   },
   putPathfinder: async (
     pathfinderID: string,
@@ -97,7 +92,7 @@ export default {
       throw error;
     }
   },
-  bulkUpdatePathfinders: (data: { items: any[] }) => {
+  bulkUpdatePathfinders: (data: BulkUpdateRequest) => {
     return axios.put<BulkUpdateResponse[]>(BASE_URL, data).then((res) => {
       if (res.status === 207) {
         // Check if any updates failed

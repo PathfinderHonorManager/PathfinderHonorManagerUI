@@ -1,7 +1,13 @@
 <template>
-  <h1 v-if="isLoadingClub">Loading Club...</h1>
-  <h1 v-else-if="clubName">{{ clubName }} Club</h1>
-  <h1 v-else>Club</h1>
+  <h1 v-if="isLoadingClub">
+    Loading Club...
+  </h1>
+  <h1 v-else-if="clubName">
+    {{ clubName }} Club
+  </h1>
+  <h1 v-else>
+    Club
+  </h1>
   <div class="content-box">
     <h3 class="title">
       Here, You Can View Your Club's Honors

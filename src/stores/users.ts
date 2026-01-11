@@ -4,34 +4,34 @@ import clubApi from "@/api/clubs";
 
 export type UserStoreType = {
   // State
-  permissions: any[];
+  permissions: string[];
   clubCode: string;
   clubName: string;
   isLoadingClub: boolean;
 
   // Actions
-  setPermissions: (permissions: any[]) => void;
+  setPermissions: (permissions: string[]) => void;
   setClubCode: (clubCode: string) => void;
   setClubName: (clubName: string) => void;
   setLoadingClub: (loading: boolean) => void;
-  decodeToken: (getAccessTokenSilently: any) => Promise<void>;
+  decodeToken: (getAccessTokenSilently: () => Promise<string>) => Promise<void>;
   getClubName: (clubCode: string) => Promise<void>;
 };
 
 interface CustomJwtPayload extends JwtPayload {
-  permissions: any[];
+  permissions: string[];
   clubCode: string;
 }
 
 export const useUserStore = defineStore("clubUser", {
   state: () => ({
-    permissions: [] as any[],
+    permissions: [] as string[],
     clubCode: "",
     clubName: "",
     isLoadingClub: true,
   }),
   actions: {
-    setPermissions(permissions: any[]) {
+    setPermissions(permissions: string[]) {
       this.permissions = permissions;
     },
     setClubCode(clubCode: string) {
@@ -43,7 +43,7 @@ export const useUserStore = defineStore("clubUser", {
     setLoadingClub(loading: boolean) {
       this.isLoadingClub = loading;
     },
-    async decodeToken(getAccessTokenSilently: any) {
+    async decodeToken(getAccessTokenSilently: () => Promise<string>) {
       const token = await getAccessTokenSilently();
       const decodedToken = jwtDecode<CustomJwtPayload>(token);
       this.setPermissions(decodedToken.permissions);

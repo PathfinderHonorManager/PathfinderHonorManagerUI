@@ -1,5 +1,4 @@
 const isDevelopment = import.meta.env.DEV;
-const localApiUrl = import.meta.env.VITE_LOCAL_API_URL || 'https://localhost:5001';
 const useLocalApi = isDevelopment && import.meta.env.VITE_USE_LOCAL_API === 'true';
 
 export const API_CONFIG = {

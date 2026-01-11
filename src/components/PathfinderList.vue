@@ -103,7 +103,7 @@ import PostPathfinderHonorComponent from "./PostPathfinderHonorComponent.vue";
 import PathfinderHonorsDisplay from "./PathfinderHonorsDisplay.vue";
 import { Pathfinder } from "@/models/pathfinder";
 
-const props = defineProps({
+defineProps({
   pathfinders: {
     type: Array as () => Pathfinder[],
     required: true

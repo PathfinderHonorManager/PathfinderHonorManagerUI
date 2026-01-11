@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch, onMounted, nextTick } from "vue";
+import { defineComponent, computed, ref, watch } from "vue";
 import { useSelectionStore, type SelectionType } from "@/stores/selectionStore";
 import { usePathfinderStore } from "@/stores/pathfinders";
 import { useHonorStore } from "@/stores/honors";

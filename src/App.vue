@@ -1,23 +1,17 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect, onMounted } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import Authentication from "@/components/AuthenticationComponent.vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import UserProfileComponent from "./components/UserProfileComponent.vue";
 import SidebarVersionInfo from "./components/SidebarVersionInfo.vue";
-import { useHonorStore } from "./stores/honors";
-import { usePathfinderStore } from "./stores/pathfinders";
 import { useUserStore } from "./stores/users";
-import { useAchievementsStore } from '@/stores/achievements';
 
 const router = useRouter();
 const { isAuthenticated, isLoading } = useAuth0();
-const honorStore = useHonorStore();
-const pathfinderStore = usePathfinderStore();
 const userStore = useUserStore();
 const { getAccessTokenSilently } = useAuth0();
 const authError = ref(false);
-const achievementsStore = useAchievementsStore();
 
 watchEffect(async () => {
   if (isLoading.value) return;

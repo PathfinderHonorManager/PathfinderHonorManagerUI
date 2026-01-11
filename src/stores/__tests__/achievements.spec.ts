@@ -96,14 +96,14 @@ describe('Achievements Store', () => {
           status: 200,
           statusText: 'OK',
           headers: {},
-          config: {} as any
+          config: {} as Record<string, unknown>
         })
         mockAchievementsApi.getAllPathfinderAchievements.mockResolvedValue({ 
           data: mockPathfinderAchievements,
           status: 200,
           statusText: 'OK',
           headers: {},
-          config: {} as any
+          config: {} as Record<string, unknown>
         })
 
         await store.loadAllAchievements()
@@ -144,14 +144,14 @@ describe('Achievements Store', () => {
           status: 200,
           statusText: 'OK',
           headers: {},
-          config: {} as any
+          config: {} as Record<string, unknown>
         })
         mockAchievementsApi.getAllPathfinderAchievements.mockResolvedValue({ 
           data: mockPathfinderAchievements,
           status: 200,
           statusText: 'OK',
           headers: {},
-          config: {} as any
+          config: {} as Record<string, unknown>
         })
 
         await store.loadAllAchievements(true)

@@ -79,7 +79,7 @@ describe('ManageAchievementsComponent', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {} as any
+      config: {} as Record<string, unknown>
     })
     
     mockAchievementsApi.getAllPathfinderAchievements.mockResolvedValue({
@@ -104,7 +104,7 @@ describe('ManageAchievementsComponent', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {} as any
+      config: {} as Record<string, unknown>
     })
     
     // Hydrate stores BEFORE mounting
@@ -263,7 +263,7 @@ describe('ManageAchievementsComponent', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {} as any
+      config: {} as Record<string, unknown>
     })
     const wrapper = mount(ManageAchievementsComponent, {
       global: { plugins: [router, pinia] },

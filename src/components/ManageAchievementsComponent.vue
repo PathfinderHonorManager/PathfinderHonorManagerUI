@@ -2,68 +2,112 @@
   <div class="manage-achievements">
     <div class="header">
       <h2>{{ className }} Achievements</h2>
-      <router-link :to="{ name: 'AchievementClasses' }" class="back-link">
+      <router-link
+        :to="{ name: 'AchievementClasses' }"
+        class="back-link"
+      >
         Back to Class Selection
       </router-link>
     </div>
 
-    <div v-if="loading || autoAddingAchievements" class="loading">
+    <div
+      v-if="loading || autoAddingAchievements"
+      class="loading"
+    >
       Loading achievements...
     </div>
-    <div v-else-if="error" class="error">
+    <div
+      v-else-if="error"
+      class="error"
+    >
       {{ error }}
     </div>
     <div v-else>
       <div class="achievement-grid">
-        <div class="achievement-header" :class="{ 'force-mobile': shouldUseMobileLayout }">
-          <div class="achievement-info">Achievement</div>
-          <div class="pathfinder-names desktop-only" :class="{ 'force-mobile': shouldUseMobileLayout }">
-            <div v-for="pathfinder in classPathfindersWithMatchingGrade" 
-                 :key="pathfinder.pathfinderID" 
-                 class="pathfinder-name"
-                 :title="`${pathfinder.firstName} ${pathfinder.lastName}`">
+        <div
+          class="achievement-header"
+          :class="{ 'force-mobile': shouldUseMobileLayout }"
+        >
+          <div class="achievement-info">
+            Achievement
+          </div>
+          <div
+            class="pathfinder-names desktop-only"
+            :class="{ 'force-mobile': shouldUseMobileLayout }"
+          >
+            <div
+              v-for="pathfinder in classPathfindersWithMatchingGrade" 
+              :key="pathfinder.pathfinderID" 
+              class="pathfinder-name"
+              :title="`${pathfinder.firstName} ${pathfinder.lastName}`"
+            >
               {{ pathfinder.firstName }} {{ pathfinder.lastName?.charAt(0) }}.
             </div>
           </div>
         </div>
         
-        <div v-for="achievement in sortedAchievements" :key="achievement.achievementID" class="achievement-row" :class="{ 'force-mobile': shouldUseMobileLayout }">
+        <div
+          v-for="achievement in sortedAchievements"
+          :key="achievement.achievementID"
+          class="achievement-row"
+          :class="{ 'force-mobile': shouldUseMobileLayout }"
+        >
           <div class="achievement-info">
             <div class="achievement-content">
               <div class="achievement-description">
                 {{ achievement.description }}
               </div>
               <div class="badge-container">
-                <span class="category-badge" :class="getCategoryClass(achievement.categoryName)">
+                <span
+                  class="category-badge"
+                  :class="getCategoryClass(achievement.categoryName)"
+                >
                   {{ achievement.categoryName }}
                 </span>
-                <span class="level-badge" :class="'level' + achievement.level">
+                <span
+                  class="level-badge"
+                  :class="'level' + achievement.level"
+                >
                   {{ achievement.levelName }}
                 </span>
               </div>
             </div>
           </div>
-          <div class="pathfinder-checkboxes desktop-only" :class="{ 'force-mobile': shouldUseMobileLayout }">
-            <div v-for="pathfinder in classPathfindersWithMatchingGrade" 
-                 :key="pathfinder.pathfinderID" 
-                 class="pathfinder-checkbox">
-              <input type="checkbox"
-                     :checked="isAchievementCompleted(pathfinder.pathfinderID, achievement.achievementID)"
-                     @change="onCheckboxChange($event, pathfinder.pathfinderID, achievement.achievementID)">
+          <div
+            class="pathfinder-checkboxes desktop-only"
+            :class="{ 'force-mobile': shouldUseMobileLayout }"
+          >
+            <div
+              v-for="pathfinder in classPathfindersWithMatchingGrade" 
+              :key="pathfinder.pathfinderID" 
+              class="pathfinder-checkbox"
+            >
+              <input
+                type="checkbox"
+                :checked="isAchievementCompleted(pathfinder.pathfinderID, achievement.achievementID)"
+                @change="onCheckboxChange($event, pathfinder.pathfinderID, achievement.achievementID)"
+              >
             </div>
           </div>
           
-          <div class="mobile-pathfinders" :class="{ 'force-mobile': shouldUseMobileLayout }">
-            <div v-for="pathfinder in classPathfindersWithMatchingGrade" 
-                 :key="pathfinder.pathfinderID" 
-                 class="mobile-pathfinder-row">
+          <div
+            class="mobile-pathfinders"
+            :class="{ 'force-mobile': shouldUseMobileLayout }"
+          >
+            <div
+              v-for="pathfinder in classPathfindersWithMatchingGrade" 
+              :key="pathfinder.pathfinderID" 
+              class="mobile-pathfinder-row"
+            >
               <div class="mobile-pathfinder-name">
                 {{ pathfinder.firstName }} {{ pathfinder.lastName }}
               </div>
               <div class="mobile-pathfinder-checkbox">
-                <input type="checkbox"
-                       :checked="isAchievementCompleted(pathfinder.pathfinderID, achievement.achievementID)"
-                       @change="onCheckboxChange($event, pathfinder.pathfinderID, achievement.achievementID)">
+                <input
+                  type="checkbox"
+                  :checked="isAchievementCompleted(pathfinder.pathfinderID, achievement.achievementID)"
+                  @change="onCheckboxChange($event, pathfinder.pathfinderID, achievement.achievementID)"
+                >
               </div>
             </div>
           </div>
@@ -71,7 +115,10 @@
       </div>
     </div>
 
-    <ToasterComponent v-if="toasterMessage" :message="toasterMessage" />
+    <ToasterComponent
+      v-if="toasterMessage"
+      :message="toasterMessage"
+    />
   </div>
 </template>
 

@@ -1,5 +1,4 @@
 import axios from "axios";
-import type { AxiosResponse } from "axios";
 import { API_CONFIG } from "../config/api";
 
 const BASE_URL = API_CONFIG.BASE_URL;

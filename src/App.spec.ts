@@ -41,10 +41,10 @@ vi.mock('vue-router', () => ({
 }))
 
 describe('App.vue', () => {
-  let mockAuth0: any
-  let mockHonorStore: any
-  let mockUserStore: any
-  let mockAchievementsStore: any
+  let mockAuth0: ReturnType<typeof useAuth0>
+  let mockHonorStore: ReturnType<typeof useHonorStore>
+  let mockUserStore: ReturnType<typeof useUserStore>
+  let mockAchievementsStore: ReturnType<typeof useAchievementsStore>
 
   beforeEach(() => {
     const pinia = createPinia()
@@ -55,24 +55,24 @@ describe('App.vue', () => {
       isAuthenticated: { value: false },
       isLoading: { value: false },
       getAccessTokenSilently: vi.fn()
-    }
+    } as ReturnType<typeof useAuth0>
     vi.mocked(useAuth0).mockReturnValue(mockAuth0)
 
     // Setup store mocks
     mockHonorStore = {
       getHonors: vi.fn()
-    }
+    } as ReturnType<typeof useHonorStore>
     vi.mocked(useHonorStore).mockReturnValue(mockHonorStore)
 
     mockUserStore = {
       decodeToken: vi.fn(),
       permissions: []
-    }
+    } as ReturnType<typeof useUserStore>
     vi.mocked(useUserStore).mockReturnValue(mockUserStore)
 
     mockAchievementsStore = {
       loadAllAchievements: vi.fn()
-    }
+    } as ReturnType<typeof useAchievementsStore>
     vi.mocked(useAchievementsStore).mockReturnValue(mockAchievementsStore)
 
     vi.clearAllMocks()

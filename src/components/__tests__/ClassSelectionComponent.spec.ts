@@ -53,16 +53,7 @@ describe('ClassSelectionComponent', () => {
     expect(links).toHaveLength(6)
 
     // Check that each link has the correct route
-    const expectedRoutes = [
-      { name: 'Achievements', params: { className: 'Friend' } },
-      { name: 'Achievements', params: { className: 'Companion' } },
-      { name: 'Achievements', params: { className: 'Explorer' } },
-      { name: 'Achievements', params: { className: 'Ranger' } },
-      { name: 'Achievements', params: { className: 'Voyager' } },
-      { name: 'Achievements', params: { className: 'Guide' } }
-    ]
-
-    links.forEach((link, index) => {
+    links.forEach((link) => {
       expect(link.attributes('href')).toBeDefined()
     })
   })
