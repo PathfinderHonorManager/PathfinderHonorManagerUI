@@ -79,3 +79,20 @@ describe('Router guards', () => {
     expect(next).toHaveBeenCalledWith()
   })
 })
+
+describe('ManageHonors route guard', () => {
+  it('redirects invalid selectionType to club', async () => {
+    const { default: router } = await import('../index')
+    const route = router.getRoutes().find((r) => r.name === 'ManageHonors')
+    expect(route?.beforeEnter).toBeDefined()
+
+    const next = vi.fn()
+    const to = { params: { selectionType: 'invalid' } }
+    const from = {}
+
+    const guard = route?.beforeEnter as (to: unknown, from: unknown, next: (val?: unknown) => void) => void
+    guard(to, from, next)
+
+    expect(next).toHaveBeenCalledWith({ name: 'club' })
+  })
+})

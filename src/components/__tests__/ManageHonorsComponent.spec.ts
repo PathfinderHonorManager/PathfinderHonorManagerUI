@@ -44,7 +44,7 @@ const mockPathfinderStore = {
 }
 
 const mockHonorStore = {
-  honors: ref(mockHonors),
+  honors: [...mockHonors],
   loading: ref(false),
   error: ref(false),
   getHonors: vi.fn(),
@@ -148,7 +148,7 @@ describe('ManageHonorsComponent', () => {
 
   describe('Initial Data Loading', () => {
     it('only loads empty stores', async () => {
-      mockHonorStore.honors.value = [mockHonors[0]]
+      mockHonorStore.honors = [mockHonors[0]]
       mockPathfinderStore.pathfinders = []
       
       wrapper.unmount()
@@ -160,4 +160,35 @@ describe('ManageHonorsComponent', () => {
       expect(mockPathfinderStore.getPathfinders).toHaveBeenCalled()
     })
   })
-}) 
+
+  describe('Selection Behavior', () => {
+    it('sets button label based on selection type', async () => {
+      wrapper.vm.selectionType = 'earn'
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.buttonLabel).toBe('Earn Honors')
+    })
+
+    it('filters honor search results to available honors', async () => {
+      const honorResult = [
+        mockHonors[0],
+        { ...mockHonors[0], honorID: '3', name: 'Honor 3' }
+      ]
+
+      wrapper.vm.updateHonorSearchResult(honorResult)
+      await wrapper.vm.$nextTick()
+
+      const ids = wrapper.vm.honorSearchResult.map((honor: IHonor) => honor.honorID)
+      expect(ids).toEqual(['1'])
+    })
+
+    it('toggles selection and resets bulk add', async () => {
+      wrapper.vm.bulkAdd = true
+
+      wrapper.vm.toggleSelection('1')
+
+      expect(mockSelectionStore.toggleSelection).toHaveBeenCalledWith('plan', '1', 'honors')
+      expect(wrapper.vm.bulkAdd).toBe(false)
+    })
+  })
+})
