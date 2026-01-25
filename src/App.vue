@@ -74,15 +74,15 @@ const canUpdatePathfinder = computed(() =>
       </router-link>
       <router-link
         v-if="canUpdatePathfinder"
-        :to="{ name: 'Investiture' }"
-      >
-        Investiture
-      </router-link>
-      <router-link
-        v-if="canUpdatePathfinder"
         :to="{ name: 'AchievementClasses' }"
       >
         Achievements
+      </router-link>
+      <router-link
+        v-if="canUpdatePathfinder"
+        :to="{ name: 'Investiture' }"
+      >
+        Investiture
       </router-link>
       
       <SidebarVersionInfo />

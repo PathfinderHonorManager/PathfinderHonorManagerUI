@@ -6,7 +6,7 @@ import ManageHonorsComponent from '../ManageHonorsComponent.vue'
 import { ref, computed } from 'vue'
 import type { IHonor } from '@/stores/honors'
 import flushPromises from 'flush-promises'
-import type { Url } from 'url'
+import type { Url } from 'node:url'
 
 const mockHonors: IHonor[] = [
   {
