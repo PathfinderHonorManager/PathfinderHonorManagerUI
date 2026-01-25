@@ -1,6 +1,6 @@
 import { expect } from 'vitest'
 import type { AxiosResponse, AxiosRequestConfig } from 'axios'
-import type { Url } from 'url'
+import type { Url } from 'node:url'
 
 export function mockApiResponse<T>(data: T, status = 200): AxiosResponse<T> {
   return {
