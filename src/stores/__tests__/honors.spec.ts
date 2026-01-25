@@ -10,7 +10,7 @@ import {
 } from '@/utils/test-helpers'
 import type { IHonor } from '@/stores/honors'
 import type { SelectionType } from '@/stores/selectionStore'
-import type { Url } from 'url'
+import type { Url } from 'node:url'
 
 vi.mock('@/api/honors')
 

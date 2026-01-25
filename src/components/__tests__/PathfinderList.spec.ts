@@ -1,3 +1,4 @@
+/* eslint-disable vue/one-component-per-file */
 import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
 import { defineComponent } from "vue";
@@ -9,7 +10,11 @@ const FontAwesomeIconStub = defineComponent({
 });
 
 const PathfinderHonorsDisplayStub = defineComponent({
-  props: ["pathfinderHonors", "pathfinderId", "canUpdatePathfinder"],
+  props: {
+    pathfinderHonors: { type: Array, required: true },
+    pathfinderId: { type: String, required: true },
+    canUpdatePathfinder: { type: Boolean, required: true }
+  },
   template: "<div class=\"honors-display\" />"
 });
 

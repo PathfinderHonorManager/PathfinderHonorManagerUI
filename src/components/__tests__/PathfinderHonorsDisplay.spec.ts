@@ -11,7 +11,7 @@ const PathfinderHonorStub = defineComponent({
     name: { type: String, required: true },
     status: { type: String, required: true },
     display: { type: Boolean, required: true },
-    image: { type: String, required: false },
+    image: { type: String, required: false, default: "" },
     canUpdatePathfinder: { type: Boolean, required: true }
   },
   template: "<div class=\"honor-stub\" />"
