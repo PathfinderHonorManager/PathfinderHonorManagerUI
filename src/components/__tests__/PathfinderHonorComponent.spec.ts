@@ -63,6 +63,13 @@ describe('PathfinderHonorComponent', () => {
       expect(wrapper.find('.honor-card').exists()).toBe(false)
     })
 
+    it('renders read-only status when user cannot update pathfinder', async () => {
+      await wrapper.setProps({ canUpdatePathfinder: false })
+      expect(wrapper.find('.status-selector').exists()).toBe(false)
+      expect(wrapper.find('.status-display').exists()).toBe(true)
+      expect(wrapper.find('button').exists()).toBe(false)
+    })
+
     it('renders status selector with correct options', async () => {
       const statusSelector = wrapper.find('.status-selector')
       expect(statusSelector.exists()).toBe(true)
