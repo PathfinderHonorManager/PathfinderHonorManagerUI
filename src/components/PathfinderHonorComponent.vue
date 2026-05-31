@@ -18,6 +18,7 @@
       
       <div class="status-dropdown">
         <div
+          v-if="canUpdatePathfinder"
           class="status-selector"
           :class="newStatus.toLowerCase()"
           @click="showDropdown = !showDropdown"
@@ -25,9 +26,16 @@
           <span>{{ newStatus }}</span>
           <span class="dropdown-arrow">▼</span>
         </div>
+        <div
+          v-else
+          class="status-display"
+          :class="newStatus.toLowerCase()"
+        >
+          <span>{{ newStatus }}</span>
+        </div>
         
         <div
-          v-if="showDropdown"
+          v-if="canUpdatePathfinder && showDropdown"
           class="dropdown-options"
         >
           <div 
@@ -225,6 +233,16 @@ export default defineComponent({
   color: white;
   font-weight: bold;
   cursor: pointer;
+}
+
+.status-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
 }
 
 .dropdown-arrow {
