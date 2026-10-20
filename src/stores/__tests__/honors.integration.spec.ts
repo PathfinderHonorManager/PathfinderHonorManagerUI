@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { setupServer } from 'msw/node'
@@ -8,9 +9,17 @@ import { API_CONFIG } from '@/config/api'
 const server = setupServer()
 const baseUrl = `${API_CONFIG.BASE_URL}/honors`
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
+const originalAdapter = axios.defaults.adapter
+beforeAll(() => {
+  // Avoid jsdom's XHR/CORS layer so MSW can intercept the requests.
+  axios.defaults.adapter = 'fetch'
+  server.listen()
+})
 afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+afterAll(() => {
+  server.close()
+  axios.defaults.adapter = originalAdapter
+})
 
 describe('Honor store integration', () => {
   it('fetches honors from the API', async () => {
