@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
@@ -17,9 +18,17 @@ const pathfinders = [
   { pathfinderID: '3', firstName: 'Cara', lastName: 'TooLow', grade: 4, isActive: true }
 ]
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
+const originalAdapter = axios.defaults.adapter
+beforeAll(() => {
+  // Avoid jsdom's XHR/CORS layer so MSW can intercept the requests.
+  axios.defaults.adapter = 'fetch'
+  server.listen()
+})
 afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+afterAll(() => {
+  server.close()
+  axios.defaults.adapter = originalAdapter
+})
 
 describe('ManageInvestitureComponent integration', () => {
   it('promotes selected pathfinders via the API', async () => {

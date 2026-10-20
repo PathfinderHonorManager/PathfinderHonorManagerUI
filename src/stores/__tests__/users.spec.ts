@@ -226,6 +226,17 @@ describe('User Store', () => {
       expect(store.clubName).toBe('')
     })
 
+    it('rejects when token retrieval returns no token', async () => {
+      mockGetAccessTokenSilently.mockResolvedValue(undefined)
+
+      await expect(store.decodeToken(mockGetAccessTokenSilently)).rejects.toThrow('Could not retrieve access token')
+
+      expect(jwtDecode).not.toHaveBeenCalled()
+      expect(clubApi.getClub).not.toHaveBeenCalled()
+      expect(store.permissions).toEqual([])
+      expect(store.clubCode).toBe('')
+    })
+
     it('handles token decode failure', async () => {
       const mockToken = 'invalid.jwt.token'
       mockGetAccessTokenSilently.mockResolvedValue(mockToken)

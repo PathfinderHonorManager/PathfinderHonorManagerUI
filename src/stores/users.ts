@@ -14,7 +14,7 @@ export type UserStoreType = {
   setClubCode: (clubCode: string) => void;
   setClubName: (clubName: string) => void;
   setLoadingClub: (loading: boolean) => void;
-  decodeToken: (getAccessTokenSilently: () => Promise<string>) => Promise<void>;
+  decodeToken: (getAccessTokenSilently: () => Promise<string | undefined>) => Promise<void>;
   getClubName: (clubCode: string) => Promise<void>;
 };
 
@@ -43,8 +43,11 @@ export const useUserStore = defineStore("clubUser", {
     setLoadingClub(loading: boolean) {
       this.isLoadingClub = loading;
     },
-    async decodeToken(getAccessTokenSilently: () => Promise<string>) {
+    async decodeToken(getAccessTokenSilently: () => Promise<string | undefined>) {
       const token = await getAccessTokenSilently();
+      if (!token) {
+        throw new Error("Could not retrieve access token");
+      }
       const decodedToken = jwtDecode<CustomJwtPayload>(token);
       this.setPermissions(decodedToken.permissions);
       this.setClubCode(decodedToken.clubCode);
